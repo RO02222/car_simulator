@@ -1,16 +1,212 @@
 //
 // Created by robbe on 3-3-2022.
 //
+#include <iostream>
+#include <exception>
+
+#include "Exception/ParserException.h"
 
 #include "World.h"
 #include "Road.h"
 #include "Light.h"
 #include "Car.h"
-#include <iostream>
+
 
 World::World(const char * worldName) {
-    loadWorld(worldName);
+    try {
+        loadWorld(worldName);
+    }
+    catch(std::exception* e) {
+        std::cerr<<e->what()<<std::endl;
+    }
 }
+
+void World::loadWorld(const char *worldName) {
+    TiXmlDocument doc;
+    if (!doc.LoadFile(worldName)) {
+        throw (doc.ErrorDesc());
+    }
+    TiXmlElement *root = doc.FirstChildElement();
+    if (root == NULL) {
+        throw (ParserException("Failed to load file: No root element."));
+    }
+    TiXmlElement *elem = root;
+    if ((std::string) elem->Value() != "World") {
+        throw (ParserException("Failed to load file: <World> ... </World>"));
+    }
+    for (TiXmlElement *elem1 = elem->FirstChildElement(); elem1 != nullptr; elem1 = elem1->NextSiblingElement()) {
+        if ((std::string) elem1->Value() == "BAAN") {
+            loadRoad(elem1);
+        }
+    }
+    for (TiXmlElement *elem1 = elem->FirstChildElement(); elem1 != NULL; elem1 = elem1->NextSiblingElement()) {
+        if ((std::string) elem1->Value() == "BAAN") {
+            continue;
+        }
+        if ((std::string) elem1->Value() == "VERKEERSLICHT") {
+            loadLight(elem1);
+            continue;
+        }
+        if ((std::string) elem1->Value() == "VOERTUIG") {
+            loadCar(elem1);
+            continue;
+        }
+        if ((std::string) elem1->Value() == "VOERTUIGGENERATOR") {
+            loadCarGen(elem1);
+            continue;
+        }
+        std::string error = "Failed to load file: <" + (std::string) elem1->Value() + "> is not valid";
+        throw (ParserException(error.c_str()));
+    }
+}
+///////////////////////
+void World::loadRoad(TiXmlElement* elem1) {
+    std::string name = "";
+    std::string length = "";
+    for (TiXmlElement *elem2 = elem1->FirstChildElement(); elem2 != nullptr; elem2 = elem2->NextSiblingElement()) {
+        if ((std::string) elem2->Value() == "naam") {
+            name = elem2->GetText();
+        } else {
+            if ((std::string) elem2->Value() == "lengte") {
+                length = elem2->GetText();
+            } else {
+                std::string error = "Failed to load file: <BAAN> : <" + (std::string) elem2->Value() + "> is not valid";
+                throw (ParserException(error.c_str()));
+            }
+        }
+    }
+    if (name == "") {
+        throw ("Failed to load file: invalid <BAAN> : 'missing argument' <naam>");
+    }
+    if (length == "") {
+        throw ("Failed to load file: invalid <BAAN> : 'missing argument' <lengte>");
+    }
+    for (Road *i: getRoads()) {
+        if (i->getName() == name) {
+            throw ("Failed to add road: road already exist");
+        }
+    }
+    roads.emplace_back(new Road(name, stoi(length)));
+}
+
+void World::loadLight(TiXmlElement* elem1) {
+    std::string roadName = "";
+    std::string position = "";
+    std::string cycle = "";
+    for (TiXmlElement *elem2 = elem1->FirstChildElement(); elem2 != nullptr; elem2 = elem2->NextSiblingElement()) {
+        if ((std::string) elem2->Value() == "baan") {
+            roadName = elem2->GetText();
+        } else {
+            if ((std::string) elem2->Value() == "positie") {
+                position = elem2->GetText();
+            } else {
+                if ((std::string) elem2->Value() == "cyclus") {
+                    cycle = elem2->GetText();
+                } else {
+                    std::string error =
+                            "Failed to load file: <VERKEERSLICHT> : <" + (std::string) elem2->Value() +
+                            "> is not valid";
+                    throw (ParserException(error.c_str()));
+                }
+            }
+        }
+    }
+    if (roadName == "") {
+        throw ("Failed to load file: invalid <VERKEERSLICHT> : 'missing argument' <baan>");
+    }
+    if (position == "") {
+        throw ("Failed to load file: invalid <VERKEERSLICHT> : 'missing argument' <positie>");
+    }
+    if (cycle == "") {
+        throw ("Failed to load file: invalid <VERKEERSLICHT> : 'missing argument' <cyclus>");
+    }
+    Road *road = nullptr;
+    for (Road *i: getRoads()) {
+        if (i->getName() == roadName) {
+            road = i;
+            break;
+        }
+        throw ("Failed to load file: invalid <VERKEERSLICHT> : '<baan> does not exist");
+    }
+    if (stoi (position) > road->getLength()){
+        throw ("Failed to load file: invalid <VERKEERSLICHT> : '<baan> is not long enough");
+    }
+    road->addLights(stoi(position),stoi(cycle));
+}
+
+void World::loadCar(TiXmlElement *elem1) {
+    std::string roadName = "";
+    std::string position = "";
+    for (TiXmlElement *elem2 = elem1->FirstChildElement(); elem2 != nullptr; elem2 = elem2->NextSiblingElement()) {
+        if ((std::string) elem2->Value() == "baan") {
+            roadName = elem2->GetText();
+        } else {
+            if ((std::string) elem2->Value() == "positie") {
+                position = elem2->GetText();
+            } else {
+                std::string error =
+                        "Failed to load file: <VOERTUIG> : <" + (std::string) elem2->Value() + "> is not valid";
+                throw (ParserException(error.c_str()));
+            }
+        }
+    }
+    if (roadName == "") {
+        throw ("Failed to load file: invalid <VOERTUIG> : 'missing argument' <baan>");
+    }
+    if (position == "") {
+        throw ("Failed to load file: invalid <VOERTUIG> : 'missing argument' <positie>");
+    }
+    Road *road = nullptr;
+    for (Road *i: getRoads()) {
+        if (i->getName() == roadName) {
+            road = i;
+            break;
+        }
+        throw ("Failed to load file: invalid <VOERTUIG> : '<baan> does not exist");
+    }
+    if (stoi (position) > road->getLength()){
+        throw ("Failed to load file: invalid <VOERTUIG> : '<baan> is not long enough");
+    }
+    road->addCars(stoi(position));
+}
+
+void World::loadCarGen(TiXmlElement *elem1) {
+    std::string roadName = "";
+    std::string frequency = "";
+    for (TiXmlElement *elem2 = elem1->FirstChildElement(); elem2 != nullptr; elem2 = elem2->NextSiblingElement()) {
+        if ((std::string) elem2->Value() == "baan") {
+            roadName = elem2->GetText();
+        } else {
+            if ((std::string) elem2->Value() == "frequentie") {
+                frequency = elem2->GetText();
+            } else {
+                std::string error =
+                        "Failed to load file: <VOERTUIGGENERATOR> : <" + (std::string) elem2->Value() + "> is not valid";
+                throw (ParserException(error.c_str()));
+            }
+        }
+    }
+    if (roadName == "") {
+        throw ("Failed to load file: invalid <VOERTUIGGENERATOR> : 'missing argument' <baan>");
+    }
+    if (frequency == "") {
+        throw ("Failed to load file: invalid <VOERTUIGGENERATOR> : 'missing argument' <frequentie>");
+    }
+    Road *road = nullptr;
+    for (Road *i: getRoads()) {
+        if (i->getName() == roadName) {
+            road = i;
+            break;
+        }
+        throw ("Failed to load file: invalid <VOERTUIGGENERATOR> : '<baan> does not exist");
+    }
+    if (stoi (frequency) > road->getLength()){
+        throw ("Failed to load file: invalid <VOERTUIGGENERATOR> : '<baan> is not long enough");
+    }
+    road->addCars(0);
+}
+///////////////////////
+
 
 const std::vector<Road *> &World::getRoads() const {
     return roads;
@@ -18,140 +214,13 @@ const std::vector<Road *> &World::getRoads() const {
 void World::setRoad(const std::vector<Road *> &banen) {
     World::roads = banen;
 }
-bool World::addRoad(std::string name, int length, bool errormessage) {
-    for (Road* i :getRoads()){
-        if (i->getName() == name){
-            if (errormessage){
-                std::cerr << "Failed to add road: road already exist" << std::endl;
-            }
-            return false;
-        }
-    }
-    roads.emplace_back(new Road(name,length));
-    return true;
+
+const std::vector<CarGen *> &World::getCarGen() const {
+    return carGen;
 }
 
-
-bool World::addCar(std::string road, int distance, bool errormessage) {
-    Road *road1 = nullptr;
-    for (Road *roads: getRoads()) {
-        if (roads->getName() == road) {
-            road1 = roads;
-            break;
-        }
-    }
-    if (road1 == nullptr) {
-        if (errormessage) {
-            std::cerr << "Failed to add car: road does not exist" << std::endl;
-        }
-        return false;
-    }
-    road1->addCars(distance);
-    return true;
-}
-
-
-bool World::loadWorld(const char *worldName) {
-    TiXmlDocument doc;
-    if (!doc.LoadFile(worldName)) {
-        std::cerr << doc.ErrorDesc() << std::endl;
-        return false;
-    }
-    TiXmlElement *root = doc.FirstChildElement();
-    if (root == NULL) {
-        std::cerr << "Failed to load file: No root element." << std::endl;
-        doc.Clear();
-        return false;
-    }
-    TiXmlElement *elem = root;
-    if ((std::string) elem->Value() != "World") {
-        std::cerr << "Failed to load file: <World> ... </World>" << std::endl;
-        return false;
-    }
-    for (TiXmlElement *elem1 = elem->FirstChildElement(); elem1 != nullptr; elem1 = elem1->NextSiblingElement()) {
-        if ((std::string) elem1->Value() != "BAAN" and (std::string) elem1->Value() != "VERKEERSLICHT" and (std::string) elem1->Value() != "VOERTUIG"){
-            std::cerr << "Unknown section : <"<<elem1->Value() <<">"<< std::endl;
-        }
-        if ((std::string) elem1->Value() == "BAAN") {
-            std::string name = "";
-            std::string length = "";
-            for (TiXmlElement *elem2 = elem1->FirstChildElement(); elem2 != nullptr; elem2 = elem2->NextSiblingElement()) {
-                if ((std::string) elem2->Value() == "naam") {
-                    name = elem2->GetText();
-                } else {
-                    if ((std::string) elem2->Value() == "lengte") {
-                        length = elem2->GetText();
-                    }
-                }
-            }
-            if (name == "" or length == "") {
-                std::cerr << "Failed to load file: invalid <BAAN> : 'missing/invalid argument'" << std::endl;
-                return false;
-            }
-            if(!addRoad(name, stoi(length), false)){
-                std::cerr << "Failed to add <BAAN>: <BAAN> already exist" << std::endl;
-                return false;
-            }
-        }
-    }
-    for (TiXmlElement *elem1 = elem->FirstChildElement(); elem1 != NULL; elem1 = elem1->NextSiblingElement()) {
-        if ((std::string) elem1->Value() == "VERKEERSLICHT") {
-            std::string road = "";
-            std::string distance = "";
-            std::string cycle = "";
-            for (TiXmlElement *elem2 = elem1->FirstChildElement(); elem2 != NULL; elem2 = elem2->NextSiblingElement()) {
-                if ((std::string) elem2->Value() == "baan") {
-                    road = elem2->GetText();
-                } else {
-                    if ((std::string) elem2->Value() == "positie") {
-                        distance = elem2->GetText();
-                    } else {
-                        if ((std::string) elem2->Value() == "cyclus") {
-                            cycle = elem2->GetText();
-                        }
-                    }
-                }
-            }
-            if (road == "" or distance == "" or cycle == "") {
-                std::cerr << "Failed to load file: invalid <VERKEERSLICHT> : 'missing/invalid argument'" << std::endl;
-                return false;
-            }
-            Road *road1 = nullptr;
-            for (Road *roads: getRoads()) {
-                if (roads->getName() == road) {
-                    road1 = roads;
-                    break;
-                }
-            }
-            if (road1 == nullptr) {
-                std::cerr << "Failed to load file: invalid <VERKEERSLICHT> : '<baan> does not exist'" << std::endl;
-                return false;
-            }
-            road1->addLights(stoi(distance), stoi(cycle));
-        }
-        if ((std::string) elem1->Value() == "VOERTUIG") {
-            std::string road = "";
-            std::string distance = "";
-            for (TiXmlElement *elem2 = elem1->FirstChildElement(); elem2 != NULL; elem2 = elem2->NextSiblingElement()) {
-                if ((std::string) elem2->Value() == "baan") {
-                    road = elem2->GetText();
-                } else {
-                    if ((std::string) elem2->Value() == "positie") {
-                        distance = elem2->GetText();
-                    }
-                }
-            }
-            if (road == "" or distance == "") {
-                std::cerr << "Failed to load file: invalid <VOERTUIG> : 'missing/invalid argument'" << std::endl;
-                return false;
-            }
-            if (!addCar(road,stoi(distance), false)) {
-                std::cerr << "Failed to load file: invalid <VOERTUIG> : '<baan> does not exist'" << std::endl;
-                return false;
-            }
-        }
-    }
-    return true;
+void World::setCarGen(const std::vector<CarGen *> &carGen) {
+    World::carGen = carGen;
 }
 
 

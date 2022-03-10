@@ -10,20 +10,36 @@
 #include "tinyxml/tinyxml.h"
 #include "tinyxml/tinystr.h"
 #include "Road.h"
+#include "CarGen.h"
 
 class World {
 private:
     std::vector<Road*> roads;
+    std::vector<CarGen*> carGen;
 public:
     World(const char * worldName);
 
-    const std::vector<Road *> &getRoads() const;
+    void loadWorld(const char * worldName);
+//////////////
+private:
+    void loadRoad(TiXmlElement* elem1);
+    void loadLight(TiXmlElement* elem1);
+    void loadCar(TiXmlElement* elem1);
+    void loadCarGen(TiXmlElement* elem1);
+//////////////
+public:
+
+
+    const std::vector<CarGen *> &getCarGen() const;
+
+    void setCarGen(const std::vector<CarGen *> &carGen);
+
     void setRoad(const std::vector<Road *> &banen);
-    bool addRoad(std::string name, int length, bool errormessage = true);
 
-    bool addCar(std::string road, int distance, bool errormessage = true);
+    const std::vector<Road *> &getRoads() const;
 
-    bool loadWorld(const char * worldName);
+
+
 
 };
 
