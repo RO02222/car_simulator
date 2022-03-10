@@ -11,4 +11,4 @@ add_executable(car_simulator
         Light.cpp Light.h
         Car.cpp Car.h
         Exception/ParserException.h
-        CarGen.cpp CarGen.h)
+        CarGen.cpp CarGen.h DesignByContract.h)

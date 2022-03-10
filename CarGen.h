@@ -7,20 +7,40 @@
 class Road;
 
 class CarGen {
-    private:
-        int frequency;
-        Road* road;
-    public:
-        CarGen (Road* road,int frequency);
-        virtual ~CarGen();
+private:
+    CarGen* _initCheck;
 
-    int getFrequency() const;
+    int frequency;
+    Road *road;
+public:
+/**
+\n ENSURE(properlyInitialized(), "constructor must end in properlyInitialized state");
+*/
+    CarGen(Road *road, int frequency);
 
+/**
+\n REQUIRE(properlyInitialized(), "constructor must end in properlyInitialized state");
+*/
+    int getFrequency();
+/**
+\n REQUIRE(properlyInitialized(), "constructor must end in properlyInitialized state");
+*/
     void setFrequency(int frequency);
-
-    Road *getRoad() const;
-
+/**
+\n REQUIRE(properlyInitialized(), "constructor must end in properlyInitialized state");
+*/
+    Road *getRoad();
+/**
+\n REQUIRE(properlyInitialized(), "constructor must end in properlyInitialized state");
+*/
     void setRoad(Road *road);
+
+
+    /////////////
+protected:
+    bool properlyInitialized();
+
+    /////////////
 };
 
 

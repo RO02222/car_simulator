@@ -7,13 +7,31 @@
 
 class Car{
 private:
+    Car* _initCheck;
     int distance;
 public:
+    /**
+\n ENSURE(properlyInitialized(), "constructor must end in properlyInitialized state");
+*/
     Car (int distance);
-    virtual ~Car();
 
-    int getDistance() const;
+/**
+\n REQUIRE(properlyInitialized(), "constructor must end in properlyInitialized state");
+*/
+    int getDistance();
+/**
+\n REQUIRE(properlyInitialized(), "constructor must end in properlyInitialized state");
+*/
     void setDistance(int distance);
+
+
+
+
+    /////////////
+protected:
+    bool properlyInitialized();
+
+    /////////////
 };
 
 

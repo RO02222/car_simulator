@@ -4,7 +4,9 @@
 #include <iostream>
 #include <exception>
 
+
 #include "Exception/ParserException.h"
+#include "DesignByContract.h"
 
 #include "World.h"
 #include "Road.h"
@@ -12,16 +14,15 @@
 #include "Car.h"
 
 
-World::World(const char * worldName) {
-    try {
-        loadWorld(worldName);
-    }
-    catch(std::exception* e) {
-        std::cerr<<e->what()<<std::endl;
-    }
+World::World() {
+    _initCheck = this;
+    roads = {};
+    carGen = {};
+    ENSURE(properlyInitialized(),"constructor must end in properlyInitialized state");
 }
 
 void World::loadWorld(const char *worldName) {
+    REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling loadWorld");
     TiXmlDocument doc;
     if (!doc.LoadFile(worldName)) {
         throw (doc.ErrorDesc());
@@ -61,6 +62,7 @@ void World::loadWorld(const char *worldName) {
 }
 ///////////////////////
 void World::loadRoad(TiXmlElement* elem1) {
+    REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling loadRoad");
     std::string name = "";
     std::string length = "";
     for (TiXmlElement *elem2 = elem1->FirstChildElement(); elem2 != nullptr; elem2 = elem2->NextSiblingElement()) {
@@ -90,6 +92,7 @@ void World::loadRoad(TiXmlElement* elem1) {
 }
 
 void World::loadLight(TiXmlElement* elem1) {
+    REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling loadLight");
     std::string roadName = "";
     std::string position = "";
     std::string cycle = "";
@@ -135,6 +138,7 @@ void World::loadLight(TiXmlElement* elem1) {
 }
 
 void World::loadCar(TiXmlElement *elem1) {
+    REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling loadCar");
     std::string roadName = "";
     std::string position = "";
     for (TiXmlElement *elem2 = elem1->FirstChildElement(); elem2 != nullptr; elem2 = elem2->NextSiblingElement()) {
@@ -171,6 +175,7 @@ void World::loadCar(TiXmlElement *elem1) {
 }
 
 void World::loadCarGen(TiXmlElement *elem1) {
+    REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling loadCarGen");
     std::string roadName = "";
     std::string frequency = "";
     for (TiXmlElement *elem2 = elem1->FirstChildElement(); elem2 != nullptr; elem2 = elem2->NextSiblingElement()) {
@@ -208,24 +213,44 @@ void World::loadCarGen(TiXmlElement *elem1) {
 ///////////////////////
 
 
-const std::vector<Road *> &World::getRoads() const {
+const std::vector<Road *> &World::getRoads() {
+    REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling getRoads");
     return roads;
 }
 void World::setRoad(const std::vector<Road *> &banen) {
+    REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling setRoad");
     World::roads = banen;
 }
 
-const std::vector<CarGen *> &World::getCarGen() const {
+const std::vector<CarGen *> &World::getCarGen()  {
+    REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling getCarGen");
     return carGen;
 }
 
 void World::setCarGen(const std::vector<CarGen *> &carGen) {
+    REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling setCarGen");
     World::carGen = carGen;
 }
 
 void World::addCarGen(Road *road, int frequency) {
+    REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling addCarGen");
     carGen.emplace_back(new CarGen(road,frequency));
 }
+
+
+
+
+
+
+
+
+
+
+//////////////
+bool World::properlyInitialized () {
+    return _initCheck == this;
+}
+//////////////
 
 
 

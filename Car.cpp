@@ -1,14 +1,29 @@
 #include "Car.h"
+#include "DesignByContract.h"
 
-Car::Car(int distance)
-        : distance(distance) {}
+Car::Car(int distance) : distance(distance) {
+    _initCheck = this;
+    ENSURE(properlyInitialized(),"constructor must end in properlyInitialized state");
 
-Car::~Car() {}
+}
 
+int Car::getDistance() {
+    REQUIRE(this->properlyInitialized(), "Car wasn't initialized when calling getDistance");
 
-int Car::getDistance() const {
     return distance;
 }
 void Car::setDistance(int distance) {
+    REQUIRE(this->properlyInitialized(), "Car wasn't initialized when calling setDistance");
+
     Car::distance = distance;
 }
+
+
+
+
+
+//////////////
+bool Car::properlyInitialized() {
+    return _initCheck == this;
+}
+//////////////

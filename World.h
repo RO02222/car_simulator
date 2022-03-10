@@ -14,34 +14,72 @@
 
 class World {
 private:
+    World* _initCheck;
+
     std::vector<Road*> roads;
     std::vector<CarGen*> carGen;
 public:
-    World(const char * worldName);
+/**
+\n ENSURE(properlyInitialized(), "constructor must end in properlyInitialized state");
+*/
+    World();
 
+/**
+\n REQUIRE(properlyInitialized(), "constructor must end in properlyInitialized state");
+*/
     void loadWorld(const char * worldName);
 //////////////
 private:
+/**
+\n REQUIRE(properlyInitialized(), "constructor must end in properlyInitialized state");
+*/
     void loadRoad(TiXmlElement* elem1);
+/**
+\n REQUIRE(properlyInitialized(), "constructor must end in properlyInitialized state");
+*/
     void loadLight(TiXmlElement* elem1);
+/**
+\n REQUIRE(properlyInitialized(), "constructor must end in properlyInitialized state");
+*/
     void loadCar(TiXmlElement* elem1);
+/**
+\n REQUIRE(properlyInitialized(), "constructor must end in properlyInitialized state");
+*/
     void loadCarGen(TiXmlElement* elem1);
 //////////////
 public:
 
+/**
+\n REQUIRE(properlyInitialized(), "constructor must end in properlyInitialized state");
+*/
+    const std::vector<CarGen *> &getCarGen();
 
-    const std::vector<CarGen *> &getCarGen() const;
-
+/**
+\n REQUIRE(properlyInitialized(), "constructor must end in properlyInitialized state");
+*/
     void setCarGen(const std::vector<CarGen *> &carGen);
-
+/**
+\n REQUIRE(properlyInitialized(), "constructor must end in properlyInitialized state");
+*/
     void setRoad(const std::vector<Road *> &banen);
-
-    const std::vector<Road *> &getRoads() const;
-
+/**
+\n REQUIRE(properlyInitialized(), "constructor must end in properlyInitialized state");
+*/
+    const std::vector<Road *> &getRoads();
+/**
+\n REQUIRE(properlyInitialized(), "constructor must end in properlyInitialized state");
+*/
     void addCarGen(Road* road,int frequency);
 
 
 
+
+
+    /////////////
+protected:
+    bool properlyInitialized ();
+
+    /////////////
 };
 
 

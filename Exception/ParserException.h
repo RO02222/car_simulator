@@ -1,5 +1,9 @@
 //
-// Created by robbe on 10-3-2022.
+//  Exceptions.h
+//  SimpleCalculator
+//
+//  Created by Quinten Soetens on 12/02/14.
+//  Copyright (c) 2014 Quinten Soetens. All rights reserved.
 //
 
 #ifndef CAR_SIMULATOR_PARSEREXCEPTION_H
