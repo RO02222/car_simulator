@@ -203,7 +203,7 @@ void World::loadCarGen(TiXmlElement *elem1) {
     if (stoi (frequency) > road->getLength()){
         throw ("Failed to load file: invalid <VOERTUIGGENERATOR> : '<baan> is not long enough");
     }
-    road->addCars(0);
+    addCarGen(road,stoi(frequency));
 }
 ///////////////////////
 
@@ -221,6 +221,10 @@ const std::vector<CarGen *> &World::getCarGen() const {
 
 void World::setCarGen(const std::vector<CarGen *> &carGen) {
     World::carGen = carGen;
+}
+
+void World::addCarGen(Road *road, int frequency) {
+    carGen.emplace_back(new CarGen(road,frequency));
 }
 
 

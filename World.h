@@ -38,6 +38,7 @@ public:
 
     const std::vector<Road *> &getRoads() const;
 
+    void addCarGen(Road* road,int frequency);
 
 
 

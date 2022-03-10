@@ -1,11 +1,7 @@
-//
-// Created by robbe on 3-3-2022.
-//
-
 #include "Car.h"
 
 Car::Car(int distance)
-: distance(distance) {}
+        : distance(distance) {}
 
 Car::~Car() {}
 

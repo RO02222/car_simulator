@@ -4,7 +4,7 @@
 
 #ifndef CAR_SIMULATOR_CAR_H
 #define CAR_SIMULATOR_CAR_H
-class Road;
+
 class Car{
 private:
     int distance;

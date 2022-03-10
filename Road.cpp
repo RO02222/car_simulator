@@ -1,7 +1,3 @@
-//
-// Created by robbe on 3-3-2022.
-//
-
 #include "Road.h"
 #include "Light.h"
 #include "Car.h"
