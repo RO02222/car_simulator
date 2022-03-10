@@ -25,49 +25,49 @@ public:
     World();
 
 /**
-\n REQUIRE(properlyInitialized(), "constructor must end in properlyInitialized state");
+\n REQUIRE(properlyInitialized(), "World wasn't initialized when calling loadWorld);
 */
     void loadWorld(const char * worldName);
 //////////////
 private:
 /**
-\n REQUIRE(properlyInitialized(), "constructor must end in properlyInitialized state");
+\n REQUIRE(properlyInitialized(), "World wasn't initialized when calling loadRoad);
 */
     void loadRoad(TiXmlElement* elem1);
 /**
-\n REQUIRE(properlyInitialized(), "constructor must end in properlyInitialized state");
+\n REQUIRE(properlyInitialized(), "World wasn't initialized when calling loadLight);
 */
     void loadLight(TiXmlElement* elem1);
 /**
-\n REQUIRE(properlyInitialized(), "constructor must end in properlyInitialized state");
+\n REQUIRE(properlyInitialized(), "World wasn't initialized when calling loadCar);
 */
     void loadCar(TiXmlElement* elem1);
 /**
-\n REQUIRE(properlyInitialized(), "constructor must end in properlyInitialized state");
+\n REQUIRE(properlyInitialized(), "World wasn't initialized when calling loadCarGen);
 */
     void loadCarGen(TiXmlElement* elem1);
 //////////////
 public:
 
 /**
-\n REQUIRE(properlyInitialized(), "constructor must end in properlyInitialized state");
+\n REQUIRE(properlyInitialized(), "World wasn't initialized when calling getCarGen);
 */
     const std::vector<CarGen *> &getCarGen();
 
 /**
-\n REQUIRE(properlyInitialized(), "constructor must end in properlyInitialized state");
+\n REQUIRE(properlyInitialized(), "World wasn't initialized when calling setCarGen);
 */
     void setCarGen(const std::vector<CarGen *> &carGen);
 /**
-\n REQUIRE(properlyInitialized(), "constructor must end in properlyInitialized state");
+\n REQUIRE(properlyInitialized(), "World wasn't initialized when calling setRoad);
 */
     void setRoad(const std::vector<Road *> &banen);
 /**
-\n REQUIRE(properlyInitialized(), "constructor must end in properlyInitialized state");
+\n REQUIRE(properlyInitialized(), "World wasn't initialized when calling getRoads);
 */
     const std::vector<Road *> &getRoads();
 /**
-\n REQUIRE(properlyInitialized(), "constructor must end in properlyInitialized state");
+\n REQUIRE(properlyInitialized(), "World wasn't initialized when calling addCarGen);
 */
     void addCarGen(Road* road,int frequency);
 

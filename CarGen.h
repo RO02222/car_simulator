@@ -19,19 +19,19 @@ public:
     CarGen(Road *road, int frequency);
 
 /**
-\n REQUIRE(properlyInitialized(), "constructor must end in properlyInitialized state");
+\n REQUIRE(properlyInitialized(), "CarGen wasn't initialized when calling getFrequency);
 */
     int getFrequency();
 /**
-\n REQUIRE(properlyInitialized(), "constructor must end in properlyInitialized state");
+\n REQUIRE(properlyInitialized(), "CarGen wasn't initialized when calling setFrequency);
 */
     void setFrequency(int frequency);
 /**
-\n REQUIRE(properlyInitialized(), "constructor must end in properlyInitialized state");
+\n REQUIRE(properlyInitialized(), "CarGen wasn't initialized when calling getRoad);
 */
     Road *getRoad();
 /**
-\n REQUIRE(properlyInitialized(), "constructor must end in properlyInitialized state");
+\n REQUIRE(properlyInitialized(), "CarGen wasn't initialized when calling setRoad);
 */
     void setRoad(Road *road);
 
