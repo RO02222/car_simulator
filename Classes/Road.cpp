@@ -52,7 +52,18 @@ void Road::setCars(const std::vector<Car *> &c) {
 }
 void Road::addCars(int distance) {
     REQUIRE(this->properlyInitialized(), "Road wasn't initialized when calling addCars");
-    Road::cars.push_back(new Car (distance));
+    Road::cars.push_back(new Car (distance,this));
+}
+void Road::removeCars(Car* carToDelete) {
+    REQUIRE(this->properlyInitialized(), "Road wasn't initialized when calling removeCars");
+    std::vector<Car *> carIt = getCars();
+    for (int i = 0; i<cars.size();i++) {
+        if (cars[i] == carToDelete){
+            cars.erase(cars.begin()+i);
+            delete carToDelete;
+            return;
+        }
+    }
 }
 
 

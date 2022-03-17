@@ -4,17 +4,26 @@
 
 #ifndef CAR_SIMULATOR_CAR_H
 #define CAR_SIMULATOR_CAR_H
-
+class Road;
 class Car{
 private:
     Car* _initCheck;
+    Road* road;
     int distance;
-    int speed;
+    double speed;
+    double acceleration;
+
 public:
     /**
 \n ENSURE(properlyInitialized(), "constructor must end in properlyInitialized state");
 */
-    Car (int distance);
+    Car (int distance,Road* road);
+
+
+/**
+\n REQUIRE(properlyInitialized(), "Car wasn't initialized when calling setAcceleration");
+*/
+    void updateCar(double t);
 
 /**
 \n REQUIRE(properlyInitialized(), "Car wasn't initialized when calling getDistance");
@@ -28,12 +37,20 @@ public:
 /**
 \n REQUIRE(properlyInitialized(), "Car wasn't initialized when calling getSpeed");
 */
-    int getSpeed();
+    double getSpeed();
 /**
 \n REQUIRE(properlyInitialized(), "Car wasn't initialized when calling setSpeed");
 */
     void setSpeed(double speed);
 
+/**
+\n REQUIRE(properlyInitialized(), "Car wasn't initialized when calling getAcceleration");
+*/
+    double getAcceleration();
+/**
+\n REQUIRE(properlyInitialized(), "Car wasn't initialized when calling setAcceleration");
+*/
+    void setAcceleration(double speed);
 
 
     /////////////

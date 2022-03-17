@@ -78,6 +78,11 @@ public:
 \n REQUIRE(properlyInitialized(), "World wasn't initialized when calling simulateWorld);
 */
     void simulateWorld(std::ostream & onStream);
+
+/**
+\n REQUIRE(properlyInitialized(), "World wasn't initialized when calling updateWorld);
+*/
+    void updateWorld(double t);
 //////////////
 
 

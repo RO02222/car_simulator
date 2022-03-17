@@ -15,6 +15,7 @@
 #include "Light.h"
 #include "Car.h"
 #include "../Functions.h"
+#include "../Basic_Values.h"
 
 
 World::World() {
@@ -254,17 +255,45 @@ void World::simulateWorld(std::ostream & onStream){
     for (std::vector<Road*>::iterator itR = roadIt.begin(); itR != roadIt.end(); itR++) {
         std::vector<Car*> carIt = (*itR)->getCars();
         for (std::vector<Car*>::iterator itC = carIt.begin(); itC != carIt.end(); itC++) {
-            onStream << "Voertuig " << numVehicle << time << std::endl;
+            onStream << "Voertuig " << numVehicle << std::endl;
             onStream << " -> baan: " << (*itR)->getName() << std::endl;
             onStream << " -> positie: " << (*itC)->getDistance() << std::endl;
-            onStream << " -> positie: " << "carspeed" << std::endl << std::endl;
+            onStream << " -> snelheid: " << (*itC)->getSpeed() << std::endl << std::endl;
             numVehicle +=1;
 
         }
     }
 }
 
-
+void World::updateWorld(double t) {
+    REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling updateWorld");
+    time += t;
+    std::vector<Road *> roadIt = getRoads();
+    for (std::vector<Road *>::iterator itR = roadIt.begin(); itR != roadIt.end(); itR++) {
+        std::vector<Car *> carIt = (*itR)->getCars();
+        for (std::vector<Car *>::iterator itC = carIt.begin(); itC != carIt.end(); itC = itC) {
+            double x = (*itC)->getDistance();
+            double v0 = (*itC)->getSpeed();
+            double a = (*itC)->getAcceleration();
+            double v1 = v0 + a * t;
+            if (v1 < 0) {
+                (*itC)->setDistance(x - pow(v0, 2) / (2 * a));
+                (*itC)->setSpeed(0);
+                if ((*itC)->getDistance() > (*itR)->getLength()) {
+                    (*itR)->removeCars((*itC));
+                }
+                itC++;
+                continue;
+            }
+            (*itC)->setSpeed(v1);
+            (*itC)->setDistance(x + v0 * t + a * (pow(t, 2) / 2.0));
+            if ((*itC)->getDistance() > (*itR)->getLength()) {
+                (*itR)->removeCars(*itC);
+            }
+            itC++;
+        }
+    }
+}
 
 
 
