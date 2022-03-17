@@ -9,6 +9,7 @@ class Car{
 private:
     Car* _initCheck;
     int distance;
+    int speed;
 public:
     /**
 \n ENSURE(properlyInitialized(), "constructor must end in properlyInitialized state");
@@ -16,14 +17,22 @@ public:
     Car (int distance);
 
 /**
-\n REQUIRE(properlyInitialized(), "constructor must end in properlyInitialized state");
+\n REQUIRE(properlyInitialized(), "Car wasn't initialized when calling getDistance");
 */
     int getDistance();
 /**
-\n REQUIRE(properlyInitialized(), "constructor must end in properlyInitialized state");
+\n REQUIRE(properlyInitialized(), "Car wasn't initialized when calling setDistance");
 */
     void setDistance(int distance);
 
+/**
+\n REQUIRE(properlyInitialized(), "Car wasn't initialized when calling getSpeed");
+*/
+    int getSpeed();
+/**
+\n REQUIRE(properlyInitialized(), "Car wasn't initialized when calling setSpeed");
+*/
+    void setSpeed(double speed);
 
 
 

@@ -1,0 +1,11 @@
+Tijd: 0
+Voertuig 10
+ -> baan: Middelheimlaan
+ -> positie: 20
+ -> positie: carspeed
+
+Voertuig 20
+ -> baan: Middelheimlaan
+ -> positie: 40
+ -> positie: carspeed
+

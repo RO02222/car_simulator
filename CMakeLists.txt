@@ -1,43 +1,14 @@
-cmake_minimum_required(VERSION 3.6)
+cmake_minimum_required(VERSION 3.20)
 project(car_simulator)
 
 set(CMAKE_CXX_STANDARD 98)
-set(CMAKE_CXX_FLAGS "-Wall -Werror")
-set(CMAKE_EXE_LINKER_FLAGS -pthread)
 
-# Set include dir
-include_directories(gtest/include)
-
-# Set Library dir
-link_directories(gtest/lib)
-
-# Set source files for RELEASE target
-set(RELEASE_SOURCE_FILES
+add_executable(car_simulator
         main.cpp
         tinyxml/tinystr.h tinyxml/tinystr.cpp tinyxml/tinyxml.h tinyxml/tinyxml.cpp tinyxml/tinyxmlparser.cpp tinyxml/tinyxmlerror.cpp
-        World.cpp World.h
-        Road.cpp Road.h
-        Light.cpp Light.h
-        Car.cpp Car.h
+        Classes/World.cpp Classes/World.h
+        Classes/Road.cpp Classes/Road.h
+        Classes/Light.cpp Classes/Light.h
+        Classes/Car.cpp Classes/Car.h
         Exception/ParserException.h
-        CarGen.cpp CarGen.h DesignByContract.h)
-
-# Set source files for DEBUG target
-set(DEBUG_SOURCE_FILES
-        TestMain.cpp
-        tinyxml/tinystr.h tinyxml/tinystr.cpp tinyxml/tinyxml.h tinyxml/tinyxml.cpp tinyxml/tinyxmlparser.cpp tinyxml/tinyxmlerror.cpp
-        World.cpp World.h
-        Road.cpp Road.h
-        Light.cpp Light.h
-        Car.cpp Car.h
-        Exception/ParserException.h
-        CarGen.cpp CarGen.h DesignByContract.h TestMain.cpp)
-
-# Create RELEASE target
-add_executable(Car_simulation ${RELEASE_SOURCE_FILES})
-
-# Create DEBUG target
-add_executable(Car_simulation_debug ${DEBUG_SOURCE_FILES})
-
-# Link library
-target_link_libraries(Car_simulation_debug gtest)
+        Classes/CarGen.cpp Classes/CarGen.h DesignByContract.h Basic_Values.h Functions.cpp Functions.h)

@@ -7,8 +7,8 @@
 #include <vector>
 #include <iostream>
 #include <cmath>
-#include "tinyxml/tinyxml.h"
-#include "tinyxml/tinystr.h"
+#include "../tinyxml/tinyxml.h"
+#include "../tinyxml/tinystr.h"
 #include "Road.h"
 #include "CarGen.h"
 
@@ -18,6 +18,7 @@ private:
 
     std::vector<Road*> roads;
     std::vector<CarGen*> carGen;
+    double time;
 public:
 /**
 \n ENSURE(properlyInitialized(), "constructor must end in properlyInitialized state");
@@ -71,8 +72,11 @@ public:
 */
     void addCarGen(Road* road,int frequency);
 
-
-
+/**
+\n REQUIRE(properlyInitialized(), "World wasn't initialized when calling simulateWorld);
+*/
+    void simulateWorld(std::ostream & onStream);
+//////////////
 
 
     /////////////
