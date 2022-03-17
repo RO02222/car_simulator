@@ -18,7 +18,7 @@ private:
 
     std::vector<Road*> roads;
     std::vector<CarGen*> carGen;
-    double time = 0;
+    double time;
 public:
 /**
 \n ENSURE(properlyInitialized(), "constructor must end in properlyInitialized state");

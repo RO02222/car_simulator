@@ -9,23 +9,22 @@ Car::Car(int distance) : distance(distance) {
 
 int Car::getDistance() {
     REQUIRE(this->properlyInitialized(), "Car wasn't initialized when calling getDistance");
-
     return distance;
 }
 void Car::setDistance(int distance) {
     REQUIRE(this->properlyInitialized(), "Car wasn't initialized when calling setDistance");
-
     Car::distance = distance;
 }
-int Car::getDistance() {
+
+
+
+int Car::getSpeed() {
     REQUIRE(this->properlyInitialized(), "Car wasn't initialized when calling getDistance");
-
-    return distance;
+    return speed;
 }
-void Car::setDistance(int distance) {
+void Car::setSpeed(double speed) {
     REQUIRE(this->properlyInitialized(), "Car wasn't initialized when calling setDistance");
-
-    Car::distance = distance;
+    Car::speed = speed;
 }
 
 

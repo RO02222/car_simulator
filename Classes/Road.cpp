@@ -5,8 +5,6 @@
 
 Road::Road(const std::string &name, int length) : name(name), length(length) {
     _initCheck = this;
-    lights = {};
-    cars = {};
     ENSURE(properlyInitialized(),"constructor must end in properlyInitialized state");
 }
 
@@ -40,7 +38,7 @@ void Road::setLights(const std::vector<Light *> &lights) {
 }
 void Road::addLights(int position, int cycle) {
     REQUIRE(this->properlyInitialized(), "Road wasn't initialized when calling addLights");
-    lights.emplace_back(new Light(position, cycle));
+    lights.push_back(new Light(position, cycle));
 }
 
 
@@ -54,7 +52,7 @@ void Road::setCars(const std::vector<Car *> &cars) {
 }
 void Road::addCars(int distance) {
     REQUIRE(this->properlyInitialized(), "Road wasn't initialized when calling addCars");
-    Road::cars.emplace_back(new Car (distance));
+    Road::cars.push_back(new Car (distance));
 }
 
 

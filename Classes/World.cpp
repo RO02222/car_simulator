@@ -3,6 +3,8 @@
 //
 #include <iostream>
 #include <exception>
+#include <vector>
+#include <iterator>
 
 
 #include "../Exception/ParserException.h"
@@ -12,13 +14,13 @@
 #include "Road.h"
 #include "Light.h"
 #include "Car.h"
+#include "../Functions.h"
 
 
 World::World() {
     _initCheck = this;
-    roads = {};
-    carGen = {};
     ENSURE(properlyInitialized(),"constructor must end in properlyInitialized state");
+    time = 0;
 }
 
 void World::loadWorld(const char *worldName) {
@@ -35,7 +37,7 @@ void World::loadWorld(const char *worldName) {
     if ((std::string) elem->Value() != "World") {
         throw (ParserException("Failed to load file: <World> ... </World>"));
     }
-    for (TiXmlElement *elem1 = elem->FirstChildElement(); elem1 != nullptr; elem1 = elem1->NextSiblingElement()) {
+    for (TiXmlElement *elem1 = elem->FirstChildElement(); elem1 != 0; elem1 = elem1->NextSiblingElement()) {
         if ((std::string) elem1->Value() == "BAAN") {
             loadRoad(elem1);
         }
@@ -65,7 +67,7 @@ void World::loadRoad(TiXmlElement* elem1) {
     REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling loadRoad");
     std::string name = "";
     std::string length = "";
-    for (TiXmlElement *elem2 = elem1->FirstChildElement(); elem2 != nullptr; elem2 = elem2->NextSiblingElement()) {
+    for (TiXmlElement *elem2 = elem1->FirstChildElement(); elem2 != 0; elem2 = elem2->NextSiblingElement()) {
         if ((std::string) elem2->Value() == "naam") {
             name = elem2->GetText();
         } else {
@@ -83,12 +85,13 @@ void World::loadRoad(TiXmlElement* elem1) {
     if (length == "") {
         throw ("Failed to load file: invalid <BAAN> : 'missing argument' <lengte>");
     }
-    for (Road *i: getRoads()) {
-        if (i->getName() == name) {
+    std::vector<Road*> roadIt = getRoads();
+    for (std::vector<Road*>::iterator it = roadIt.begin(); it != roadIt.end(); it++) {
+        if ((*it)->getName() == name) {
             throw ("Failed to add road: road already exist");
         }
     }
-    roads.emplace_back(new Road(name, stoi(length)));
+    roads.push_back(new Road(name, stringInt(length)));
 }
 
 void World::loadLight(TiXmlElement* elem1) {
@@ -96,7 +99,7 @@ void World::loadLight(TiXmlElement* elem1) {
     std::string roadName = "";
     std::string position = "";
     std::string cycle = "";
-    for (TiXmlElement *elem2 = elem1->FirstChildElement(); elem2 != nullptr; elem2 = elem2->NextSiblingElement()) {
+    for (TiXmlElement *elem2 = elem1->FirstChildElement(); elem2 != 0; elem2 = elem2->NextSiblingElement()) {
         if ((std::string) elem2->Value() == "baan") {
             roadName = elem2->GetText();
         } else {
@@ -123,25 +126,27 @@ void World::loadLight(TiXmlElement* elem1) {
     if (cycle == "") {
         throw ("Failed to load file: invalid <VERKEERSLICHT> : 'missing argument' <cyclus>");
     }
-    Road *road = nullptr;
-    for (Road *i: getRoads()) {
-        if (i->getName() == roadName) {
-            road = i;
+    Road *road = 0;
+    std::vector<Road*> roadIt = getRoads();
+    for (std::vector<Road*>::iterator it = roadIt.begin(); it != roadIt.end(); it++) {
+
+        if ((*it)->getName() == roadName) {
+            road = (*it);
             break;
         }
         throw ("Failed to load file: invalid <VERKEERSLICHT> : '<baan> does not exist");
     }
-    if (stoi (position) > road->getLength()){
+    if (stringInt (position) > road->getLength()){
         throw ("Failed to load file: invalid <VERKEERSLICHT> : '<baan> is not long enough");
     }
-    road->addLights(stoi(position),stoi(cycle));
+    road->addLights(stringInt(position),stringInt(cycle));
 }
 
 void World::loadCar(TiXmlElement *elem1) {
     REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling loadCar");
     std::string roadName = "";
     std::string position = "";
-    for (TiXmlElement *elem2 = elem1->FirstChildElement(); elem2 != nullptr; elem2 = elem2->NextSiblingElement()) {
+    for (TiXmlElement *elem2 = elem1->FirstChildElement(); elem2 != 0; elem2 = elem2->NextSiblingElement()) {
         if ((std::string) elem2->Value() == "baan") {
             roadName = elem2->GetText();
         } else {
@@ -160,25 +165,26 @@ void World::loadCar(TiXmlElement *elem1) {
     if (position == "") {
         throw ("Failed to load file: invalid <VOERTUIG> : 'missing argument' <positie>");
     }
-    Road *road = nullptr;
-    for (Road *i: getRoads()) {
-        if (i->getName() == roadName) {
-            road = i;
+    Road *road = 0;
+    std::vector<Road*> roadIt = getRoads();
+    for (std::vector<Road*>::iterator it = roadIt.begin(); it != roadIt.end(); it++) {
+        if ((*it)->getName() == roadName) {
+            road = (*it);
             break;
         }
         throw ("Failed to load file: invalid <VOERTUIG> : '<baan> does not exist");
     }
-    if (stoi (position) > road->getLength()){
+    if (stringInt (position) > road->getLength()){
         throw ("Failed to load file: invalid <VOERTUIG> : '<baan> is not long enough");
     }
-    road->addCars(stoi(position));
+    road->addCars(stringInt(position));
 }
 
 void World::loadCarGen(TiXmlElement *elem1) {
     REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling loadCarGen");
     std::string roadName = "";
     std::string frequency = "";
-    for (TiXmlElement *elem2 = elem1->FirstChildElement(); elem2 != nullptr; elem2 = elem2->NextSiblingElement()) {
+    for (TiXmlElement *elem2 = elem1->FirstChildElement(); elem2 != 0; elem2 = elem2->NextSiblingElement()) {
         if ((std::string) elem2->Value() == "baan") {
             roadName = elem2->GetText();
         } else {
@@ -197,18 +203,19 @@ void World::loadCarGen(TiXmlElement *elem1) {
     if (frequency == "") {
         throw ("Failed to load file: invalid <VOERTUIGGENERATOR> : 'missing argument' <frequentie>");
     }
-    Road *road = nullptr;
-    for (Road *i: getRoads()) {
-        if (i->getName() == roadName) {
-            road = i;
+    Road *road = 0;
+    std::vector<Road*> roadIt = getRoads();
+    for (std::vector<Road*>::iterator it = roadIt.begin(); it != roadIt.end(); it++) {
+        if ((*it)->getName() == roadName) {
+            road = (*it);
             break;
         }
         throw ("Failed to load file: invalid <VOERTUIGGENERATOR> : '<baan> does not exist");
     }
-    if (stoi (frequency) > road->getLength()){
+    if (stringInt (frequency) > road->getLength()){
         throw ("Failed to load file: invalid <VOERTUIGGENERATOR> : '<baan> is not long enough");
     }
-    addCarGen(road,stoi(frequency));
+    addCarGen(road,stringInt(frequency));
 }
 ///////////////////////
 
@@ -234,7 +241,7 @@ void World::setCarGen(const std::vector<CarGen *> &carGen) {
 
 void World::addCarGen(Road *road, int frequency) {
     REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling addCarGen");
-    carGen.emplace_back(new CarGen(road,frequency));
+    carGen.push_back(new CarGen(road,frequency));
 }
 
 
@@ -243,11 +250,13 @@ void World::simulateWorld(std::ostream & onStream){
     REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling simulateWorld");
     onStream << "Tijd: " <<time<<std::endl;
     int numVehicle = 1;
-    for (Road* i:roads){
-        for (Car* car: i->getCars()){
-            onStream << "Voertuig " << std::to_string(numVehicle) << time << std::endl;
-            onStream << " -> baan: " << i->getName() << std::endl;
-            onStream << " -> positie: " << car->getDistance() << std::endl;
+    std::vector<Road*> roadIt = getRoads();
+    for (std::vector<Road*>::iterator itR = roadIt.begin(); itR != roadIt.end(); itR++) {
+        std::vector<Car*> carIt = (*itR)->getCars();
+        for (std::vector<Car*>::iterator itC = carIt.begin(); itC != carIt.end(); itC++) {
+            onStream << "Voertuig " << numVehicle << time << std::endl;
+            onStream << " -> baan: " << (*itR)->getName() << std::endl;
+            onStream << " -> positie: " << (*itC)->getDistance() << std::endl;
             onStream << " -> positie: " << "carspeed" << std::endl << std::endl;
             numVehicle +=1;
 
