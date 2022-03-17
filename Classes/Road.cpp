@@ -12,9 +12,9 @@ const std::string &Road::getName() {
     REQUIRE(this->properlyInitialized(), "Road wasn't initialized when calling getName");
     return name;
 }
-void Road::setName(const std::string &name) {
+void Road::setName(const std::string &n) {
     REQUIRE(this->properlyInitialized(), "Road wasn't initialized when calling setName");
-    Road::name = name;
+    Road::name = n;
 }
 
 
@@ -22,9 +22,9 @@ int Road::getLength() {
     REQUIRE(this->properlyInitialized(), "Road wasn't initialized when calling getLength");
     return length;
 }
-void Road::setLength(int length) {
+void Road::setLength(int l) {
     REQUIRE(this->properlyInitialized(), "Road wasn't initialized when calling setLength");
-    Road::length = length;
+    Road::length = l;
 }
 
 
@@ -32,9 +32,9 @@ const std::vector<Light *> &Road::getLights() {
     REQUIRE(this->properlyInitialized(), "Road wasn't initialized when calling getLights");
     return lights;
 }
-void Road::setLights(const std::vector<Light *> &lights) {
+void Road::setLights(const std::vector<Light *> &l) {
     REQUIRE(this->properlyInitialized(), "Road wasn't initialized when calling setLights");
-    Road::lights = lights;
+    Road::lights = l;
 }
 void Road::addLights(int position, int cycle) {
     REQUIRE(this->properlyInitialized(), "Road wasn't initialized when calling addLights");
@@ -46,9 +46,9 @@ const std::vector<Car *> &Road::getCars() {
     REQUIRE(this->properlyInitialized(), "Road wasn't initialized when calling getCars");
     return cars;
 }
-void Road::setCars(const std::vector<Car *> &cars) {
+void Road::setCars(const std::vector<Car *> &c) {
     REQUIRE(this->properlyInitialized(), "Road wasn't initialized when calling setCars");
-    Road::cars = cars;
+    Road::cars = c;
 }
 void Road::addCars(int distance) {
     REQUIRE(this->properlyInitialized(), "Road wasn't initialized when calling addCars");

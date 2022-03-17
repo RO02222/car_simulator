@@ -234,9 +234,9 @@ const std::vector<CarGen *> &World::getCarGen()  {
     return carGen;
 }
 
-void World::setCarGen(const std::vector<CarGen *> &carGen) {
+void World::setCarGen(const std::vector<CarGen *> &cG) {
     REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling setCarGen");
-    World::carGen = carGen;
+    World::carGen = cG;
 }
 
 void World::addCarGen(Road *road, int frequency) {

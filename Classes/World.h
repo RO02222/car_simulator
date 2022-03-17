@@ -30,6 +30,8 @@ public:
 */
     void loadWorld(const char * worldName);
 //////////////
+
+
 private:
 /**
 \n REQUIRE(properlyInitialized(), "World wasn't initialized when calling loadRoad);
@@ -82,7 +84,6 @@ public:
     /////////////
 protected:
     bool properlyInitialized ();
-
     /////////////
 };
 

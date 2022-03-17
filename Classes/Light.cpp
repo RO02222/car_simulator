@@ -14,9 +14,9 @@ int Light::getPosition() {
     REQUIRE(this->properlyInitialized(), "Light wasn't initialized when calling getPosition");
     return position;
 }
-void Light::setPosition(int position) {
+void Light::setPosition(int p) {
     REQUIRE(this->properlyInitialized(), "Light wasn't initialized when calling setPosition");
-    Light::position = position;
+    Light::position = p;
 }
 
 
@@ -24,9 +24,9 @@ int Light::getCycle() {
     REQUIRE(this->properlyInitialized(), "Light wasn't initialized when calling getCycle");
     return cycle;
 }
-void Light::setCycle(int cycle) {
+void Light::setCycle(int c) {
     REQUIRE(this->properlyInitialized(), "Light wasn't initialized when calling setCycle");
-    Light::cycle = cycle;
+    Light::cycle = c;
 }
 
 

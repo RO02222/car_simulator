@@ -9,9 +9,9 @@ class Road;
 class CarGen {
 private:
     CarGen* _initCheck;
-
-    int frequency;
     Road *road;
+    int frequency;
+
 public:
 /**
 \n ENSURE(properlyInitialized(), "constructor must end in properlyInitialized state");
@@ -33,7 +33,7 @@ public:
 /**
 \n REQUIRE(properlyInitialized(), "CarGen wasn't initialized when calling setRoad);
 */
-    void setRoad(Road *road);
+    void setRoad(Road *r);
 
 
     /////////////

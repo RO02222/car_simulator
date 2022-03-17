@@ -7,23 +7,23 @@ CarGen::CarGen(Road* road,int frequency) : road(road), frequency(frequency) {
 
 }
 
+Road *CarGen::getRoad() {
+    REQUIRE(this->properlyInitialized(), "CarGen wasn't initialized when calling getRoad");
+    return road;
+}
+void CarGen::setRoad(Road *r) {
+    REQUIRE(this->properlyInitialized(), "CarGen wasn't initialized when calling setRoad");
+    CarGen::road = r;
+}
+
 int CarGen::getFrequency() {
     REQUIRE(this->properlyInitialized(), "CarGen wasn't initialized when calling getFrequency");
 
     return frequency;
 }
-void CarGen::setFrequency(int frequency) {
+void CarGen::setFrequency(int f) {
     REQUIRE(this->properlyInitialized(), "CarGen wasn't initialized when calling setFrequency");
-    CarGen::frequency = frequency;
-}
-
-Road *CarGen::getRoad() {
-    REQUIRE(this->properlyInitialized(), "CarGen wasn't initialized when calling getRoad");
-    return road;
-}
-void CarGen::setRoad(Road *road) {
-    REQUIRE(this->properlyInitialized(), "CarGen wasn't initialized when calling setRoad");
-    CarGen::road = road;
+    CarGen::frequency = f;
 }
 
 
