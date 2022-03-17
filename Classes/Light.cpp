@@ -3,7 +3,7 @@
 //
 
 #include "Light.h"
-#include "DesignByContract.h"
+#include "../DesignByContract.h"
 
 Light::Light(int position, int cycle): position(position), cycle(cycle) {
     _initCheck = this;

@@ -5,8 +5,8 @@
 #include <exception>
 
 
-#include "Exception/ParserException.h"
-#include "DesignByContract.h"
+#include "../Exception/ParserException.h"
+#include "../DesignByContract.h"
 
 #include "World.h"
 #include "Road.h"
@@ -239,7 +239,21 @@ void World::addCarGen(Road *road, int frequency) {
 
 
 
+void World::simulateWorld(std::ostream & onStream){
+    REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling simulateWorld");
+    onStream << "Tijd: " <<time<<std::endl;
+    int numVehicle = 1;
+    for (Road* i:roads){
+        for (Car* car: i->getCars()){
+            onStream << "Voertuig " << std::to_string(numVehicle) << time << std::endl;
+            onStream << " -> baan: " << i->getName() << std::endl;
+            onStream << " -> positie: " << car->getDistance() << std::endl;
+            onStream << " -> positie: " << "carspeed" << std::endl << std::endl;
+            numVehicle +=1;
 
+        }
+    }
+}
 
 
 
