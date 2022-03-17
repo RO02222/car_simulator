@@ -1,11 +1,86 @@
 Tijd: 0
-Voertuig 10
+Voertuig 1
  -> baan: Middelheimlaan
  -> positie: 20
- -> positie: carspeed
+ -> snelheid: 16.6
 
-Voertuig 20
+Voertuig 2
  -> baan: Middelheimlaan
  -> positie: 40
- -> positie: carspeed
+ -> snelheid: 16.6
 
+Voertuig 3
+ -> baan: Middelheimlaan
+ -> positie: 0
+ -> snelheid: 16.6
+
+Tijd: 5
+Voertuig 1
+ -> baan: Middelheimlaan
+ -> positie: 103
+ -> snelheid: 16.6
+
+Voertuig 2
+ -> baan: Middelheimlaan
+ -> positie: 123
+ -> snelheid: 16.6
+
+Voertuig 3
+ -> baan: Middelheimlaan
+ -> positie: 83
+ -> snelheid: 16.6
+
+Tijd: 10
+Voertuig 1
+ -> baan: Middelheimlaan
+ -> positie: 186
+ -> snelheid: 16.6
+
+Voertuig 2
+ -> baan: Middelheimlaan
+ -> positie: 206
+ -> snelheid: 16.6
+
+Voertuig 3
+ -> baan: Middelheimlaan
+ -> positie: 166
+ -> snelheid: 16.6
+
+Tijd: 15
+Voertuig 1
+ -> baan: Middelheimlaan
+ -> positie: 269
+ -> snelheid: 16.6
+
+Voertuig 2
+ -> baan: Middelheimlaan
+ -> positie: 289
+ -> snelheid: 16.6
+
+Voertuig 3
+ -> baan: Middelheimlaan
+ -> positie: 249
+ -> snelheid: 16.6
+
+Tijd: 20
+Voertuig 1
+ -> baan: Middelheimlaan
+ -> positie: 352
+ -> snelheid: 16.6
+
+Voertuig 2
+ -> baan: Middelheimlaan
+ -> positie: 372
+ -> snelheid: 16.6
+
+Voertuig 3
+ -> baan: Middelheimlaan
+ -> positie: 332
+ -> snelheid: 16.6
+
+Tijd: 25
+Tijd: 30
+Tijd: 35
+Tijd: 40
+Tijd: 45
+Tijd: 50
