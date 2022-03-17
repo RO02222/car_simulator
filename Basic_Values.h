@@ -7,7 +7,7 @@
 
 const int gLength = 4;
 const double gMaxSpeed = 16.6;
-const double gMaxVelocity = 1.44;
+const double gMaxAcceleration = 1.44;
 const double gMaxBrake = 4.61;
 const int gMinDistance = 4;
 const double gSimTime = 0.0166;

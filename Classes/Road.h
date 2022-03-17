@@ -65,7 +65,10 @@ public:
 \n REQUIRE(properlyInitialized(), "Road wasn't initialized when calling addCars);
 */
     void addCars(int distance);
-
+/**
+\n REQUIRE(properlyInitialized(), "Road wasn't initialized when calling removeCars);
+*/
+    void removeCars(Car* car);
 
 
     /////////////

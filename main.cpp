@@ -15,6 +15,10 @@ int main() {
     std::ofstream myFile;
     myFile.open("../Car_sim.txt");
     w->simulateWorld(myFile);
+    for (int i; i<10; i++) {
+        w->updateWorld(5);
+        w->simulateWorld(myFile);
+    }
     myFile.close();
 
 
