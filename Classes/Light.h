@@ -19,19 +19,19 @@ public:
     Light(int position, int cycle);
 
 /**
-\n REQUIRE(properlyInitialized(), "constructor must end in properlyInitialized state");
+\n REQUIRE(properlyInitialized(), "Light wasn't initialized when calling getPosition");
 */
     int getPosition();
 /**
-\n REQUIRE(properlyInitialized(), "constructor must end in properlyInitialized state");
+\n REQUIRE(properlyInitialized(), "Light wasn't initialized when calling setPosition");
 */
     void setPosition(int position);
 /**
-\n REQUIRE(properlyInitialized(), "constructor must end in properlyInitialized state");
+\n REQUIRE(properlyInitialized(), "Light wasn't initialized when calling getCycle");
 */
     int getCycle();
 /**
-\n REQUIRE(properlyInitialized(), "constructor must end in properlyInitialized state");
+\n REQUIRE(properlyInitialized(), "Light wasn't initialized when calling setCycle");
 */
     void setCycle(int cycle);
 

@@ -1,5 +1,5 @@
 #include "CarGen.h"
-#include "DesignByContract.h"
+#include "../DesignByContract.h"
 
 CarGen::CarGen(Road* road,int frequency) : road(road), frequency(frequency) {
     _initCheck = this;
