@@ -11,7 +11,6 @@ Car::Car(double distance, Road* road) : road(road), distance(distance) {
     maxSpeed = gMaxSpeed;
     acceleration = 0;
     ENSURE(properlyInitialized(),"constructor must end in properlyInitialized state");
-
 }
 
 

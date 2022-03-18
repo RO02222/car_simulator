@@ -5,7 +5,7 @@
 #include "Light.h"
 #include "../DesignByContract.h"
 
-Light::Light(double position, double cycle, Road* r): road(r), position(position), cycle(cycle) {
+Light::Light(double position, double c, Road* r): road(r), position(position), cycle(c) {
     _initCheck = this;
     if (cycle < 1){
         cycle = 1;
@@ -25,6 +25,7 @@ void Light::updateLight(double t) {
         }
     }
     if (state == green){
+
 
     }
 
