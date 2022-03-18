@@ -5,7 +5,7 @@
 #ifndef CAR_SIMULATOR_CAR_H
 #define CAR_SIMULATOR_CAR_H
 class Road;
-enum speed{fast,slow,stop};
+enum Action{fast,slow,stop};
 class Car{
 private:
     Car* _initCheck;
@@ -14,6 +14,7 @@ private:
     double speed;
     double maxSpeed;
     double acceleration;
+    Action action;
 
 public:
 /**
@@ -82,6 +83,14 @@ public:
 \n REQUIRE(properlyInitialized(), "Car wasn't initialized when calling setAcceleration");
 */
     void setAcceleration(double speed);
+/**
+\n REQUIRE(properlyInitialized(), "Car wasn't initialized when calling getAction");
+*/
+    Action getAction();
+/**
+\n REQUIRE(properlyInitialized(), "Car wasn't initialized when calling setAction");
+*/
+    void setAction(Action a);
 //////////////
 
 
