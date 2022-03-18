@@ -36,7 +36,6 @@ void Road::addLight(double position, double cycle) {
         return;
     }
     std::vector<Light*> l = getLights();
-    for (std::vector<Light*>::iterator itL = l.begin();itL != l.end(); itL++)
     lights.push_back(new Light(position, cycle,this));
 }
 
