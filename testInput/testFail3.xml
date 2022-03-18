@@ -1,6 +1,7 @@
 <World>
     <BAAN>
         <naam>Middelheimlaan</naam>
+        <lengte>400</lengte>
     </BAAN>
 
     <VERKEERSLICHT>

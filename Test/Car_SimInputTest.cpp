@@ -92,6 +92,6 @@ TEST_F(Car_SimInputTest, InputNoRoot) {
 TEST_F(Car_SimInputTest, InputNoBaan) {
     World w = World();
 
-    EXPECT_THROW_WITH_MESSAGE(w.loadWorld("../testInput/testFail3.xml"),ParserException , "Failed to load file: No root element.");
+    EXPECT_THROW_WITH_MESSAGE(w.loadWorld("../testInput/testFail3.xml"),ParserException , "");
 }
 
