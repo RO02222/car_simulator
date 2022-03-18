@@ -13,8 +13,9 @@
 
 using namespace std;
 
-#include "Classes/World.h"
-
+#include "Test/Car_SimDomainTest.cpp"
+#include "Test/CarGenDomainTest.cpp"
+#include "Test/LightDomainTest.cpp"
 
 
 int main(int argc, char **argv) {

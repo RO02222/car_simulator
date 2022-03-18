@@ -1,11 +1,3 @@
-//============================================================================
-// Name        : TicTacToeDomainTests.cpp
-// Author      : Serge Demeyer
-// Version     :
-// Copyright   : Project Software Engineering - BA1 Informatica - Serge Demeyer - University of Antwerp
-// Description : TicTactToe in C++, Ansi-style
-//============================================================================
-
 #include <iostream>
 #include <fstream>
 #include <sys/stat.h>
@@ -19,7 +11,7 @@ using namespace std;
 #include "../Classes/Light.h"
 #include "../Classes/Road.h"
 
-class TicTactToeDomainTest: public ::testing::Test {
+class Car_SimDomainTest: public ::testing::Test {
 protected:
     // You should make the members protected s.t. they can be
     // accessed from sub-classes.
@@ -45,57 +37,84 @@ protected:
     friend class Road;
     // You should make the members protected s.t. they can be
     // accessed from sub-classes.
-
-
 };
 
 /**
-Tests the default constructor.
+Tests if every object is initialised right.
 */
-TEST_F(TicTactToeDomainTest, HappyDay) {
+TEST_F(Car_SimDomainTest, Initialiser) {
     World w = World();
-    Road R1 = Road("Middelheimlaan", 800);
-    Road R2 = Road("Groenenborgerlaan", 80);
-    Car C1 = Car(25);
-    Car C2 = Car(60);
-    Car C3 = Car(90);
-    Light L1 = Light(100, 5);
-    Light L2 = Light(600, 5);
-    Light L3 = Light(40,5);
-    R1.
-    EXPECT_EQ(0, ttt_.nrOfMoves());
-    EXPECT_TRUE(ttt_.notDone());
-    char col, row;
-    for (col = minCol; col <= maxCol; col++)
-        for (row = minRow; row <= maxRow; row++) {
-            EXPECT_EQ(' ', ttt_.getMark(col, row));
-        };
-    EXPECT_TRUE(tttPlayer_.properlyInitialized());
-    EXPECT_EQ('X', tttPlayer_.getMarker());
-}
+    Road r1 = Road("Middelheimlaan", 100);
+    Road r2 = Road("Groenenborgerlaan", 100);
+    r1.addCar(25);
+    r1.addCar(60);
+    r2.addCar(90);
+    r1.addLight(80, 5);
+    r1.addLight( 20, 5);
+    r1.addLight(50, 5);
+    r2.addLight(60,5);
+    r1.addCarGen(5);
+    r2.addCarGen(5);
 
+    EXPECT_EQ(r1.getName(), "Middelheimlaan");
+    EXPECT_EQ(r1.getLength(), 100);
+    EXPECT_EQ(r2.getName(), "Groenenborgerlaan");
+    EXPECT_EQ(r2.getLength(), 100);
+
+    EXPECT_EQ(r1.getCars()[0]->getDistance(),25);
+    EXPECT_EQ(r1.getCars()[1]->getDistance(),60);
+    EXPECT_EQ(r1.getCars()[2]->getDistance(),0);
+    EXPECT_EQ(r2.getCars()[0]->getDistance(),90);
+    EXPECT_EQ(r2.getCars()[1]->getDistance(),0);
+
+    EXPECT_EQ(r1.getLights()[0]->getPosition(), 80);
+    EXPECT_EQ(r1.getLights()[1]->getPosition(), 20);
+    EXPECT_EQ(r1.getLights()[2]->getPosition(), 50);
+    EXPECT_EQ(r2.getLights()[0]->getPosition(), 60);
+    EXPECT_EQ(r1.getLights()[0]->getCycle(), 5);
+    EXPECT_EQ(r1.getLights()[1]->getCycle(), 5);
+    EXPECT_EQ(r1.getLights()[2]->getCycle(), 5);
+    EXPECT_EQ(r2.getLights()[0]->getCycle(), 5);
+
+    EXPECT_EQ(r1.getCarGen()[0]->getFrequency(), 5);
+    EXPECT_EQ(r2.getCarGen()[0]->getFrequency(), 5);
+}
 
 /**
-Tests the "happy day" scenario
+Tests update simulation.
 */
-TEST_F(TicTactToeDomainTest, HappyDay) {
-    EXPECT_EQ(0, ttt_.nrOfMoves());
-    EXPECT_TRUE(ttt_.notDone());
-    ttt_.setMoves("a1c1b2a3c3", "b1a2c2b3");
-    while (ttt_.notDone()) {
-        ttt_.doMove();
-    };
-    char col, row;
-    bool markIsX = false; // start with 'O'
-    // The diagonal is recognised as a winner. Sow we stop after verifying first two rows
-    for (row = minRow; row < maxRow; row++)
-        for (col = minCol; col <= maxCol; col++) {
-            if (markIsX)
-                EXPECT_EQ('X', ttt_.getMark(col, row));
-            else
-                EXPECT_EQ('O', ttt_.getMark(col, row));
-            markIsX = not markIsX;
-        };
-    EXPECT_FALSE(ttt_.notDone());
-    EXPECT_EQ(7, ttt_.nrOfMoves());
+TEST_F(Car_SimDomainTest, UpdateWorld) {
+    World w = World();
+    Road r1 = Road("Middelheimlaan", 100);
+    Road r2 = Road("Groenenborgerlaan", 100);
+    r1.addCar(25);
+    r1.addCar(60);
+    r2.addCar(90);
+    r1.addLight(80, 5);
+    r1.addLight( 20, 5);
+    r1.addLight(50, 5);
+    r2.addLight(60,5);
+    r1.addCarGen(5);
+    r2.addCarGen(5);
+
+    w.updateWorld(1);
+
+    EXPECT_EQ(r1.getName(), "Middelheimlaan");
+    EXPECT_EQ(r1.getLength(), 100);
+    EXPECT_EQ(r2.getName(), "Groenenborgerlaan");
+    EXPECT_EQ(r2.getLength(), 100);
+
+    EXPECT_EQ(r1.getLights()[0]->getPosition(), 80);
+    EXPECT_EQ(r1.getLights()[1]->getPosition(), 20);
+    EXPECT_EQ(r1.getLights()[2]->getPosition(), 50);
+    EXPECT_EQ(r2.getLights()[0]->getPosition(), 60);
+    EXPECT_EQ(r1.getLights()[0]->getCycle(), 5);
+    EXPECT_EQ(r1.getLights()[1]->getCycle(), 5);
+    EXPECT_EQ(r1.getLights()[2]->getCycle(), 5);
+    EXPECT_EQ(r2.getLights()[0]->getCycle(), 5);
+
+    EXPECT_EQ(r1.getCarGen()[0]->getFrequency(), 5);
+    EXPECT_EQ(r2.getCarGen()[0]->getFrequency(), 5);
+
 }
+
