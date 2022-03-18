@@ -18,6 +18,23 @@ public:
 */
     Light(int position, int cycle);
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/////////////
 /**
 \n REQUIRE(properlyInitialized(), "Light wasn't initialized when calling getPosition");
 */
@@ -34,15 +51,15 @@ public:
 \n REQUIRE(properlyInitialized(), "Light wasn't initialized when calling setCycle");
 */
     void setCycle(int cycle);
+/////////////
 
 
 
-
-    /////////////
+/////////////
 protected:
-    bool properlyInitialized();
+    bool properlyInitialized() const;
 
-    /////////////
+/////////////
 };
 
 

@@ -68,11 +68,22 @@ void Car::setAcceleration(double a) {
 }
 
 
+//////////////
+Road *Car::getRoad() const {
+    REQUIRE(this->properlyInitialized(), "Car wasn't initialized when calling getRoad");
+    return road;
+}
+
+void Car::setRoad(Road *r) {
+    REQUIRE(this->properlyInitialized(), "Car wasn't initialized when calling setRoad");
+    Car::road = r;
+}
+//////////////
 
 
 
 //////////////
-bool Car::properlyInitialized() {
+bool Car::properlyInitialized() const{
     return _initCheck == this;
 }
 //////////////

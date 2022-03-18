@@ -25,6 +25,22 @@ public:
 */
     void updateCar(double t);
 
+
+
+
+
+
+
+//////////////
+public:
+/**
+\n REQUIRE(properlyInitialized(), "Car wasn't initialized when calling getRoad");
+*/
+    Road *getRoad() const;
+/**
+\n REQUIRE(properlyInitialized(), "Car wasn't initialized when calling setRoad");
+*/
+    void setRoad(Road *r);
 /**
 \n REQUIRE(properlyInitialized(), "Car wasn't initialized when calling getDistance");
 */
@@ -33,7 +49,6 @@ public:
 \n REQUIRE(properlyInitialized(), "Car wasn't initialized when calling setDistance");
 */
     void setDistance(int distance);
-
 /**
 \n REQUIRE(properlyInitialized(), "Car wasn't initialized when calling getSpeed");
 */
@@ -42,7 +57,6 @@ public:
 \n REQUIRE(properlyInitialized(), "Car wasn't initialized when calling setSpeed");
 */
     void setSpeed(double speed);
-
 /**
 \n REQUIRE(properlyInitialized(), "Car wasn't initialized when calling getAcceleration");
 */
@@ -51,13 +65,15 @@ public:
 \n REQUIRE(properlyInitialized(), "Car wasn't initialized when calling setAcceleration");
 */
     void setAcceleration(double speed);
+//////////////
 
 
-    /////////////
+
+/////////////
 protected:
-    bool properlyInitialized();
+    bool properlyInitialized() const;
 
-    /////////////
+/////////////
 };
 
 

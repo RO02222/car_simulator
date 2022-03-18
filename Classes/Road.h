@@ -109,7 +109,7 @@ public:
 
 /////////////
 protected:
-    bool properlyInitialized();
+    bool properlyInitialized() const;
 
 /////////////
 };

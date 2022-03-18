@@ -42,7 +42,7 @@ void CarGen::setFrequency(int f) {
 
 
 //////////////
-bool CarGen::properlyInitialized() {
+bool CarGen::properlyInitialized() const{
     return _initCheck == this;
 }
 //////////////

@@ -94,7 +94,7 @@ void Road::setCarGen(const std::vector<CarGen *> &cG) {
 
 
 //////////////
-bool Road::properlyInitialized() {
+bool Road::properlyInitialized() const{
     return _initCheck == this;
 }
 //////////////
