@@ -39,7 +39,7 @@ void Car::updateCar(double t) {
     double dv = getSpeed() - nextCar->getSpeed();
     delta = (gMinDistance+std::max(0.0,v0+((v0*dv)/(2* sqrt(gMaxAcceleration*gMaxBrake)))))/dx;
     }
-    double a = gMaxAcceleration*(1.0-pow(v0/gMaxSpeed,4)-pow(delta,2));
+    double a = gMaxAcceleration*(1.0-pow(v0/getMaxSpeed(),4)-pow(delta,2));
     setAcceleration(a);
 
     double v1 = v0 + a * t;
