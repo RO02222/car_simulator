@@ -18,6 +18,7 @@ using namespace std;
 #include "Test/LightDomainTest.cpp"
 #include "Test/RoadDomainTest.cpp"
 #include "Test/WorldDomainTest.cpp"
+#include "Test/Car_SimInputTest.cpp"
 
 
 int main(int argc, char **argv) {

@@ -20,7 +20,6 @@ protected:
     // should define it if you need to initialize the variables.
     // Otherwise, this can be skipped.
     virtual void SetUp() {
-        World();
     }
 
     // virtual void TearDown() will be called after each test is run.
