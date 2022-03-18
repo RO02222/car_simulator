@@ -2,8 +2,11 @@
 #include "Road.h"
 #include "../DesignByContract.h"
 
-CarGen::CarGen(int f,Road* road) : road(road), frequency(f) {
+CarGen::CarGen(double f,Road* road) : road(road), frequency(f) {
     _initCheck = this;
+    if (frequency < 1){
+        frequency = 1;
+    }
     this->road->addCar(0);
     ENSURE(properlyInitialized(),"constructor must end in properlyInitialized state");
 }
@@ -28,12 +31,11 @@ void CarGen::setRoad(Road *r) {
     REQUIRE(this->properlyInitialized(), "CarGen wasn't initialized when calling setRoad");
     CarGen::road = r;
 }
-int CarGen::getFrequency() {
+double CarGen::getFrequency() {
     REQUIRE(this->properlyInitialized(), "CarGen wasn't initialized when calling getFrequency");
-
     return frequency;
 }
-void CarGen::setFrequency(int f) {
+void CarGen::setFrequency(double f) {
     REQUIRE(this->properlyInitialized(), "CarGen wasn't initialized when calling setFrequency");
     CarGen::frequency = f;
 }

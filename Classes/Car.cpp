@@ -31,13 +31,15 @@ void Car::updateCar(double t) {
         std::cerr<<"Car is not on a road"<<std::endl;
         return;
     }
+    /*
+    double delta = 0;
     if (nextCar == NULL){
-        return;
-    }
+        delta = 0;
+    } else{
     double dx = nextCar->getDistance() - getDistance() - gLength;
     double dv = getSpeed() - nextCar->getSpeed();
-    double delta = gMinDistance+std::max(0.0,v0+((v0*dv)/(2* sqrt(gMaxAcceleration*gMaxBrake)))
-
+    delta = gMinDistance+std::max(0.0,v0+((v0*dv)/(2* sqrt(gMaxAcceleration*gMaxBrake))));
+    }*/
 
 
 

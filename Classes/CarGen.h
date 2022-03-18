@@ -10,14 +10,14 @@ class CarGen {
 private:
     CarGen* _initCheck;
     Road *road;
-    int frequency;
+    double frequency;
 
 public:
 
 /**
 \n ENSURE(properlyInitialized(), "constructor must end in properlyInitialized state");
 */
-    CarGen(int frequency,Road *road);
+    CarGen(double frequency,Road *road);
 
 
 
@@ -41,11 +41,11 @@ public:
 /**
 \n REQUIRE(properlyInitialized(), "CarGen wasn't initialized when calling getFrequency);
 */
-    int getFrequency();
+    double getFrequency();
 /**
 \n REQUIRE(properlyInitialized(), "CarGen wasn't initialized when calling setFrequency);
 */
-    void setFrequency(int frequency);
+    void setFrequency(double frequency);
 /////////////
 
 

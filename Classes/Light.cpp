@@ -7,6 +7,9 @@
 
 Light::Light(int position, int cycle): position(position), cycle(cycle) {
     _initCheck = this;
+    if (cycle < 1){
+        cycle = 1;
+    }
     ENSURE(this->properlyInitialized(), "constructor must end in properlyInitialized state");
 }
 
