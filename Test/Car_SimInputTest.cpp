@@ -89,9 +89,9 @@ TEST_F(Car_SimInputTest, InputNoRoot) {
     EXPECT_THROW_WITH_MESSAGE(w.loadWorld("../testInput/testFail2.xml"),ParserException , "Failed to load file: No root element.");
 }
 
-TEST_F(Car_SimInputTest, InputNoBaan) {
+TEST_F(Car_SimInputTest, InputToMuch) {
     World w = World();
 
-    EXPECT_THROW_WITH_MESSAGE(w.loadWorld("../testInput/testFail3.xml"),ParserException , "");
+    EXPECT_THROW_WITH_MESSAGE(w.loadWorld("../testInput/testFail3.xml"),ParserException , "Failed to load file: <Serge_De_Mayer_is_leuk> is not valid");
 }
 
