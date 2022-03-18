@@ -5,7 +5,7 @@
 
 #include <cmath>
 
-Car::Car(int distance, Road* road) : road(road), distance(distance) {
+Car::Car(double distance, Road* road) : road(road), distance(distance) {
     _initCheck = this;
     speed = gMaxSpeed;
     acceleration = 0;
@@ -16,9 +16,34 @@ Car::Car(int distance, Road* road) : road(road), distance(distance) {
 
 
 void Car::updateCar(double t) {
-    REQUIRE(this->properlyInitialized(), "Car wasn't initialized when calling getDistance");
+    REQUIRE(this->properlyInitialized(), "Car wasn't initialized when calling updateCar");
     double v0 = getSpeed();
     double a = getAcceleration();
+    std::vector<Car*> carsOnRoad = getRoad()->getCars();
+    Car* nextCar = NULL;
+    for (std::vector<Car*>::iterator itC = carsOnRoad.begin(); itC != carsOnRoad.end(); itC++){
+        if ((*itC) == this){
+            break;
+        }
+        nextCar = (*itC);
+    }
+    if (nextCar == *carsOnRoad.end()){
+        std::cerr<<"Car is not on a road"<<std::endl;
+        return;
+    }
+    if (nextCar == NULL){
+        return;
+    }
+    double dx = nextCar->getDistance() - getDistance() - gLength;
+    double dv = getSpeed() - nextCar->getSpeed();
+    double delta = gMinDistance+std::max(0.0,v0+((v0*dv)/(2* sqrt(gMaxAcceleration*gMaxBrake)))
+
+
+
+
+
+
+
     double v1 = v0 + a * t;
     if (v1 < 0) {
         setDistance(distance - pow(v0, 2) / (2 * a));
@@ -38,34 +63,6 @@ void Car::updateCar(double t) {
 
 
 
-int Car::getDistance() {
-    REQUIRE(this->properlyInitialized(), "Car wasn't initialized when calling getDistance");
-    return distance;
-}
-void Car::setDistance(int d) {
-    REQUIRE(this->properlyInitialized(), "Car wasn't initialized when calling setDistance");
-    Car::distance = d;
-}
-
-
-
-double Car::getSpeed() {
-    REQUIRE(this->properlyInitialized(), "Car wasn't initialized when calling getDistance");
-    return speed;
-}
-void Car::setSpeed(double s) {
-    REQUIRE(this->properlyInitialized(), "Car wasn't initialized when calling setDistance");
-    Car::speed = s;
-}
-
-double Car::getAcceleration() {
-    REQUIRE(this->properlyInitialized(), "Car wasn't initialized when calling getDistance");
-    return acceleration;
-}
-void Car::setAcceleration(double a) {
-    REQUIRE(this->properlyInitialized(), "Car wasn't initialized when calling setDistance");
-    Car::acceleration = a;
-}
 
 
 //////////////
@@ -73,10 +70,33 @@ Road *Car::getRoad() const {
     REQUIRE(this->properlyInitialized(), "Car wasn't initialized when calling getRoad");
     return road;
 }
-
 void Car::setRoad(Road *r) {
     REQUIRE(this->properlyInitialized(), "Car wasn't initialized when calling setRoad");
     Car::road = r;
+}
+double Car::getDistance() {
+    REQUIRE(this->properlyInitialized(), "Car wasn't initialized when calling getDistance");
+    return distance;
+}
+void Car::setDistance(double d) {
+    REQUIRE(this->properlyInitialized(), "Car wasn't initialized when calling setDistance");
+    Car::distance = d;
+}
+double Car::getSpeed() {
+    REQUIRE(this->properlyInitialized(), "Car wasn't initialized when calling getSpeed");
+    return speed;
+}
+void Car::setSpeed(double s) {
+    REQUIRE(this->properlyInitialized(), "Car wasn't initialized when calling setSpeed");
+    Car::speed = s;
+}
+double Car::getAcceleration() {
+    REQUIRE(this->properlyInitialized(), "Car wasn't initialized when calling getAcceleration");
+    return acceleration;
+}
+void Car::setAcceleration(double a) {
+    REQUIRE(this->properlyInitialized(), "Car wasn't initialized when calling setAcceleration");
+    Car::acceleration = a;
 }
 //////////////
 

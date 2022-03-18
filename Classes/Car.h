@@ -9,15 +9,15 @@ class Car{
 private:
     Car* _initCheck;
     Road* road;
-    int distance;
+    double distance;
     double speed;
     double acceleration;
 
 public:
-    /**
+/**
 \n ENSURE(properlyInitialized(), "constructor must end in properlyInitialized state");
 */
-    Car (int distance,Road* road);
+    Car (double distance,Road* road);
 
 
 /**
@@ -31,24 +31,31 @@ public:
 
 
 
+
+
+
 //////////////
 public:
 /**
 \n REQUIRE(properlyInitialized(), "Car wasn't initialized when calling getRoad");
 */
     Road *getRoad() const;
+
+protected:
 /**
 \n REQUIRE(properlyInitialized(), "Car wasn't initialized when calling setRoad");
 */
     void setRoad(Road *r);
+
+public:
 /**
 \n REQUIRE(properlyInitialized(), "Car wasn't initialized when calling getDistance");
 */
-    int getDistance();
+    double getDistance();
 /**
 \n REQUIRE(properlyInitialized(), "Car wasn't initialized when calling setDistance");
 */
-    void setDistance(int distance);
+    void setDistance(double distance);
 /**
 \n REQUIRE(properlyInitialized(), "Car wasn't initialized when calling getSpeed");
 */

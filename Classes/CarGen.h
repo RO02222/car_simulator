@@ -30,10 +30,14 @@ public:
 \n REQUIRE(properlyInitialized(), "CarGen wasn't initialized when calling getRoad);
 */
     Road *getRoad();
+
+protected:
 /**
 \n REQUIRE(properlyInitialized(), "CarGen wasn't initialized when calling setRoad);
 */
     void setRoad(Road *r);
+
+public:
 /**
 \n REQUIRE(properlyInitialized(), "CarGen wasn't initialized when calling getFrequency);
 */
