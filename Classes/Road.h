@@ -37,7 +37,10 @@ public:
 
 
 
-
+/**
+\n REQUIRE(properlyInitialized(), "Car wasn't initialized when calling setAcceleration");
+*/
+    void updateRoad(double t);
 
 
 

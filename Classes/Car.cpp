@@ -10,6 +10,7 @@ Car::Car(double distance, Road* road) : road(road), distance(distance) {
     speed = gMaxSpeed;
     maxSpeed = gMaxSpeed;
     acceleration = 0;
+    action = fast;
     ENSURE(properlyInitialized(),"constructor must end in properlyInitialized state");
 }
 
@@ -25,7 +26,7 @@ void Car::updateCar(double t) {
     double v0 = getSpeed();
 
     double a;
-    if (getAction() == stop) {
+    if (getAction() != stop) {
         std::vector<Car *> carsOnRoad = getRoad()->getCars();
         Car *nextCar = NULL;
         for (std::vector<Car *>::iterator itC = carsOnRoad.begin(); itC != carsOnRoad.end(); itC++) {

@@ -12,7 +12,13 @@ Road::Road(const std::string &name, double l) : name(name), length(l) {
     ENSURE(properlyInitialized(),"constructor must end in properlyInitialized state");
 }
 
-
+void Road::updateRoad(double t) {
+    REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling updateWorld");
+    std::vector<Car *> carIt = getCars();
+    for (std::vector<Car *>::iterator itC = carIt.begin(); itC != carIt.end(); itC++) {
+        (*itC)->updateCar(t);
+    }
+}
 
 
 

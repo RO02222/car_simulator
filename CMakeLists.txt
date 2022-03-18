@@ -14,14 +14,14 @@ link_directories(gtest/lib)
 # Set source files for RELEASE target
 set(RELEASE_SOURCE_FILES
         main.cpp
-        Test/Car_SimDomainTest.cpp
         tinyxml/tinystr.h tinyxml/tinystr.cpp tinyxml/tinyxml.h tinyxml/tinyxml.cpp tinyxml/tinyxmlparser.cpp tinyxml/tinyxmlerror.cpp
         Classes/World.cpp Classes/World.h
         Classes/Road.cpp Classes/Road.h
         Classes/Light.cpp Classes/Light.h
         Classes/Car.cpp Classes/Car.h
         Exception/ParserException.h
-        Classes/CarGen.cpp Classes/CarGen.h DesignByContract.h Basic_Values.h Functions.cpp Functions.h Test/CarTest.cpp Test/LightTest.cpp Test/RoadTest.cpp Test/CarGenTest.cpp Test/WorldTest.cpp Test/Car_SimDomainTest.cpp Test/LightDomainTest.cpp Test/RoadDomainTest.cpp Test/WorldDomainTest.cpp Test/WorldInputTest.cpp Test/WorldOutputTest.cpp Test/RoadInputTest.cpp Test/RoadOutputTest.cpp Test/LightInputTest.cpp Test/LightOutputTest.cpp Test/CarInputTest.cpp Test/CarOutputTest.cpp Test/CarGenInputTest.cpp Test/CarGenOutputTest.cpp Test/CarGenDomainTest.cpp)
+        Classes/CarGen.cpp Classes/CarGen.h DesignByContract.h Basic_Values.h Functions.cpp Functions.h
+        )
 
 # Set source files for DEBUG target
 set(DEBUG_SOURCE_FILES
@@ -32,7 +32,8 @@ set(DEBUG_SOURCE_FILES
         Classes/Light.cpp Classes/Light.h
         Classes/Car.cpp Classes/Car.h
         Exception/ParserException.h
-        Classes/CarGen.cpp Classes/CarGen.h DesignByContract.h Basic_Values.h Functions.cpp Functions.h)
+        Classes/CarGen.cpp Classes/CarGen.h DesignByContract.h Basic_Values.h Functions.cpp Functions.h
+        )
 
 # Create RELEASE target
 add_executable(Car_Simulation ${RELEASE_SOURCE_FILES})

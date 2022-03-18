@@ -48,26 +48,7 @@ void World::updateWorld(double t) {
     time += t;
     std::vector<Road *> roadIt = getRoads();
     for (std::vector<Road *>::iterator itR = roadIt.begin(); itR != roadIt.end(); itR++) {
-        std::vector<Car *> carIt = (*itR)->getCars();
-        for (std::vector<Car *>::iterator itC = carIt.begin(); itC != carIt.end();itC++) {
-            double x = (*itC)->getDistance();
-            double v0 = (*itC)->getSpeed();
-            double a = (*itC)->getAcceleration();
-            double v1 = v0 + a * t;
-            if (v1 < 0) {
-                (*itC)->setDistance(x - pow(v0, 2) / (2 * a));
-                (*itC)->setSpeed(0);
-                if ((*itC)->getDistance() > (*itR)->getLength()) {
-                    (*itR)->removeCars((*itC));
-                }
-                continue;
-            }
-            (*itC)->setSpeed(v1);
-            (*itC)->setDistance(x + v0 * t + a * (pow(t, 2) / 2.0));
-            if ((*itC)->getDistance() > (*itR)->getLength()) {
-                (*itR)->removeCars(*itC);
-            }
-        }
+        (*itR)->updateRoad(t);
     }
 }
 
