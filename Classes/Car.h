@@ -5,6 +5,7 @@
 #ifndef CAR_SIMULATOR_CAR_H
 #define CAR_SIMULATOR_CAR_H
 class Road;
+enum speed{fast,slow,stop};
 class Car{
 private:
     Car* _initCheck;

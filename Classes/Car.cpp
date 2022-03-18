@@ -21,14 +21,11 @@ void Car::updateCar(double t) {
     std::vector<Car*> carsOnRoad = getRoad()->getCars();
     Car* nextCar = NULL;
     for (std::vector<Car*>::iterator itC = carsOnRoad.begin(); itC != carsOnRoad.end(); itC++){
-        if ((*itC) == this){
-            break;
+        if ((*itC)->getDistance() > this->getDistance()){
+            if (nextCar == NULL or (*itC)->getDistance() < nextCar->getDistance()){
+                nextCar = (*itC);
+            }
         }
-        nextCar = (*itC);
-    }
-    if (nextCar == *carsOnRoad.end()){
-        std::cerr<<"Car is not on a road"<<std::endl;
-        return;
     }
     double delta = 0.0;
     if (nextCar == NULL){
@@ -45,10 +42,6 @@ void Car::updateCar(double t) {
     if (v1 < 0) {
         setDistance(distance - pow(v0, 2) / (2 * a));
         setSpeed(0);
-    }
-    if (getDistance() > road->getLength()) {
-        road->removeCars(this);
-        return;
     }
     setSpeed(v1);
     setDistance(distance + v0 * t + a * (pow(t, 2) / 2.0));

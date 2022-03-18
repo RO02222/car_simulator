@@ -4,8 +4,11 @@
 #include "CarGen.h"
 #include "../DesignByContract.h"
 
-Road::Road(const std::string &name, double length) : name(name), length(length) {
+Road::Road(const std::string &name, double l) : name(name), length(l) {
     _initCheck = this;
+    if (l < 1){
+        length = 1;
+    }
     ENSURE(properlyInitialized(),"constructor must end in properlyInitialized state");
 }
 
@@ -38,9 +41,6 @@ void Road::addLight(double position, double cycle) {
         position = 0;
     }
     std::vector<Light*> l = getLights();
-    for (std::vector<Light*>::iterator itL = l.begin();itL != l.end(); itL++){
-        break;
-    }
     lights.push_back(new Light(position, cycle,this));
 }
 
