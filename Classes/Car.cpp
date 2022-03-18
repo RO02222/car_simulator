@@ -17,7 +17,6 @@ Car::Car(int distance, Road* road) : road(road), distance(distance) {
 
 void Car::updateCar(double t) {
     REQUIRE(this->properlyInitialized(), "Car wasn't initialized when calling getDistance");
-    double x = getDistance();
     double v0 = getSpeed();
     double a = getAcceleration();
     double v1 = v0 + a * t;
@@ -63,9 +62,9 @@ double Car::getAcceleration() {
     REQUIRE(this->properlyInitialized(), "Car wasn't initialized when calling getDistance");
     return acceleration;
 }
-void Car::setAcceleration(double speed) {
+void Car::setAcceleration(double a) {
     REQUIRE(this->properlyInitialized(), "Car wasn't initialized when calling setDistance");
-    Car::acceleration = acceleration;
+    Car::acceleration = a;
 }
 
 

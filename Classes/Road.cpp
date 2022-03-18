@@ -57,7 +57,7 @@ void Road::addCars(int distance) {
 void Road::removeCars(Car* carToDelete) {
     REQUIRE(this->properlyInitialized(), "Road wasn't initialized when calling removeCars");
     std::vector<Car *> carIt = getCars();
-    for (int i = 0; i<cars.size();i++) {
+    for (unsigned int i = 0; i<cars.size();i++) {
         if (cars[i] == carToDelete){
             cars.erase(cars.begin()+i);
             delete carToDelete;

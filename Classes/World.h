@@ -24,14 +24,12 @@ public:
 \n ENSURE(properlyInitialized(), "constructor must end in properlyInitialized state");
 */
     World();
-
 /**
 \n REQUIRE(properlyInitialized(), "World wasn't initialized when calling loadWorld);
 */
     void loadWorld(const char * worldName);
+
 //////////////
-
-
 private:
 /**
 \n REQUIRE(properlyInitialized(), "World wasn't initialized when calling loadRoad);
@@ -56,7 +54,6 @@ public:
 \n REQUIRE(properlyInitialized(), "World wasn't initialized when calling getCarGen);
 */
     const std::vector<CarGen *> &getCarGen();
-
 /**
 \n REQUIRE(properlyInitialized(), "World wasn't initialized when calling setCarGen);
 */

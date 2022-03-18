@@ -9,11 +9,11 @@
 #include <iostream>
 #include <fstream>
 #include <sys/stat.h>
-#include <gtest/gtest.h>
+#include "gtest/gtest.h"
 
 using namespace std;
 
-#include "Classes/Light.h"
+#include "../Classes/Light.h"
 
 
 

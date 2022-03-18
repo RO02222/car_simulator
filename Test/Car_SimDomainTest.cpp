@@ -9,15 +9,15 @@
 #include <iostream>
 #include <fstream>
 #include <sys/stat.h>
-#include <gtest/gtest.h>
+#include "gtest/gtest.h"
 
 using namespace std;
 
-#include "Classes/World.h"
-#include "Classes/Car.h"
-#include "Classes/CarGen.h"
-#include "Classes/Light.h"
-#include "Classes/Road.h"
+#include "../Classes/World.h"
+#include "../Classes/Car.h"
+#include "../Classes/CarGen.h"
+#include "../Classes/Light.h"
+#include "../Classes/Road.h"
 
 class TicTactToeDomainTest: public ::testing::Test {
 protected:
