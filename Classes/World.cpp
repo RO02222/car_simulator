@@ -158,7 +158,7 @@ void World::loadLight(TiXmlElement* elem1) {
     if (cycle == "") {
         throw (ParserException("Failed to load file: invalid <VERKEERSLICHT> : 'missing argument' <cyclus>"));
     }
-    Road *road = 0;
+    Road *road = NULL;
     std::vector<Road*> roadIt = getRoads();
     for (std::vector<Road*>::iterator it = roadIt.begin(); it != roadIt.end(); it++) {
 
@@ -166,7 +166,9 @@ void World::loadLight(TiXmlElement* elem1) {
             road = (*it);
             break;
         }
-        throw (ParserException("Failed to load file: invalid <VERKEERSLICHT> : '<baan> does not exist"));
+    }
+    if (road == NULL){
+        throw (ParserException("Failed to load file: invalid <VERKEERSLICHT> : '<baan>' does not exist"));
     }
     if (stringInt (position) > road->getLength()){
         throw (ParserException("Failed to load file: invalid <VERKEERSLICHT> : '<baan> is not long enough"));
