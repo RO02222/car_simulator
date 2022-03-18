@@ -63,9 +63,7 @@ TEST_F(Car_SimDomainTest, Initialiser) {
 
     EXPECT_EQ(r1.getCars()[0]->getDistance(),25);
     EXPECT_EQ(r1.getCars()[1]->getDistance(),60);
-    EXPECT_EQ(r1.getCars()[2]->getDistance(),0);
     EXPECT_EQ(r2.getCars()[0]->getDistance(),90);
-    EXPECT_EQ(r2.getCars()[1]->getDistance(),0);
 
     EXPECT_EQ(r1.getLights()[0]->getPosition(), 80);
     EXPECT_EQ(r1.getLights()[1]->getPosition(), 20);
