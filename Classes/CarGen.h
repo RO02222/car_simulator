@@ -13,19 +13,19 @@ private:
     int frequency;
 
 public:
+
 /**
 \n ENSURE(properlyInitialized(), "constructor must end in properlyInitialized state");
 */
     CarGen(int frequency,Road *road);
 
-/**
-\n REQUIRE(properlyInitialized(), "CarGen wasn't initialized when calling getFrequency);
-*/
-    int getFrequency();
-/**
-\n REQUIRE(properlyInitialized(), "CarGen wasn't initialized when calling setFrequency);
-*/
-    void setFrequency(int frequency);
+
+
+
+
+
+/////////////
+public:
 /**
 \n REQUIRE(properlyInitialized(), "CarGen wasn't initialized when calling getRoad);
 */
@@ -34,13 +34,23 @@ public:
 \n REQUIRE(properlyInitialized(), "CarGen wasn't initialized when calling setRoad);
 */
     void setRoad(Road *r);
+/**
+\n REQUIRE(properlyInitialized(), "CarGen wasn't initialized when calling getFrequency);
+*/
+    int getFrequency();
+/**
+\n REQUIRE(properlyInitialized(), "CarGen wasn't initialized when calling setFrequency);
+*/
+    void setFrequency(int frequency);
+/////////////
 
 
-    /////////////
+
+/////////////
 protected:
     bool properlyInitialized();
 
-    /////////////
+/////////////
 };
 
 

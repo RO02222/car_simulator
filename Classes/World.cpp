@@ -72,6 +72,7 @@ void World::updateWorld(double t) {
 }
 
 
+
 ///////////////////////
 void World::loadWorld(const char *worldName) {
     REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling loadWorld");
@@ -189,7 +190,7 @@ void World::loadLight(TiXmlElement* elem1) {
     if (stringInt (position) > road->getLength()){
         throw ("Failed to load file: invalid <VERKEERSLICHT> : '<baan> is not long enough");
     }
-    road->addLights(stringInt(position),stringInt(cycle));
+    road->addLight(stringInt(position),stringInt(cycle));
 }
 
 void World::loadCar(TiXmlElement *elem1) {
@@ -227,7 +228,7 @@ void World::loadCar(TiXmlElement *elem1) {
     if (stringInt (position) > road->getLength()){
         throw ("Failed to load file: invalid <VOERTUIG> : '<baan> is not long enough");
     }
-    road->addCars(stringInt(position));
+    road->addCar(stringInt(position));
 }
 
 void World::loadCarGen(TiXmlElement *elem1) {
