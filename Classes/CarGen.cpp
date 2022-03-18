@@ -2,7 +2,7 @@
 #include "Road.h"
 #include "../DesignByContract.h"
 
-CarGen::CarGen(Road* road,int f) : road(road), frequency(f) {
+CarGen::CarGen(int f,Road* road) : road(road), frequency(f) {
     _initCheck = this;
     this->road->addCars(0);
     ENSURE(properlyInitialized(),"constructor must end in properlyInitialized state");

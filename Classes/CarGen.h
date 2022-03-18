@@ -16,7 +16,7 @@ public:
 /**
 \n ENSURE(properlyInitialized(), "constructor must end in properlyInitialized state");
 */
-    CarGen(Road *road, int frequency);
+    CarGen(int frequency,Road *road);
 
 /**
 \n REQUIRE(properlyInitialized(), "CarGen wasn't initialized when calling getFrequency);

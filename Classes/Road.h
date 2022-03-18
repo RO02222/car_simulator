@@ -7,9 +7,10 @@
 #include <vector>
 #include <iostream>
 
-class Road;
 class Light;
 class Car;
+class CarGen;
+
 
 class Road{
 private:
@@ -17,14 +18,49 @@ private:
 
     std::string name;
     int length;
+
     std::vector<Light*> lights;
     std::vector<Car*> cars;
+    std::vector<CarGen*> carGen;
 public:
-    /**
+/**
 \n ENSURE(properlyInitialized(), "constructor must end in properlyInitialized state");
 */
     Road(const std::string &name, int length);
 
+
+
+/**
+\n REQUIRE(properlyInitialized(), "Road wasn't initialized when calling removeCars);
+*/
+    void removeCars(Car* car);
+
+
+
+
+
+
+
+/////////////
+public:
+/**
+\n REQUIRE(properlyInitialized(), "Road wasn't initialized when calling addLights);
+*/
+    void addLight(int position, int cycle);
+/**
+\n REQUIRE(properlyInitialized(), "Road wasn't initialized when calling addCars);
+*/
+    void addCar(int distance);
+/**
+\n REQUIRE(properlyInitialized(), "Road wasn't initialized when calling setCarGen);
+*/
+    void addCarGen(int frequency);
+/////////////
+
+
+
+/////////////
+public:
 /**
 \n REQUIRE(properlyInitialized(), "Road wasn't initialized when calling getName);
 */
@@ -41,6 +77,8 @@ public:
 \n REQUIRE(properlyInitialized(), "Road wasn't initialized when calling setLength);
 */
     void setLength(int length);
+
+
 /**
 \n REQUIRE(properlyInitialized(), "Road wasn't initialized when calling getLights);
 */
@@ -50,10 +88,6 @@ public:
 */
     void setLights(const std::vector<Light *> &lights);
 /**
-\n REQUIRE(properlyInitialized(), "Road wasn't initialized when calling addLights);
-*/
-    void addLights(int position, int cycle);
-/**
 \n REQUIRE(properlyInitialized(), "Road wasn't initialized when calling getCars);
 */
     const std::vector<Car *> &getCars();
@@ -62,20 +96,22 @@ public:
 */
     void setCars(const std::vector<Car *> &cars);
 /**
-\n REQUIRE(properlyInitialized(), "Road wasn't initialized when calling addCars);
+\n REQUIRE(properlyInitialized(), "Road wasn't initialized when calling getCarGen);
 */
-    void addCars(int distance);
+    const std::vector<CarGen *> &getCarGen();
 /**
-\n REQUIRE(properlyInitialized(), "Road wasn't initialized when calling removeCars);
+\n REQUIRE(properlyInitialized(), "Road wasn't initialized when calling setCarGen);
 */
-    void removeCars(Car* car);
+    void setCarGen(const std::vector<CarGen *> &carGen);
+/////////////
 
 
-    /////////////
+
+/////////////
 protected:
     bool properlyInitialized();
 
-    /////////////
+/////////////
 };
 
 #endif //CAR_SIMULATOR_ROAD_H
