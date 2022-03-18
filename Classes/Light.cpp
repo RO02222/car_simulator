@@ -10,7 +10,7 @@
 
 Light::Light(double position, double c, Road* r): road(r), position(position), cycle(c) {
     _initCheck = this;
-    if (cycle < 1){
+    if (c < 1){
         cycle = 1;
     }
     lastCycle = 0;
