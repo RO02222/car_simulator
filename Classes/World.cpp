@@ -107,6 +107,7 @@ void World::loadRoad(TiXmlElement* elem1) {
                 length = elem2->GetText();
             } else {
                 std::string error = "Failed to load file: <BAAN> : <" + (std::string) elem2->Value() + "> is not valid";
+
                 throw (ParserException(error.c_str()));
             }
         }
