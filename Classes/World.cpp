@@ -24,6 +24,56 @@ World::World() {
     time = 0;
 }
 
+
+void World::simulateWorld(std::ostream & onStream){
+    REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling simulateWorld");
+    onStream << "Tijd: " <<time<<std::endl;
+    int numVehicle = 1;
+    std::vector<Road*> roadIt = getRoads();
+    for (std::vector<Road*>::iterator itR = roadIt.begin(); itR != roadIt.end(); itR++) {
+        std::vector<Car*> carIt = (*itR)->getCars();
+        for (std::vector<Car*>::iterator itC = carIt.begin(); itC != carIt.end(); itC++) {
+            onStream << "Voertuig " << numVehicle << std::endl;
+            onStream << " -> baan: " << (*itR)->getName() << std::endl;
+            onStream << " -> positie: " << (*itC)->getDistance() << std::endl;
+            onStream << " -> snelheid: " << (*itC)->getSpeed() << std::endl << std::endl;
+            numVehicle +=1;
+
+        }
+    }
+}
+
+void World::updateWorld(double t) {
+    REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling updateWorld");
+    time += t;
+    std::vector<Road *> roadIt = getRoads();
+    for (std::vector<Road *>::iterator itR = roadIt.begin(); itR != roadIt.end(); itR++) {
+        std::vector<Car *> carIt = (*itR)->getCars();
+        for (std::vector<Car *>::iterator itC = carIt.begin(); itC != carIt.end();itC++) {
+            double x = (*itC)->getDistance();
+            double v0 = (*itC)->getSpeed();
+            double a = (*itC)->getAcceleration();
+            double v1 = v0 + a * t;
+            if (v1 < 0) {
+                (*itC)->setDistance(x - pow(v0, 2) / (2 * a));
+                (*itC)->setSpeed(0);
+                if ((*itC)->getDistance() > (*itR)->getLength()) {
+                    (*itR)->removeCars((*itC));
+                }
+                continue;
+            }
+            (*itC)->setSpeed(v1);
+            (*itC)->setDistance(x + v0 * t + a * (pow(t, 2) / 2.0));
+            if ((*itC)->getDistance() > (*itR)->getLength()) {
+                (*itR)->removeCars(*itC);
+            }
+        }
+    }
+}
+
+
+
+///////////////////////
 void World::loadWorld(const char *worldName) {
     REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling loadWorld");
     TiXmlDocument doc;
@@ -63,7 +113,7 @@ void World::loadWorld(const char *worldName) {
         throw (ParserException(error.c_str()));
     }
 }
-///////////////////////
+
 void World::loadRoad(TiXmlElement* elem1) {
     REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling loadRoad");
     std::string name = "";
@@ -140,7 +190,7 @@ void World::loadLight(TiXmlElement* elem1) {
     if (stringInt (position) > road->getLength()){
         throw ("Failed to load file: invalid <VERKEERSLICHT> : '<baan> is not long enough");
     }
-    road->addLights(stringInt(position),stringInt(cycle));
+    road->addLight(stringInt(position),stringInt(cycle));
 }
 
 void World::loadCar(TiXmlElement *elem1) {
@@ -178,7 +228,7 @@ void World::loadCar(TiXmlElement *elem1) {
     if (stringInt (position) > road->getLength()){
         throw ("Failed to load file: invalid <VOERTUIG> : '<baan> is not long enough");
     }
-    road->addCars(stringInt(position));
+    road->addCar(stringInt(position));
 }
 
 void World::loadCarGen(TiXmlElement *elem1) {
@@ -216,88 +266,38 @@ void World::loadCarGen(TiXmlElement *elem1) {
     if (stringInt (frequency) > road->getLength()){
         throw ("Failed to load file: invalid <VOERTUIGGENERATOR> : '<baan> is not long enough");
     }
-    addCarGen(road,stringInt(frequency));
+    road->addCarGen(stringInt(frequency));
 }
 ///////////////////////
 
 
+
+//////////////
 const std::vector<Road *> &World::getRoads() {
     REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling getRoads");
     return roads;
 }
+
 void World::setRoad(const std::vector<Road *> &banen) {
     REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling setRoad");
     World::roads = banen;
 }
 
-const std::vector<CarGen *> &World::getCarGen()  {
-    REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling getCarGen");
-    return carGen;
+double World::getTime() const {
+    REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling getTime");
+    return time;
 }
 
-void World::setCarGen(const std::vector<CarGen *> &cG) {
-    REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling setCarGen");
-    World::carGen = cG;
+void World::setTime(double t) {
+    REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling setTime");
+    World::time = t;
 }
-
-void World::addCarGen(Road *road, int frequency) {
-    REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling addCarGen");
-    carGen.push_back(new CarGen(road,frequency));
-}
-
-
-
-void World::simulateWorld(std::ostream & onStream){
-    REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling simulateWorld");
-    onStream << "Tijd: " <<time<<std::endl;
-    int numVehicle = 1;
-    std::vector<Road*> roadIt = getRoads();
-    for (std::vector<Road*>::iterator itR = roadIt.begin(); itR != roadIt.end(); itR++) {
-        std::vector<Car*> carIt = (*itR)->getCars();
-        for (std::vector<Car*>::iterator itC = carIt.begin(); itC != carIt.end(); itC++) {
-            onStream << "Voertuig " << numVehicle << std::endl;
-            onStream << " -> baan: " << (*itR)->getName() << std::endl;
-            onStream << " -> positie: " << (*itC)->getDistance() << std::endl;
-            onStream << " -> snelheid: " << (*itC)->getSpeed() << std::endl << std::endl;
-            numVehicle +=1;
-
-        }
-    }
-}
-
-void World::updateWorld(double t) {
-    REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling updateWorld");
-    time += t;
-    std::vector<Road *> roadIt = getRoads();
-    for (std::vector<Road *>::iterator itR = roadIt.begin(); itR != roadIt.end(); itR++) {
-        std::vector<Car *> carIt = (*itR)->getCars();
-        for (std::vector<Car *>::iterator itC = carIt.begin(); itC != carIt.end();itC++) {
-            double x = (*itC)->getDistance();
-            double v0 = (*itC)->getSpeed();
-            double a = (*itC)->getAcceleration();
-            double v1 = v0 + a * t;
-            if (v1 < 0) {
-                (*itC)->setDistance(x - pow(v0, 2) / (2 * a));
-                (*itC)->setSpeed(0);
-                if ((*itC)->getDistance() > (*itR)->getLength()) {
-                    (*itR)->removeCars((*itC));
-                }
-                continue;
-            }
-            (*itC)->setSpeed(v1);
-            (*itC)->setDistance(x + v0 * t + a * (pow(t, 2) / 2.0));
-            if ((*itC)->getDistance() > (*itR)->getLength()) {
-                (*itR)->removeCars(*itC);
-            }
-        }
-    }
-}
-
+//////////////
 
 
 
 //////////////
-bool World::properlyInitialized () {
+bool World::properlyInitialized () const{
     return _initCheck == this;
 }
 //////////////
