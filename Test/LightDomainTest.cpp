@@ -69,7 +69,7 @@ TEST_F(LightDomainTest, InitialiserEdge) {
     r1.addLight(70,0);
     r1.addLight(90,-16);
     r1.addLight(110,2);
-    r1.addLight(100000000000000000,2);
+    r1.addLight(1000000000000000000,2);
     r1.addLight(-300,2);
 
     EXPECT_EQ(r1.getLights()[0]->getCycle(), 1.0000001);
@@ -77,4 +77,5 @@ TEST_F(LightDomainTest, InitialiserEdge) {
     EXPECT_EQ(r1.getLights()[2]->getCycle(), 1);
     EXPECT_EQ(r1.getLights()[3]->getPosition(), 100);
     EXPECT_EQ(r1.getLights()[4]->getPosition(), 100);
+    EXPECT_EQ(r1.getLights()[5]->getPosition(), 0);
 }
