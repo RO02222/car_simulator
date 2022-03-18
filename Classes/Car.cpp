@@ -8,6 +8,7 @@
 Car::Car(double distance, Road* road) : road(road), distance(distance) {
     _initCheck = this;
     speed = gMaxSpeed;
+    maxSpeed = gMaxSpeed;
     acceleration = 0;
     ENSURE(properlyInitialized(),"constructor must end in properlyInitialized state");
 
@@ -18,7 +19,6 @@ Car::Car(double distance, Road* road) : road(road), distance(distance) {
 void Car::updateCar(double t) {
     REQUIRE(this->properlyInitialized(), "Car wasn't initialized when calling updateCar");
     double v0 = getSpeed();
-    double a = getAcceleration();
     std::vector<Car*> carsOnRoad = getRoad()->getCars();
     Car* nextCar = NULL;
     for (std::vector<Car*>::iterator itC = carsOnRoad.begin(); itC != carsOnRoad.end(); itC++){
@@ -31,20 +31,16 @@ void Car::updateCar(double t) {
         std::cerr<<"Car is not on a road"<<std::endl;
         return;
     }
-    /*
-    double delta = 0;
+    double delta = 0.0;
     if (nextCar == NULL){
-        delta = 0;
+        delta = 0.0;
     } else{
     double dx = nextCar->getDistance() - getDistance() - gLength;
     double dv = getSpeed() - nextCar->getSpeed();
-    delta = gMinDistance+std::max(0.0,v0+((v0*dv)/(2* sqrt(gMaxAcceleration*gMaxBrake))));
-    }*/
-
-
-
-
-
+    delta = (gMinDistance+std::max(0.0,v0+((v0*dv)/(2* sqrt(gMaxAcceleration*gMaxBrake)))))/dx;
+    }
+    double a = gMaxAcceleration*(1.0-pow(v0/gMaxSpeed,4)-pow(delta,2));
+    setAcceleration(a);
 
     double v1 = v0 + a * t;
     if (v1 < 0) {
@@ -91,6 +87,14 @@ double Car::getSpeed() {
 void Car::setSpeed(double s) {
     REQUIRE(this->properlyInitialized(), "Car wasn't initialized when calling setSpeed");
     Car::speed = s;
+}
+double Car::getMaxSpeed() {
+    REQUIRE(this->properlyInitialized(), "Car wasn't initialized when calling getMaxSpeed");
+    return maxSpeed;
+}
+void Car::setMaxSpeed(double s) {
+    REQUIRE(this->properlyInitialized(), "Car wasn't initialized when calling setMaxSpeed");
+    Car::maxSpeed = s;
 }
 double Car::getAcceleration() {
     REQUIRE(this->properlyInitialized(), "Car wasn't initialized when calling getAcceleration");

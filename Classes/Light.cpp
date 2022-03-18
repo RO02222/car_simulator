@@ -5,7 +5,7 @@
 #include "Light.h"
 #include "../DesignByContract.h"
 
-Light::Light(int position, int cycle): position(position), cycle(cycle) {
+Light::Light(double position, double cycle): position(position), cycle(cycle) {
     _initCheck = this;
     if (cycle < 1){
         cycle = 1;
@@ -29,19 +29,19 @@ Light::Light(int position, int cycle): position(position), cycle(cycle) {
 
 
 /////////////
-int Light::getPosition() {
+double Light::getPosition() {
     REQUIRE(this->properlyInitialized(), "Light wasn't initialized when calling getPosition");
     return position;
 }
-void Light::setPosition(int p) {
+void Light::setPosition(double p) {
     REQUIRE(this->properlyInitialized(), "Light wasn't initialized when calling setPosition");
     Light::position = p;
 }
-int Light::getCycle() {
+double Light::getCycle() {
     REQUIRE(this->properlyInitialized(), "Light wasn't initialized when calling getCycle");
     return cycle;
 }
-void Light::setCycle(int c) {
+void Light::setCycle(double c) {
     REQUIRE(this->properlyInitialized(), "Light wasn't initialized when calling setCycle");
     Light::cycle = c;
 }

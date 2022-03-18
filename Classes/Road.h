@@ -17,7 +17,7 @@ private:
     Road* _initCheck;
 
     std::string name;
-    int length;
+    double length;
 
     std::vector<Light*> lights;
     std::vector<Car*> cars;
@@ -26,7 +26,7 @@ public:
 /**
 \n ENSURE(properlyInitialized(), "constructor must end in properlyInitialized state");
 */
-    Road(const std::string &name, int length);
+    Road(const std::string &name, double length);
 
 
 
@@ -46,15 +46,15 @@ public:
 /**
 \n REQUIRE(properlyInitialized(), "Road wasn't initialized when calling addLights);
 */
-    void addLight(int position, int cycle);
+    void addLight(double position, double cycle);
 /**
 \n REQUIRE(properlyInitialized(), "Road wasn't initialized when calling addCars);
 */
-    void addCar(int distance);
+    void addCar(double distance);
 /**
 \n REQUIRE(properlyInitialized(), "Road wasn't initialized when calling setCarGen);
 */
-    void addCarGen(int frequency);
+    void addCarGen(double frequency);
 /////////////
 
 
@@ -72,11 +72,11 @@ public:
 /**
 \n REQUIRE(properlyInitialized(), "Road wasn't initialized when calling getLength);
 */
-    int getLength();
+    double getLength();
 /**
 \n REQUIRE(properlyInitialized(), "Road wasn't initialized when calling setLength);
 */
-    void setLength(int length);
+    void setLength(double length);
 
 
 /**

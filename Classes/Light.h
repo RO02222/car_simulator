@@ -10,13 +10,13 @@ class Light{
 private:
     Light* _initCheck;
 
-    int position;
-    int cycle;
+    double position;
+    double cycle;
 public:
     /**
 \n ENSURE(properlyInitialized(), "constructor must end in properlyInitialized state");
 */
-    Light(int position, int cycle);
+    Light(double position, double cycle);
 
 
 
@@ -38,19 +38,19 @@ public:
 /**
 \n REQUIRE(properlyInitialized(), "Light wasn't initialized when calling getPosition");
 */
-    int getPosition();
+    double getPosition();
 /**
 \n REQUIRE(properlyInitialized(), "Light wasn't initialized when calling setPosition");
 */
-    void setPosition(int position);
+    void setPosition(double position);
 /**
 \n REQUIRE(properlyInitialized(), "Light wasn't initialized when calling getCycle");
 */
-    int getCycle();
+    double getCycle();
 /**
 \n REQUIRE(properlyInitialized(), "Light wasn't initialized when calling setCycle");
 */
-    void setCycle(int cycle);
+    void setCycle(double cycle);
 /////////////
 
 

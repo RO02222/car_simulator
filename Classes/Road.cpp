@@ -4,7 +4,7 @@
 #include "CarGen.h"
 #include "../DesignByContract.h"
 
-Road::Road(const std::string &name, int length) : name(name), length(length) {
+Road::Road(const std::string &name, double length) : name(name), length(length) {
     _initCheck = this;
     ENSURE(properlyInitialized(),"constructor must end in properlyInitialized state");
 }
@@ -29,17 +29,17 @@ void Road::removeCars(Car* carToDelete) {
 
 
 /////////////
-void Road::addLight(int position, int cycle) {
+void Road::addLight(double position, double cycle) {
     REQUIRE(this->properlyInitialized(), "Road wasn't initialized when calling addLight");
     lights.push_back(new Light(position, cycle));
 }
 
-void Road::addCar(int distance) {
+void Road::addCar(double distance) {
     REQUIRE(this->properlyInitialized(), "Road wasn't initialized when calling addCar");
     Road::cars.push_back(new Car (distance,this));
 }
 
-void Road::addCarGen(int frequency) {
+void Road::addCarGen(double frequency) {
     REQUIRE(this->properlyInitialized(), "Road wasn't initialized when calling addCarGen");
     carGen.push_back(new CarGen(frequency, this));
 }
@@ -56,11 +56,11 @@ void Road::setName(const std::string &n) {
     REQUIRE(this->properlyInitialized(), "Road wasn't initialized when calling setName");
     Road::name = n;
 }
-int Road::getLength() {
+double Road::getLength() {
     REQUIRE(this->properlyInitialized(), "Road wasn't initialized when calling getLength");
     return length;
 }
-void Road::setLength(int l) {
+void Road::setLength(double l) {
     REQUIRE(this->properlyInitialized(), "Road wasn't initialized when calling setLength");
     Road::length = l;
 }

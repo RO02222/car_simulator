@@ -11,6 +11,7 @@ private:
     Road* road;
     double distance;
     double speed;
+    double maxSpeed;
     double acceleration;
 
 public:
@@ -64,6 +65,14 @@ public:
 \n REQUIRE(properlyInitialized(), "Car wasn't initialized when calling setSpeed");
 */
     void setSpeed(double speed);
+/**
+\n REQUIRE(properlyInitialized(), "Car wasn't initialized when calling getMaxSpeed");
+*/
+    double getMaxSpeed();
+/**
+\n REQUIRE(properlyInitialized(), "Car wasn't initialized when calling setMaxSpeed");
+*/
+    void setMaxSpeed(double speed);
 /**
 \n REQUIRE(properlyInitialized(), "Car wasn't initialized when calling getAcceleration");
 */
