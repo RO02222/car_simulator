@@ -20,8 +20,7 @@ set(RELEASE_SOURCE_FILES
         Classes/Light.cpp Classes/Light.h
         Classes/Car.cpp Classes/Car.h
         Exception/ParserException.h
-        Classes/CarGen.cpp Classes/CarGen.h DesignByContract.h Basic_Values.h Functions.cpp Functions.h
-        )
+        Classes/CarGen.cpp Classes/CarGen.h DesignByContract.h Basic_Values.h Functions.cpp Functions.h)
 
 # Set source files for DEBUG target
 set(DEBUG_SOURCE_FILES
@@ -32,8 +31,7 @@ set(DEBUG_SOURCE_FILES
         Classes/Light.cpp Classes/Light.h
         Classes/Car.cpp Classes/Car.h
         Exception/ParserException.h
-        Classes/CarGen.cpp Classes/CarGen.h DesignByContract.h Basic_Values.h Functions.cpp Functions.h
-        )
+        Classes/CarGen.cpp Classes/CarGen.h DesignByContract.h Basic_Values.h Functions.cpp Functions.h)
 
 # Create RELEASE target
 add_executable(Car_Simulation ${RELEASE_SOURCE_FILES})

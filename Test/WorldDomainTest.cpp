@@ -57,8 +57,6 @@ Tests if every object is initialised right.
 */
 TEST_F(WorldDomainTest, Initialiser) {
     World w = World();
-    r1.addLight(50,3);
 
-    EXPECT_EQ(r1.getLights()[0]->getPosition(), 50);
-    EXPECT_EQ(r1.getLights()[0]->getCycle(), 3);
+    EXPECT_EQ(w.getTime(), 0);
 }
