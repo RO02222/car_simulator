@@ -5,21 +5,29 @@
 #ifndef CAR_SIMULATOR_LIGHT_H
 #define CAR_SIMULATOR_LIGHT_H
 
+enum color {green,red};
+class Road;
 
 class Light{
 private:
     Light* _initCheck;
+    Road* road;
 
     double position;
     double cycle;
+    double lastCycle;
+    color state;
 public:
     /**
 \n ENSURE(properlyInitialized(), "constructor must end in properlyInitialized state");
 */
-    Light(double position, double cycle);
+    Light(double position, double cycle, Road* r);
 
 
-
+/**
+\n REQUIRE(properlyInitialized(), "Light wasn't initialized when calling updateLight");
+*/
+    void updateLight(double t);
 
 
 
@@ -35,6 +43,18 @@ public:
 
 
 /////////////
+/**
+\n REQUIRE(properlyInitialized(), "Light wasn't initialized when calling getPosition");
+*/
+    Road* getRoad();
+
+protected:
+/**
+\n REQUIRE(properlyInitialized(), "Light wasn't initialized when calling setPosition");
+*/
+    void setRoad(Road* r);
+
+public:
 /**
 \n REQUIRE(properlyInitialized(), "Light wasn't initialized when calling getPosition");
 */

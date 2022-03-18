@@ -5,12 +5,31 @@
 #include "Light.h"
 #include "../DesignByContract.h"
 
-Light::Light(double position, double cycle): position(position), cycle(cycle) {
+Light::Light(double position, double cycle, Road* r): road(r), position(position), cycle(cycle) {
     _initCheck = this;
     if (cycle < 1){
         cycle = 1;
     }
+    lastCycle = 0;
+    state = green;
     ENSURE(this->properlyInitialized(), "constructor must end in properlyInitialized state");
+}
+
+void Light::updateLight(double t) {
+    REQUIRE(this->properlyInitialized(), "Light wasn't initialized when calling updateLight");
+    if (lastCycle > cycle){
+        if (state == green){
+            state = red;
+        } else{
+            state = green;
+        }
+    }
+    if (state == green){
+
+    }
+
+
+    return;
 }
 
 
@@ -26,9 +45,15 @@ Light::Light(double position, double cycle): position(position), cycle(cycle) {
 
 
 
-
-
 /////////////
+Road* Light::getRoad() {
+    REQUIRE(this->properlyInitialized(), "Light wasn't initialized when calling getRoad");
+    return road;
+}
+void Light::setRoad(Road *r) {
+    REQUIRE(this->properlyInitialized(), "Light wasn't initialized when calling setRoad");
+    Light::road = r;
+}
 double Light::getPosition() {
     REQUIRE(this->properlyInitialized(), "Light wasn't initialized when calling getPosition");
     return position;

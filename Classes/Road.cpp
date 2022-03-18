@@ -31,7 +31,7 @@ void Road::removeCars(Car* carToDelete) {
 /////////////
 void Road::addLight(double position, double cycle) {
     REQUIRE(this->properlyInitialized(), "Road wasn't initialized when calling addLight");
-    lights.push_back(new Light(position, cycle));
+    lights.push_back(new Light(position, cycle,this));
 }
 
 void Road::addCar(double distance) {
