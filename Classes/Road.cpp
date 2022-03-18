@@ -53,8 +53,7 @@ void Road::addLight(double position, double cycle) {
 void Road::addCar(double distance) {
     REQUIRE(this->properlyInitialized(), "Road wasn't initialized when calling addCar");
     if (distance>getLength() or distance<0){
-        std::cerr<<"Car not on a road"<<std::endl;
-        return;
+        distance = getLength();
     }
     Road::cars.push_back(new Car (distance,this));
 }
