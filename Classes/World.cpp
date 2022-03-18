@@ -150,13 +150,13 @@ void World::loadLight(TiXmlElement* elem1) {
         }
     }
     if (roadName == "") {
-        throw ("Failed to load file: invalid <VERKEERSLICHT> : 'missing argument' <baan>");
+        throw (ParserException("Failed to load file: invalid <VERKEERSLICHT> : 'missing argument' <baan>"));
     }
     if (position == "") {
-        throw ("Failed to load file: invalid <VERKEERSLICHT> : 'missing argument' <positie>");
+        throw (ParserException("Failed to load file: invalid <VERKEERSLICHT> : 'missing argument' <positie>"));
     }
     if (cycle == "") {
-        throw ("Failed to load file: invalid <VERKEERSLICHT> : 'missing argument' <cyclus>");
+        throw (ParserException("Failed to load file: invalid <VERKEERSLICHT> : 'missing argument' <cyclus>"));
     }
     Road *road = 0;
     std::vector<Road*> roadIt = getRoads();
@@ -166,10 +166,10 @@ void World::loadLight(TiXmlElement* elem1) {
             road = (*it);
             break;
         }
-        throw ("Failed to load file: invalid <VERKEERSLICHT> : '<baan> does not exist");
+        throw (ParserException("Failed to load file: invalid <VERKEERSLICHT> : '<baan> does not exist"));
     }
     if (stringInt (position) > road->getLength()){
-        throw ("Failed to load file: invalid <VERKEERSLICHT> : '<baan> is not long enough");
+        throw (ParserException("Failed to load file: invalid <VERKEERSLICHT> : '<baan> is not long enough"));
     }
     road->addLight(stringInt(position),stringInt(cycle));
 }
@@ -192,10 +192,10 @@ void World::loadCar(TiXmlElement *elem1) {
         }
     }
     if (roadName == "") {
-        throw ("Failed to load file: invalid <VOERTUIG> : 'missing argument' <baan>");
+        throw (ParserException("Failed to load file: invalid <VOERTUIG> : 'missing argument' <baan>"));
     }
     if (position == "") {
-        throw ("Failed to load file: invalid <VOERTUIG> : 'missing argument' <positie>");
+        throw (ParserException("Failed to load file: invalid <VOERTUIG> : 'missing argument' <positie>"));
     }
     Road *road = 0;
     std::vector<Road*> roadIt = getRoads();
@@ -204,10 +204,10 @@ void World::loadCar(TiXmlElement *elem1) {
             road = (*it);
             break;
         }
-        throw ("Failed to load file: invalid <VOERTUIG> : '<baan> does not exist");
+        throw (ParserException("Failed to load file: invalid <VOERTUIG> : '<baan> does not exist"));
     }
     if (stringInt (position) > road->getLength()){
-        throw ("Failed to load file: invalid <VOERTUIG> : '<baan> is not long enough");
+        throw (ParserException("Failed to load file: invalid <VOERTUIG> : '<baan> is not long enough"));
     }
     road->addCar(stringInt(position));
 }
@@ -230,10 +230,10 @@ void World::loadCarGen(TiXmlElement *elem1) {
         }
     }
     if (roadName == "") {
-        throw ("Failed to load file: invalid <VOERTUIGGENERATOR> : 'missing argument' <baan>");
+        throw (ParserException("Failed to load file: invalid <VOERTUIGGENERATOR> : 'missing argument' <baan>"));
     }
     if (frequency == "") {
-        throw ("Failed to load file: invalid <VOERTUIGGENERATOR> : 'missing argument' <frequentie>");
+        throw (ParserException("Failed to load file: invalid <VOERTUIGGENERATOR> : 'missing argument' <frequentie>"));
     }
     Road *road = 0;
     std::vector<Road*> roadIt = getRoads();
@@ -242,10 +242,10 @@ void World::loadCarGen(TiXmlElement *elem1) {
             road = (*it);
             break;
         }
-        throw ("Failed to load file: invalid <VOERTUIGGENERATOR> : '<baan> does not exist");
+        throw (ParserException("Failed to load file: invalid <VOERTUIGGENERATOR> : '<baan> does not exist"));
     }
     if (stringInt (frequency) > road->getLength()){
-        throw ("Failed to load file: invalid <VOERTUIGGENERATOR> : '<baan> is not long enough");
+        throw (ParserException("Failed to load file: invalid <VOERTUIGGENERATOR> : '<baan> is not long enough"));
     }
     road->addCarGen(stringInt(frequency));
 }
