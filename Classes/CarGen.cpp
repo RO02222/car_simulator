@@ -1,5 +1,6 @@
 #include "CarGen.h"
 #include "Road.h"
+#include "Car.h"
 #include "../DesignByContract.h"
 
 CarGen::CarGen(double f,Road* road) : road(road), frequency(f) {
@@ -7,12 +8,26 @@ CarGen::CarGen(double f,Road* road) : road(road), frequency(f) {
     if (frequency < 1){
         frequency = 1;
     }
-    this->road->addCar(0);
+    lastCycle = frequency;
     ENSURE(properlyInitialized(),"constructor must end in properlyInitialized state");
 }
 
 
-
+void CarGen::updateCarGen(double t) {
+    REQUIRE(this->properlyInitialized(), "Light wasn't initialized when calling updateCarGen");
+    lastCycle += t;
+    if (lastCycle < frequency) {
+        return;
+    }
+    lastCycle -= frequency;
+    std::vector<Car *> carsOnRoad = getRoad()->getCars();
+    for (std::vector<Car *>::iterator itC = carsOnRoad.begin(); itC != carsOnRoad.end(); itC++) {
+        if ((*itC)->getDistance() <= 2) {
+            return;
+        }
+    }
+    getRoad()->addCar(0);
+}
 
 
 
@@ -38,6 +53,14 @@ double CarGen::getFrequency() {
 void CarGen::setFrequency(double f) {
     REQUIRE(this->properlyInitialized(), "CarGen wasn't initialized when calling setFrequency");
     CarGen::frequency = f;
+}
+double CarGen::getCycle() {
+    REQUIRE(this->properlyInitialized(), "CarGen wasn't initialized when calling getCycle");
+    return lastCycle;
+}
+void CarGen::setCycle(double c) {
+    REQUIRE(this->properlyInitialized(), "CarGen wasn't initialized when calling setCycle");
+    CarGen::lastCycle = c;
 }
 /////////////
 

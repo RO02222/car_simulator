@@ -3,6 +3,9 @@
 //
 
 #include "Light.h"
+#include "Car.h"
+#include "Road.h"
+#include "../Basic_Values.h"
 #include "../DesignByContract.h"
 
 Light::Light(double position, double c, Road* r): road(r), position(position), cycle(c) {
@@ -11,25 +14,47 @@ Light::Light(double position, double c, Road* r): road(r), position(position), c
         cycle = 1;
     }
     lastCycle = 0;
-    state = green;
+    state = red;
     ENSURE(this->properlyInitialized(), "constructor must end in properlyInitialized state");
 }
 
 void Light::updateLight(double t) {
     REQUIRE(this->properlyInitialized(), "Light wasn't initialized when calling updateLight");
-    if (lastCycle > cycle){
-        if (state == green){
+    lastCycle += t;
+    if (lastCycle > cycle) {
+        lastCycle -= cycle;
+        if (state == green) {
             state = red;
-        } else{
+        } else {
             state = green;
         }
     }
-    if (state == green){
-
-
+    std::vector<Car *> carsOnRoad = getRoad()->getCars();
+    Car *firstCar = NULL;
+    for (std::vector<Car *>::iterator itC = carsOnRoad.begin(); itC != carsOnRoad.end(); itC++) {
+        if ((*itC)->getDistance()< getPosition()){
+            if ((*itC)->getDistance() + gStopDistance < getPosition() or (*itC)->getAction() == slow or (*itC)->getAction() == stop){
+                if (firstCar == NULL or (*itC)->getDistance() > firstCar->getDistance()) {
+                    firstCar = (*itC);
+                }
+            }
+        }
     }
-
-
+    if (firstCar == NULL) {
+        return;
+    }
+    if (state == green) {
+        firstCar->setAction(fast);
+        return;
+    }
+    if (state == red) {
+        if ((firstCar->getDistance() + gStopDistance) > getPosition()) {
+            firstCar->setAction(stop);
+            return;
+        } else if ((firstCar->getDistance() + gBreakDistance) > getPosition()) {
+            firstCar->setAction(slow);
+        }
+    }
     return;
 }
 

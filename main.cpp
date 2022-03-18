@@ -4,7 +4,6 @@
 #include "Basic_Values.h"
 
 int main() {
-    //load world
     World* w = new World();
     try {
         w->loadWorld("../XML/case1.xml");
@@ -15,22 +14,11 @@ int main() {
     std::ofstream myFile;
     myFile.open("../Car_sim.txt");
     w->simulateWorld(myFile);
-    for (unsigned int i =0; i < 10; i++) {
-        w->updateWorld(5);
+    for (unsigned int i =0; i < 400; i++) {
+        w->updateWorld(1);
         w->simulateWorld(myFile);
     }
     myFile.close();
-
-
-    /*
-    std::ostream onStream();
-
-    onStream << "hallo";
-    w->simulateWorld()
-    std::ofstream File;
-    File.open("output");
-    File << o
-    */
     delete w;
     return 0;
 }

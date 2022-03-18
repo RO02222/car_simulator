@@ -11,6 +11,7 @@ private:
     CarGen* _initCheck;
     Road *road;
     double frequency;
+    double lastCycle;
 
 public:
 
@@ -19,7 +20,10 @@ public:
 */
     CarGen(double frequency,Road *road);
 
-
+/**
+\n REQUIRE(properlyInitialized(), "CarGen wasn't initialized when calling updateCarGen");
+*/
+    void updateCarGen(double t);
 
 
 
@@ -46,6 +50,17 @@ public:
 \n REQUIRE(properlyInitialized(), "CarGen wasn't initialized when calling setFrequency);
 */
     void setFrequency(double frequency);
+
+/**
+\n REQUIRE(properlyInitialized(), "CarGen wasn't initialized when calling getCycle);
+*/
+    double getCycle();
+
+protected:
+/**
+\n REQUIRE(properlyInitialized(), "CarGen wasn't initialized when calling setCycle);
+*/
+    void setCycle(double c);
 /////////////
 
 

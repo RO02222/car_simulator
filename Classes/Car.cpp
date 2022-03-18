@@ -44,7 +44,7 @@ void Car::updateCar(double t) {
             double dv = getSpeed() - nextCar->getSpeed();
             delta = (gMinDistance + std::max(0.0, v0 + ((v0 * dv) / (2 * sqrt(gMaxAcceleration * gMaxBrake))))) / dx;
         }
-        a = gMaxAcceleration * (1.0 - pow(v0 / getMaxSpeed(), 4) - pow(delta, 2));
+        a = (gMaxAcceleration)*(1.0 - (pow(v0 / getMaxSpeed(), 4)) - pow(delta, 2));
     }else{
         a = -(gMaxBrake*v0)/getMaxSpeed();
     }
@@ -53,6 +53,7 @@ void Car::updateCar(double t) {
     if (v1 < 0) {
         setDistance(distance - pow(v0, 2) / (2 * a));
         setSpeed(0);
+        return;
     }
     setSpeed(v1);
     setDistance(distance + v0 * t + a * (pow(t, 2) / 2.0));

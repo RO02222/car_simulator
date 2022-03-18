@@ -18,6 +18,14 @@ void Road::updateRoad(double t) {
     for (std::vector<Car *>::iterator itC = carIt.begin(); itC != carIt.end(); itC++) {
         (*itC)->updateCar(t);
     }
+    std::vector<Light *> lightIt = getLights();
+    for (std::vector<Light *>::iterator itL = lightIt.begin(); itL != lightIt.end(); itL++) {
+        (*itL)->updateLight(t);
+    }
+    std::vector<CarGen *> carGenIt = getCarGen();
+    for (std::vector<CarGen *>::iterator itG = carGenIt.begin(); itG != carGenIt.end(); itG++) {
+        (*itG)->updateCarGen(t);
+    }
 }
 
 
