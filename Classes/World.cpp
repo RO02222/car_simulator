@@ -112,15 +112,15 @@ void World::loadRoad(TiXmlElement* elem1) {
         }
     }
     if (name == "") {
-        throw ("Failed to load file: invalid <BAAN> : 'missing argument' <naam>");
+        throw (ParserException("Failed to load file: invalid <BAAN> : 'missing argument' <naam>"));
     }
     if (length == "") {
-        throw ("Failed to load file: invalid <BAAN> : 'missing argument' <lengte>");
+        throw (ParserException("Failed to load file: invalid <BAAN> : 'missing argument' <lengte>"));
     }
     std::vector<Road*> roadIt = getRoads();
     for (std::vector<Road*>::iterator it = roadIt.begin(); it != roadIt.end(); it++) {
         if ((*it)->getName() == name) {
-            throw ("Failed to add road: road already exist");
+            throw (ParserException("Failed to add road: road already exist"));
         }
     }
     roads.push_back(new Road(name, stringInt(length)));
