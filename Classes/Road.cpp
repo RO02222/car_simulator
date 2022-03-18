@@ -31,11 +31,16 @@ void Road::removeCars(Car* carToDelete) {
 /////////////
 void Road::addLight(double position, double cycle) {
     REQUIRE(this->properlyInitialized(), "Road wasn't initialized when calling addLight");
-    if (position>getLength() or position<0){
-        std::cerr<<"Light not on a road"<<std::endl;
-        return;
+    if (position>getLength()) {
+        position = getLength();
+    }
+    if (position<0){
+        position = 0;
     }
     std::vector<Light*> l = getLights();
+    for (std::vector<Light*>::iterator itL = l.begin();itL != l.end(); itL++){
+        break;
+    }
     lights.push_back(new Light(position, cycle,this));
 }
 
