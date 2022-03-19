@@ -4,9 +4,10 @@
 #include "Basic_Values.h"
 
 int main() {
+
     World* w = new World();
     try {
-        w->loadWorld("../testInput/testFail3.xml");
+        w->loadWorld("../testInput/testFail7.xml");
     }
     catch(std::exception* e) {
         std::cerr<<e->what()<<std::endl;

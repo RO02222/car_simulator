@@ -5,6 +5,7 @@
 #include <exception>
 #include <vector>
 #include <iterator>
+#include <cstring>
 
 
 #include "../Exception/ParserException.h"
@@ -142,9 +143,7 @@ void World::loadLight(TiXmlElement* elem1) {
                 if ((std::string) elem2->Value() == "cyclus") {
                     cycle = elem2->GetText();
                 } else {
-                    std::string error =
-                            "Failed to load file: <VERKEERSLICHT> : <" + (std::string) elem2->Value() +
-                            "> is not valid";
+                    std::string error = "Failed to load file: <VERKEERSLICHT> : <" + (std::string) elem2->Value() + "> is not valid";
                     throw (ParserException(error.c_str()));
                 }
             }
@@ -190,7 +189,7 @@ void World::loadCar(TiXmlElement *elem1) {
             } else {
                 std::string error =
                         "Failed to load file: <VOERTUIG> : <" + (std::string) elem2->Value() + "> is not valid";
-                throw (ParserException(error.c_str()));
+                throw ParserException(error.c_str());
             }
         }
     }
@@ -200,7 +199,7 @@ void World::loadCar(TiXmlElement *elem1) {
     if (position == "") {
         throw (ParserException("Failed to load file: invalid <VOERTUIG> : 'missing argument' <positie>"));
     }
-    Road *road = 0;
+    Road *road = NULL;
     std::vector<Road*> roadIt = getRoads();
     for (std::vector<Road*>::iterator it = roadIt.begin(); it != roadIt.end(); it++) {
         if ((*it)->getName() == roadName) {
@@ -238,7 +237,7 @@ void World::loadCarGen(TiXmlElement *elem1) {
     if (frequency == "") {
         throw (ParserException("Failed to load file: invalid <VOERTUIGGENERATOR> : 'missing argument' <frequentie>"));
     }
-    Road *road = 0;
+    Road *road = NULL;
     std::vector<Road*> roadIt = getRoads();
     for (std::vector<Road*>::iterator it = roadIt.begin(); it != roadIt.end(); it++) {
         if ((*it)->getName() == roadName) {

@@ -8,6 +8,8 @@
 #include "gtest/gtest.h"
 #include "../Exception/ParserException.h"
 
+
+
 using namespace std;
 //source: https://github.com/google/googletest/issues/952
 #define EXPECT_THROW_WITH_MESSAGE(stmt, etype, whatstring) EXPECT_THROW( \
@@ -77,6 +79,52 @@ TEST_F(Car_SimInputTest, InputHappyDay) {
     EXPECT_EQ(w.getRoads()[0]->getCarGen()[0]->getFrequency(), 5);
 }
 
+/**
+Tests InputMixed test if load in different order also works
+*/
+TEST_F(Car_SimInputTest, InputMixed) {
+    World w = World();
+    w.loadWorld("../testInput/testCase2.xml");
+
+
+    EXPECT_EQ(w.getRoads()[0]->getName(), "Middelheimlaan");
+    EXPECT_EQ(w.getRoads()[0]->getLength(), 400);
+
+    EXPECT_EQ(w.getRoads()[0]->getLights()[0]->getRoad()->getName(), "Middelheimlaan");
+    EXPECT_EQ(w.getRoads()[0]->getLights()[0]->getPosition(), 400);
+    EXPECT_EQ(w.getRoads()[0]->getLights()[0]->getCycle(), 20);
+
+    EXPECT_EQ(w.getRoads()[0]->getCars()[0]->getRoad()->getName(), "Middelheimlaan");
+    EXPECT_EQ(w.getRoads()[0]->getCars()[0]->getDistance(), 40);
+    EXPECT_EQ(w.getRoads()[0]->getCars()[1]->getRoad()->getName(), "Middelheimlaan");
+    EXPECT_EQ(w.getRoads()[0]->getCars()[1]->getDistance(), 20);
+
+    EXPECT_EQ(w.getRoads()[0]->getCarGen()[0]->getRoad()->getName(), "Middelheimlaan");
+    EXPECT_EQ(w.getRoads()[0]->getCarGen()[0]->getFrequency(), 5);
+}
+
+TEST_F(Car_SimInputTest, InputMixed2) {
+    World w = World();
+    w.loadWorld("../testInput/testCase3.xml");
+
+
+    EXPECT_EQ(w.getRoads()[0]->getName(), "Middelheimlaan");
+    EXPECT_EQ(w.getRoads()[0]->getLength(), 400);
+
+    EXPECT_EQ(w.getRoads()[0]->getLights()[0]->getRoad()->getName(), "Middelheimlaan");
+    EXPECT_EQ(w.getRoads()[0]->getLights()[0]->getPosition(), 400);
+    EXPECT_EQ(w.getRoads()[0]->getLights()[0]->getCycle(), 20);
+
+    EXPECT_EQ(w.getRoads()[0]->getCars()[0]->getRoad()->getName(), "Middelheimlaan");
+    EXPECT_EQ(w.getRoads()[0]->getCars()[0]->getDistance(), 40);
+    EXPECT_EQ(w.getRoads()[0]->getCars()[1]->getRoad()->getName(), "Middelheimlaan");
+    EXPECT_EQ(w.getRoads()[0]->getCars()[1]->getDistance(), 20);
+
+    EXPECT_EQ(w.getRoads()[0]->getCarGen()[0]->getRoad()->getName(), "Middelheimlaan");
+    EXPECT_EQ(w.getRoads()[0]->getCarGen()[0]->getFrequency(), 5);
+}
+
+
 TEST_F(Car_SimInputTest, InputNoWorld) {
     World w = World();
 
@@ -89,14 +137,48 @@ TEST_F(Car_SimInputTest, InputNoRoot) {
     EXPECT_THROW_WITH_MESSAGE(w.loadWorld("../testInput/testFail2.xml"),ParserException , "Failed to load file: No root element.");
 }
 
-TEST_F(Car_SimInputTest, InputMuch) {
+TEST_F(Car_SimInputTest, InputNoLength) {
     World w = World();
 
     EXPECT_THROW_WITH_MESSAGE(w.loadWorld("../testInput/testFail3.xml"),ParserException , "Failed to load file: invalid <BAAN> : 'missing argument' <lengte>");
 }
 
-TEST_F(Car_SimInputTest, InputTooLong) {
+TEST_F(Car_SimInputTest, InputLightToFar) {
     World w = World();
 
     EXPECT_THROW_WITH_MESSAGE(w.loadWorld("../testInput/testFail4.xml"),ParserException , "Failed to load file: invalid <VOERTUIG> : '<baan> is not long enough");
 }
+
+
+TEST_F(Car_SimInputTest, InputAlreadyExist) {
+    World w = World();
+
+    EXPECT_THROW_WITH_MESSAGE(w.loadWorld("../testInput/testFail5.xml"),ParserException , "Failed to add road: road already exist");
+}
+
+TEST_F(Car_SimInputTest, InputNotInitialized) {
+    World* w = new World();
+    delete w;
+
+    EXPECT_DEATH(w->loadWorld("../testInput/testCase1.xml"), "World wasn't initialized when calling loadWorld");
+}
+
+TEST_F(Car_SimInputTest, InputNoPosition) {
+    World w = World();
+
+    EXPECT_THROW_WITH_MESSAGE(w.loadWorld("../testInput/testFail6.xml"),ParserException , "Failed to load file: invalid <VERKEERSLICHT> : 'missing argument' <positie>");
+}
+
+TEST_F(Car_SimInputTest, InputNoGenerator) {
+    World w = World();
+
+    EXPECT_THROW_WITH_MESSAGE(w.loadWorld("../testInput/testFail7.xml"),ParserException , "Failed to load file: invalid <VOERTUIGGENERATOR> : 'missing argument' <baan>");
+}
+
+TEST_F(Car_SimInputTest, InputCarToFar) {
+    World w = World();
+
+    EXPECT_THROW_WITH_MESSAGE(w.loadWorld("../testInput/testFail8.xml"),ParserException , "Failed to load file: invalid <VOERTUIG> : '<baan> is not long enough");
+}
+
+

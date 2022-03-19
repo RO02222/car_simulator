@@ -1,13 +1,8 @@
 <World>
-    <BAAN>
-        <naam>Middelheimlaan</naam>
-        <lengte>400</lengte>
-    </BAAN>
-
-    <BAAN>
-        <naam>Middelheimlaan</naam>
-        <lengte>250</lengte>
-    </BAAN>
+    <VOERTUIGGENERATOR>
+        <baan>Middelheimlaan</baan>
+        <frequentie>5</frequentie>
+    </VOERTUIGGENERATOR>
 
     <VERKEERSLICHT>
         <baan>Middelheimlaan</baan>
@@ -20,14 +15,14 @@
         <positie>40</positie>
     </VOERTUIG>
 
+    <BAAN>
+        <naam>Middelheimlaan</naam>
+        <lengte>400</lengte>
+    </BAAN>
+
     <VOERTUIG>
         <baan>Middelheimlaan</baan>
         <positie>20</positie>
     </VOERTUIG>
-
-    <VOERTUIGGENERATOR>
-        <baan>Middelheimlaan</baan>
-        <frequentie>5</frequentie>
-    </VOERTUIGGENERATOR>
 
 </World>
