@@ -29,8 +29,6 @@ public:
 */
     void updateLight(double t);
 
-    color getState() const;
-
 
 
 

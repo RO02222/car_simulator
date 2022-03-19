@@ -7,7 +7,7 @@ int main() {
 
     World* w = new World();
     try {
-        w->loadWorld("../XML/case1.xml");
+        w->loadWorld("../XML/case2.xml");
     }
     catch(std::exception* e) {
         std::cerr<<e->what()<<std::endl;
@@ -15,7 +15,7 @@ int main() {
     std::ofstream myFile;
     myFile.open("../Car_sim.txt");
     w->simulateWorld(myFile);
-    for (unsigned int i =0; i < 1; i++) {
+    for (unsigned int i =0; i < 400; i++) {
         w->updateWorld(1);
         w->simulateWorld(myFile);
     }

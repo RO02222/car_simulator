@@ -4,11 +4,6 @@
         <lengte>100</lengte>
     </BAAN>
 
-    <BAAN>
-        <naam>Groenenborgerlaan</naam>
-        <lengte>100</lengte>
-    </BAAN>
-
     <VERKEERSLICHT>
         <baan>Middelheimlaan</baan>
         <positie>80</positie>
@@ -28,7 +23,7 @@
     </VERKEERSLICHT>
 
     <VERKEERSLICHT>
-        <baan>Groenenborgerlaan</baan>
+        <baan>Middelheimlaan</baan>
         <positie>60</positie>
         <cyclus>5</cyclus>
     </VERKEERSLICHT>
@@ -44,17 +39,12 @@
     </VOERTUIG>
 
     <VOERTUIG>
-        <baan>Groenenborgerlaan</baan>
+        <baan>Middelheimlaan</baan>
         <positie>90</positie>
     </VOERTUIG>
 
     <VOERTUIGGENERATOR>
         <baan>Middelheimlaan</baan>
-        <frequentie>5</frequentie>
-    </VOERTUIGGENERATOR>
-
-    <VOERTUIGGENERATOR>
-        <baan>Groenenborgerlaan</baan>
         <frequentie>5</frequentie>
     </VOERTUIGGENERATOR>
 

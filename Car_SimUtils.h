@@ -5,6 +5,7 @@
 #ifndef CAR_SIMULATION_CAR_SIMUTILS_H
 #define CAR_SIMULATION_CAR_SIMUTILS_H
 
+#include "Classes/World.h"
 #include <iostream>
 
 bool DirectoryExists(const std::string dirname);

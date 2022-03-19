@@ -85,27 +85,53 @@ TEST_F(Car_SimDomainTest, Initialiser) {
 Tests update simulation.
 */
 TEST_F(Car_SimDomainTest, UpdateWorld) {
-    World w = World();
-    Road r1 = Road("Middelheimlaan", 100);
-    Road r2 = Road("Groenenborgerlaan", 100);
-    r1.addCar(25);
-    r1.addCar(60);
-    r2.addCar(90);
-    r1.addLight(80, 5);
-    r1.addLight( 20, 5);
-    r1.addLight(50, 5);
-    r2.addLight(60,5);
-    r1.addCarGen(5);
-    r2.addCarGen(5);
+    World* w = new World();
+    Road* r1 = new Road("Middelheimlaan", 100);
+    r1->addCar(25);
+    r1->addCar(60);
+    r1->addCar(90);
+    r1->addLight(80, 2);
+    r1->addLight( 20, 3);
+    r1->addLight(50, 4);
+    r1->addLight(60,5);
+    r1->addCarGen(5);
+    vector<Road*> roads;
+    roads.push_back(r1);
+    w->setRoad(roads);
 
-    w.updateWorld(1);
+    w->updateWorld(1);
+    EXPECT_EQ(r1->getName(), "Middelheimlaan");
+    EXPECT_EQ(r1->getLength(), 100);
 
-    EXPECT_EQ(r1.getLights()[0]->getState(), red);
-    EXPECT_EQ(r1.getLights()[1]->getState(), red);
-    EXPECT_EQ(r1.getLights()[2]->getState(), red);
-    EXPECT_EQ(r2.getLights()[0]->getState(), red);
+    EXPECT_EQ(r1->getLights()[0]->getPosition(), 80);
+    EXPECT_EQ(r1->getLights()[1]->getPosition(), 20);
+    EXPECT_EQ(r1->getLights()[2]->getPosition(), 50);
+    EXPECT_EQ(r1->getLights()[3]->getPosition(), 60);
 
+    EXPECT_EQ(r1->getLights()[0]->getCycle(), 2);
+    EXPECT_EQ(r1->getLights()[1]->getCycle(), 3);
+    EXPECT_EQ(r1->getLights()[2]->getCycle(), 4);
+    EXPECT_EQ(r1->getLights()[3]->getCycle(), 5);
 
+    EXPECT_EQ(r1->getLights()[0]->getState(), red);
+    EXPECT_EQ(r1->getLights()[1]->getState(), red);
+    EXPECT_EQ(r1->getLights()[2]->getState(), red);
+    EXPECT_EQ(r1->getLights()[3]->getState(), red);
 
+    w->updateWorld(5);
+
+    EXPECT_EQ(r1->getLights()[0]->getState(), green);
+    EXPECT_EQ(r1->getLights()[1]->getState(), green);
+    EXPECT_EQ(r1->getLights()[2]->getState(), green);
+    EXPECT_EQ(r1->getLights()[3]->getState(), green);
+
+    w->updateWorld(2);
+    EXPECT_EQ(r1->getLights()[0]->getState(), red);
+    EXPECT_EQ(r1->getLights()[1]->getState(), red);
+    EXPECT_EQ(r1->getLights()[2]->getState(), green);
+    EXPECT_EQ(r1->getLights()[3]->getState(), green);
+
+    delete r1;
+    delete w;
 }
 

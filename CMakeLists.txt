@@ -31,7 +31,8 @@ set(DEBUG_SOURCE_FILES
         Classes/Light.cpp Classes/Light.h
         Classes/Car.cpp Classes/Car.h
         Exception/ParserException.h
-        Classes/CarGen.cpp Classes/CarGen.h DesignByContract.h Basic_Values.h Functions.cpp Functions.h)
+        Classes/CarGen.cpp Classes/CarGen.h DesignByContract.h Basic_Values.h Functions.cpp Functions.h
+        Car_SimUtils.cpp Car_SimUtils.h)
 
 # Create RELEASE target
 add_executable(Car_Simulation ${RELEASE_SOURCE_FILES})
