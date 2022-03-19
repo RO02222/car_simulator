@@ -46,11 +46,7 @@ protected:
     }
 
     // Declares the variables your tests want to use.
-    friend class Car;
     friend class World;
-    friend class CarGen;
-    friend class Light;
-    friend class Road;
     // You should make the members protected s.t. they can be
     // accessed from sub-classes.
 };
@@ -80,7 +76,7 @@ TEST_F(Car_SimInputTest, InputHappyDay) {
 }
 
 /**
-Tests InputMixed test if load in different order also works
+Tests InputMixed: test if read in different order of Classes also works.
 */
 TEST_F(Car_SimInputTest, InputMixed) {
     World w = World();
@@ -103,6 +99,9 @@ TEST_F(Car_SimInputTest, InputMixed) {
     EXPECT_EQ(w.getRoads()[0]->getCarGen()[0]->getFrequency(), 5);
 }
 
+/**
+Tests InputMixed2: test if read in different order of variables also works.
+*/
 TEST_F(Car_SimInputTest, InputMixed2) {
     World w = World();
     w.loadWorld("../testInput/testCase3.xml");
@@ -124,7 +123,9 @@ TEST_F(Car_SimInputTest, InputMixed2) {
     EXPECT_EQ(w.getRoads()[0]->getCarGen()[0]->getFrequency(), 5);
 }
 
-
+/**
+Tests InputNoWorld: test if read in different order of variables also works.
+*/
 TEST_F(Car_SimInputTest, InputNoWorld) {
     World w = World();
 

@@ -96,22 +96,7 @@ TEST_F(Car_SimDomainTest, UpdateWorld) {
 
     w.updateWorld(1);
 
-    EXPECT_EQ(r1.getName(), "Middelheimlaan");
-    EXPECT_EQ(r1.getLength(), 100);
-    EXPECT_EQ(r2.getName(), "Groenenborgerlaan");
-    EXPECT_EQ(r2.getLength(), 100);
-
-    EXPECT_EQ(r1.getLights()[0]->getPosition(), 80);
-    EXPECT_EQ(r1.getLights()[1]->getPosition(), 20);
-    EXPECT_EQ(r1.getLights()[2]->getPosition(), 50);
-    EXPECT_EQ(r2.getLights()[0]->getPosition(), 60);
-    EXPECT_EQ(r1.getLights()[0]->getCycle(), 5);
-    EXPECT_EQ(r1.getLights()[1]->getCycle(), 5);
-    EXPECT_EQ(r1.getLights()[2]->getCycle(), 5);
-    EXPECT_EQ(r2.getLights()[0]->getCycle(), 5);
-
     EXPECT_EQ(r1.getCarGen()[0]->getFrequency(), 5);
     EXPECT_EQ(r2.getCarGen()[0]->getFrequency(), 5);
-
 }
 
