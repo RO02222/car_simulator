@@ -71,6 +71,14 @@ public:
 \n REQUIRE(properlyInitialized(), "Light wasn't initialized when calling setCycle");
 */
     void setCycle(double cycle);
+/**
+\n REQUIRE(properlyInitialized(), "Light wasn't initialized when calling getState");
+*/
+    color getState();
+/**
+\n REQUIRE(properlyInitialized(), "Light wasn't initialized when calling setState");
+*/
+    void setState(color state);
 /////////////
 
 

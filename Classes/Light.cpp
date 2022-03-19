@@ -96,6 +96,14 @@ void Light::setCycle(double c) {
     REQUIRE(this->properlyInitialized(), "Light wasn't initialized when calling setCycle");
     Light::cycle = c;
 }
+color Light::getState() {
+    REQUIRE(this->properlyInitialized(), "Light wasn't initialized when calling getState");
+    return cycle;
+}
+void Light::setState(color state) {
+    REQUIRE(this->properlyInitialized(), "Light wasn't initialized when calling setState");
+    Light::cycle = c;
+}
 /////////////
 
 
