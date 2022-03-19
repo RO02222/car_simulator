@@ -95,3 +95,8 @@ TEST_F(Car_SimInputTest, InputMuch) {
     EXPECT_THROW_WITH_MESSAGE(w.loadWorld("../testInput/testFail3.xml"),ParserException , "Failed to load file: invalid <BAAN> : 'missing argument' <lengte>");
 }
 
+TEST_F(Car_SimInputTest, InputTooLong) {
+    World w = World();
+
+    EXPECT_THROW_WITH_MESSAGE(w.loadWorld("../testInput/testFail4.xml"),ParserException , "Failed to load file: invalid <VOERTUIG> : '<baan> is not long enough");
+}
