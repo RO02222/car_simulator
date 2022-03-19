@@ -7,7 +7,7 @@ int main() {
 
     World* w = new World();
     try {
-        w->loadWorld("../testInput/testFail7.xml");
+        w->loadWorld("../XML/case1.xml");
     }
     catch(std::exception* e) {
         std::cerr<<e->what()<<std::endl;
