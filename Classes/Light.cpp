@@ -23,10 +23,10 @@ void Light::updateLight(double t) {
     lastCycle += t;
     if (lastCycle > cycle) {
         lastCycle -= cycle;
-        if (state == green) {
-            state = red;
+        if (getState() == green) {
+            setState(red);
         } else {
-            state = green;
+            setState(green);
         }
     }
     std::vector<Car *> carsOnRoad = getRoad()->getCars();
@@ -43,11 +43,11 @@ void Light::updateLight(double t) {
     if (firstCar == NULL) {
         return;
     }
-    if (state == green) {
+    if (getState() == green) {
         firstCar->setAction(fast);
         return;
     }
-    if (state == red) {
+    if (getState() == red) {
         if ((firstCar->getDistance() + gStopDistance) > getPosition()) {
             firstCar->setAction(stop);
             return;
@@ -100,16 +100,11 @@ color Light::getState() {
     REQUIRE(this->properlyInitialized(), "Light wasn't initialized when calling getState");
     return state;
 }
-void Light::setState(color s) {
+void Light::setState(color state) {
     REQUIRE(this->properlyInitialized(), "Light wasn't initialized when calling setState");
-    Light::state = s;
-}
-
-color Light::getState() const {
-    return state;
+    Light::state = state;
 }
 /////////////
-
 
 
 
@@ -117,5 +112,4 @@ color Light::getState() const {
 bool Light::properlyInitialized () const{
     return _initCheck == this;
 }
-
 //////////////
