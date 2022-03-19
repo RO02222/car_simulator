@@ -101,6 +101,10 @@ void World::loadRoad(TiXmlElement* elem1) {
     std::string name = "";
     std::string length = "";
     for (TiXmlElement *elem2 = elem1->FirstChildElement(); elem2 != 0; elem2 = elem2->NextSiblingElement()) {
+        if (elem2->GetText() == NULL){
+            std::string error = "Failed to load file: <" + (std::string)elem2->Value()  + "> has no value";
+            throw (ParserException(error.c_str()));
+        }
         if ((std::string) elem2->Value() == "naam") {
             name = elem2->GetText();
         } else {
@@ -108,7 +112,6 @@ void World::loadRoad(TiXmlElement* elem1) {
                 length = elem2->GetText();
             } else {
                 std::string error = "Failed to load file: <BAAN> : <" + (std::string) elem2->Value() + "> is not valid";
-
                 throw (ParserException(error.c_str()));
             }
         }
@@ -134,6 +137,10 @@ void World::loadLight(TiXmlElement* elem1) {
     std::string position = "";
     std::string cycle = "";
     for (TiXmlElement *elem2 = elem1->FirstChildElement(); elem2 != 0; elem2 = elem2->NextSiblingElement()) {
+        if (elem2->GetText() == NULL){
+            std::string error = "Failed to load file: <" + (std::string)elem2->Value()  + "> has no value";
+            throw (ParserException(error.c_str()));
+        }
         if ((std::string) elem2->Value() == "baan") {
             roadName = elem2->GetText();
         } else {
@@ -181,6 +188,10 @@ void World::loadCar(TiXmlElement *elem1) {
     std::string roadName = "";
     std::string position = "";
     for (TiXmlElement *elem2 = elem1->FirstChildElement(); elem2 != 0; elem2 = elem2->NextSiblingElement()) {
+        if (elem2->GetText() == NULL){
+            std::string error = "Failed to load file: <" + (std::string)elem2->Value()  + "> has no value";
+            throw (ParserException(error.c_str()));
+        }
         if ((std::string) elem2->Value() == "baan") {
             roadName = elem2->GetText();
         } else {
@@ -219,6 +230,10 @@ void World::loadCarGen(TiXmlElement *elem1) {
     std::string roadName = "";
     std::string frequency = "";
     for (TiXmlElement *elem2 = elem1->FirstChildElement(); elem2 != 0; elem2 = elem2->NextSiblingElement()) {
+        if (elem2->GetText() == NULL){
+            std::string error = "Failed to load file: <" + (std::string)elem2->Value()  + "> has no value";
+            throw (ParserException(error.c_str()));
+        }
         if ((std::string) elem2->Value() == "baan") {
             roadName = elem2->GetText();
         } else {
