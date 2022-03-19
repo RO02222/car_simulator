@@ -23,10 +23,10 @@ void Light::updateLight(double t) {
     lastCycle += t;
     if (lastCycle > cycle) {
         lastCycle -= cycle;
-        if (state == green) {
-            state = red;
+        if (getState() == green) {
+            setState(red);
         } else {
-            state = green;
+            setState(green);
         }
     }
     std::vector<Car *> carsOnRoad = getRoad()->getCars();
@@ -43,11 +43,11 @@ void Light::updateLight(double t) {
     if (firstCar == NULL) {
         return;
     }
-    if (state == green) {
+    if (getState() == green) {
         firstCar->setAction(fast);
         return;
     }
-    if (state == red) {
+    if (getState() == red) {
         if ((firstCar->getDistance() + gStopDistance) > getPosition()) {
             firstCar->setAction(stop);
             return;
