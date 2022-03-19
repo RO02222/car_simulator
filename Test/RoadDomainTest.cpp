@@ -41,7 +41,7 @@ protected:
 };
 
 /**
-Tests if every object is initialised right.
+Tests Initialiser: test if every object is initialised right.
 */
 TEST_F(RoadDomainTest, Initialiser) {
     Road r1 = Road("Middelheimlaan", 100);
@@ -52,7 +52,7 @@ TEST_F(RoadDomainTest, Initialiser) {
 
 
 /**
-Tests if every object is initialised right.
+Tests InitialiserEdge: test if every object is initialised right with some edge cases or extreme numbers.
 */
 TEST_F(RoadDomainTest, InitialiserEdge) {
     Road r1 = Road("Middelheimlaan", 1000000000000);
@@ -65,6 +65,9 @@ TEST_F(RoadDomainTest, InitialiserEdge) {
     EXPECT_EQ(r3.getLength(), 1);
 }
 
+/**
+Tests addLight: test if function addLight works properly.
+*/
 TEST_F(RoadDomainTest, addLight){
     Road r1 = Road("Middelheimlaan", 100);
 
@@ -77,6 +80,9 @@ TEST_F(RoadDomainTest, addLight){
     EXPECT_EQ(r1.getLights()[1]->getCycle(), 2);
 }
 
+/**
+Tests addCar: test if function addCar works properly.
+*/
 TEST_F(RoadDomainTest, addCar){
     Road r1 = Road("Middelheimlaan", 100);
 
@@ -87,6 +93,9 @@ TEST_F(RoadDomainTest, addCar){
     EXPECT_EQ(r1.getCars()[1]->getDistance(), 50);
 }
 
+/**
+Tests addCarGen: test if function addCarGen works properly.
+*/
 TEST_F(RoadDomainTest, addCarGen){
     Road r1 = Road("Middelheimlaan", 100);
 

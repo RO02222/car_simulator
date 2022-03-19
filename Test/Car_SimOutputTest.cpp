@@ -36,6 +36,7 @@ protected:
     // You should make the members protected s.t. they can be
     // accessed from sub-classes.
 };
+
 // Tests the compare files
 TEST_F(Car_SimOutputTest, FileCompare) {
     ASSERT_TRUE(DirectoryExists("../testOutput"));
@@ -98,6 +99,9 @@ TEST_F(Car_SimOutputTest, FileCompare) {
             FileCompare("../testOutput/nonexisting.txt", "../testOutput/file1.txt"));
 }
 
+/**
+Tests FileOutputHappyDay: test if the output is right in a simple case.
+*/
 TEST_F(Car_SimOutputTest, FileOutputHappyDay) {
     World* w = new World();
     try {
@@ -120,7 +124,9 @@ TEST_F(Car_SimOutputTest, FileOutputHappyDay) {
 }
 
 
-
+/**
+Tests FileExtreme: test if the output is right for many updates of the world.
+*/
 TEST_F(Car_SimOutputTest, FileExtreme) {
     World* w = new World();
     try {
@@ -142,6 +148,9 @@ TEST_F(Car_SimOutputTest, FileExtreme) {
     EXPECT_TRUE(FileCompare("../Car_sim.txt", "../testOutput/testOutput2.txt"));
 }
 
+/**
+Tests FileSimulation: test if the output is right for many updates of the world, with the given simulation update time.
+*/
 TEST_F(Car_SimOutputTest, FileSimulation) {
     World* w = new World();
     try {

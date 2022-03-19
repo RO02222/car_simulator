@@ -21,6 +21,11 @@ Light::Light(double position, double c, Road* r): road(r), position(position), c
     ENSURE(this->properlyInitialized(), "constructor must end in properlyInitialized state");
 }
 
+/*
+ *
+ * @param t:
+ * @return:
+ */
 void Light::updateLight(double t) {
     REQUIRE(this->properlyInitialized(), "Light wasn't initialized when calling updateLight");
     lastCycle += t;
@@ -75,43 +80,90 @@ void Light::updateLight(double t) {
 
 
 /////////////
+/*
+ *
+ * @return:
+ */
 Road* Light::getRoad() {
     REQUIRE(this->properlyInitialized(), "Light wasn't initialized when calling getRoad");
     return road;
 }
+/*
+ *
+ * @param r:
+ * @return:
+ */
+
 void Light::setRoad(Road *r) {
     REQUIRE(this->properlyInitialized(), "Light wasn't initialized when calling setRoad");
     Light::road = r;
 }
+
+/*
+ *
+ * @return:
+ */
 double Light::getPosition() {
     REQUIRE(this->properlyInitialized(), "Light wasn't initialized when calling getPosition");
     return position;
 }
+
+/*
+ *
+ * @param p:
+ * @return:
+ */
 void Light::setPosition(double p) {
     REQUIRE(this->properlyInitialized(), "Light wasn't initialized when calling setPosition");
     Light::position = p;
 }
+
+/*
+ *
+ * @return:
+ */
 double Light::getCycle() {
     REQUIRE(this->properlyInitialized(), "Light wasn't initialized when calling getCycle");
     return cycle;
 }
+
+/*
+ *
+ * @param c:
+ * @return:
+ */
 void Light::setCycle(double c) {
     REQUIRE(this->properlyInitialized(), "Light wasn't initialized when calling setCycle");
     Light::cycle = c;
 }
+
+/*
+ *
+ * @return:
+ */
 color Light::getState() {
     REQUIRE(this->properlyInitialized(), "Light wasn't initialized when calling getState");
     return state;
 }
-void Light::setState(color state) {
+
+/*
+ *
+ * @param s:
+ * @return:
+ */
+void Light::setState(color s) {
     REQUIRE(this->properlyInitialized(), "Light wasn't initialized when calling setState");
-    Light::state = state;
+    Light::state = s;
 }
 /////////////
 
 
 
 //////////////
+/*
+ *
+ * @return:
+ */
 bool Light::properlyInitialized () const{
     return _initCheck == this;
 }

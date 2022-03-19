@@ -85,7 +85,7 @@ TEST_F(Car_SimDomainTest, Initialiser) {
 }
 
 /**
-Tests update simulation.
+Tests update simulated world and see if the new situation is right (here just the lights).
 */
 TEST_F(Car_SimDomainTest, UpdateWorld) {
     World* w = new World();

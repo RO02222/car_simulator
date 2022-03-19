@@ -41,7 +41,7 @@ protected:
 };
 
 /**
-Tests if every object is initialised right.
+Tests Initialiser: test if every object is initialised right.
 */
 TEST_F(CarDomainTest, Initialiser) {
     Road r1 = Road("Middelheimlaan", 100);

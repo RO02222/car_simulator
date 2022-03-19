@@ -22,7 +22,11 @@ Car::Car(double distance, Road* road) : road(road), distance(distance) {
 }
 
 
-
+/*
+ *
+ * @param t:
+ * @return:
+ */
 void Car::updateCar(double t) {
     REQUIRE(this->properlyInitialized(), "Car wasn't initialized when calling updateCar");
     if (getAction() == fast) {
@@ -75,50 +79,115 @@ void Car::updateCar(double t) {
 
 
 //////////////
+/*
+ *
+ * @return:
+ */
 Road *Car::getRoad() const {
     REQUIRE(this->properlyInitialized(), "Car wasn't initialized when calling getRoad");
     return road;
 }
+
+/*
+ *
+ * @param r:
+ * @return:
+ */
 void Car::setRoad(Road *r) {
     REQUIRE(this->properlyInitialized(), "Car wasn't initialized when calling setRoad");
     Car::road = r;
 }
+
+/*
+ *
+ * @return:
+ */
 double Car::getDistance() {
     REQUIRE(this->properlyInitialized(), "Car wasn't initialized when calling getDistance");
     return distance;
 }
+
+/*
+ *
+ * @param d:
+ * @return:
+ */
 void Car::setDistance(double d) {
     REQUIRE(this->properlyInitialized(), "Car wasn't initialized when calling setDistance");
     Car::distance = d;
 }
+
+/*
+ *
+ * @return:
+ */
 double Car::getSpeed() {
     REQUIRE(this->properlyInitialized(), "Car wasn't initialized when calling getSpeed");
     return speed;
 }
+
+/*
+ *
+ * @param s:
+ * @return:
+ */
 void Car::setSpeed(double s) {
     REQUIRE(this->properlyInitialized(), "Car wasn't initialized when calling setSpeed");
     Car::speed = s;
 }
+
+/*
+ *
+ * @return:
+ */
 double Car::getMaxSpeed() {
     REQUIRE(this->properlyInitialized(), "Car wasn't initialized when calling getMaxSpeed");
     return maxSpeed;
 }
+
+/*
+ *
+ * @param s:
+ * @return:
+ */
 void Car::setMaxSpeed(double s) {
     REQUIRE(this->properlyInitialized(), "Car wasn't initialized when calling setMaxSpeed");
     Car::maxSpeed = s;
 }
+
+/*
+ *
+ * @return:
+ */
 double Car::getAcceleration() {
     REQUIRE(this->properlyInitialized(), "Car wasn't initialized when calling getAcceleration");
     return acceleration;
 }
+
+/*
+ *
+ * @param a:
+ * @return:
+ */
 void Car::setAcceleration(double a) {
     REQUIRE(this->properlyInitialized(), "Car wasn't initialized when calling setAcceleration");
     Car::acceleration = a;
 }
+
+/*
+ *
+ * @return:
+ */
 Action Car::getAction() {
     REQUIRE(this->properlyInitialized(), "Car wasn't initialized when calling getAction");
     return action;
 }
+
+/*
+ *
+ * @param a:
+ * @return:
+ */
 void Car::setAction(Action a) {
     REQUIRE(this->properlyInitialized(), "Car wasn't initialized when calling setAction");
     Car::action = a;
@@ -128,6 +197,10 @@ void Car::setAction(Action a) {
 
 
 //////////////
+/*
+ *
+ * @return:
+ */
 bool Car::properlyInitialized() const{
     return _initCheck == this;
 }

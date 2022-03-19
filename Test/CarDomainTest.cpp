@@ -46,7 +46,7 @@ protected:
 };
 
 /**
-Tests if every object is initialised right.
+Tests Initialiser: test if every object is initialised right.
 */
 TEST_F(CarDomainTest, Initialiser) {
     Road r1 = Road("Middelheimlaan", 100);
@@ -60,7 +60,7 @@ TEST_F(CarDomainTest, Initialiser) {
 
 
 /**
-Tests if every object is initialised right.
+Tests InitialiserEdge: test if every object is initialised right with some edge cases.
 */
 TEST_F(CarDomainTest, InitialiserEdge) {
     Road r1 = Road("Middelheimlaan", 100);

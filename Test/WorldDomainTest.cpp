@@ -42,7 +42,7 @@ protected:
 };
 
 /**
-Tests if every object is initialised right.
+Tests Initialiser: test if every object is initialised right.
 */
 TEST_F(WorldDomainTest, Initialiser) {
     World w = World();

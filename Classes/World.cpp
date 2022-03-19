@@ -26,7 +26,11 @@ World::World() {
     time = 0;
 }
 
-
+/*
+ *
+ * @param onstream:
+ * @return:
+ */
 void World::simulateWorld(std::ostream & onStream){
     REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling simulateWorld");
     onStream << "Tijd: " <<time<<std::endl;
@@ -45,6 +49,11 @@ void World::simulateWorld(std::ostream & onStream){
     }
 }
 
+/*
+ *
+ * @param t:
+ * @return:
+ */
 void World::updateWorld(double t) {
     REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling updateWorld");
     time += t;
@@ -57,6 +66,11 @@ void World::updateWorld(double t) {
 
 
 ///////////////////////
+/*
+ *
+ * @param worldName:
+ * @return:
+ */
 void World::loadWorld(const char *worldName) {
     REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling loadWorld");
     TiXmlDocument doc;
@@ -97,6 +111,11 @@ void World::loadWorld(const char *worldName) {
     }
 }
 
+/*
+ *
+ * @param elem1:
+ * @return:
+ */
 void World::loadRoad(TiXmlElement* elem1) {
     REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling loadRoad");
     std::string name = "";
@@ -132,6 +151,11 @@ void World::loadRoad(TiXmlElement* elem1) {
     roads.push_back(new Road(name, stringInt(length)));
 }
 
+/*
+ *
+ * @param elem1:
+ * @return:
+ */
 void World::loadLight(TiXmlElement* elem1) {
     REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling loadLight");
     std::string roadName = "";
@@ -184,6 +208,11 @@ void World::loadLight(TiXmlElement* elem1) {
     road->addLight(stringInt(position),stringInt(cycle));
 }
 
+/*
+ *
+ * @param elem1:
+ * @return:
+ */
 void World::loadCar(TiXmlElement *elem1) {
     REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling loadCar");
     std::string roadName = "";
@@ -226,6 +255,11 @@ void World::loadCar(TiXmlElement *elem1) {
     road->addCar(stringInt(position));
 }
 
+/*
+ *
+ * @param elem1:
+ * @return:
+ */
 void World::loadCarGen(TiXmlElement *elem1) {
     REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling loadCarGen");
     std::string roadName = "";
@@ -272,21 +306,39 @@ void World::loadCarGen(TiXmlElement *elem1) {
 
 
 //////////////
+/*
+ *
+ * @return:
+ */
 const std::vector<Road *> &World::getRoads() {
     REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling getRoads");
     return roads;
 }
 
+/*
+ *
+ * @param banen:
+ * @return:
+ */
 void World::setRoad(const std::vector<Road *> &banen) {
     REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling setRoad");
     World::roads = banen;
 }
 
+/*
+ *
+ * @return:
+ */
 double World::getTime() const {
     REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling getTime");
     return time;
 }
 
+/*
+ *
+ * @param t:
+ * @return:
+ */
 void World::setTime(double t) {
     REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling setTime");
     World::time = t;
@@ -296,6 +348,10 @@ void World::setTime(double t) {
 
 
 //////////////
+/*
+ *
+ * @return:
+ */
 bool World::properlyInitialized () const{
     return _initCheck == this;
 }

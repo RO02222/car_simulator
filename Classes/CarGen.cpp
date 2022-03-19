@@ -20,7 +20,11 @@ CarGen::CarGen(double f,Road* road) : road(road), frequency(f) {
     ENSURE(properlyInitialized(),"constructor must end in properlyInitialized state");
 }
 
-
+/*
+ *
+ * @param t:
+ * @return:
+ */
 void CarGen::updateCarGen(double t) {
     REQUIRE(this->properlyInitialized(), "Light wasn't initialized when calling updateCarGen");
     lastCycle += t;
@@ -46,26 +50,58 @@ void CarGen::updateCarGen(double t) {
 
 
 /////////////
+/*
+ *
+ * @return:
+ */
 Road *CarGen::getRoad() {
     REQUIRE(this->properlyInitialized(), "CarGen wasn't initialized when calling getRoad");
     return road;
 }
+
+/*
+ *
+ * @param r:
+ * @return:
+ */
 void CarGen::setRoad(Road *r) {
     REQUIRE(this->properlyInitialized(), "CarGen wasn't initialized when calling setRoad");
     CarGen::road = r;
 }
+
+/*
+ *
+ * @return:
+ */
 double CarGen::getFrequency() {
     REQUIRE(this->properlyInitialized(), "CarGen wasn't initialized when calling getFrequency");
     return frequency;
 }
+
+/*
+ *
+ * @param f:
+ * @return:
+ */
 void CarGen::setFrequency(double f) {
     REQUIRE(this->properlyInitialized(), "CarGen wasn't initialized when calling setFrequency");
     CarGen::frequency = f;
 }
+
+/*
+ *
+ * @return:
+ */
 double CarGen::getCycle() {
     REQUIRE(this->properlyInitialized(), "CarGen wasn't initialized when calling getCycle");
     return lastCycle;
 }
+
+/*
+ *
+ * @param c:
+ * @return:
+ */
 void CarGen::setCycle(double c) {
     REQUIRE(this->properlyInitialized(), "CarGen wasn't initialized when calling setCycle");
     CarGen::lastCycle = c;
@@ -75,6 +111,10 @@ void CarGen::setCycle(double c) {
 
 
 //////////////
+/*
+ *
+ * @return:
+ */
 bool CarGen::properlyInitialized() const{
     return _initCheck == this;
 }

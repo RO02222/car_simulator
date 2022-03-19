@@ -73,7 +73,7 @@ TEST_F(Car_SimInputTest, InputHappyDay) {
 }
 
 /**
-Tests InputMixed: test if read in different order of Classes also works.
+Tests InputMixed: test if xml read in different order of Classes also works.
 */
 TEST_F(Car_SimInputTest, InputMixed) {
     World w = World();
@@ -97,7 +97,7 @@ TEST_F(Car_SimInputTest, InputMixed) {
 }
 
 /**
-Tests InputMixed2: test if read in different order of variables also works.
+Tests InputMixed2: test if xml read in different order of variables also works.
 */
 TEST_F(Car_SimInputTest, InputMixed2) {
     World w = World();
@@ -121,55 +121,83 @@ TEST_F(Car_SimInputTest, InputMixed2) {
 }
 
 /**
-Tests InputNoWorld: test if read in different order of variables also works.
+Tests InputNoWorld: test if xml read without a world part works.
 */
 TEST_F(Car_SimInputTest, InputNoWorld) {
     World w = World();
 
-    EXPECT_THROW_WITH_MESSAGE(w.loadWorld("../testInput/testFail1.xml"),ParserException , "Failed to load file: <World> ... </World>");
+    EXPECT_THROW_WITH_MESSAGE(w.loadWorld("../testInput/testFail1.xml"),ParserException ,
+                              "Failed to load file: <World> ... </World>");
 }
 
+/**
+Tests InputNoRoot: test if xml read without a root works.
+*/
 TEST_F(Car_SimInputTest, InputNoRoot) {
     World w = World();
 
-    EXPECT_THROW_WITH_MESSAGE(w.loadWorld("../testInput/testFail2.xml"),ParserException , "Failed to load file: No root element.");
+    EXPECT_THROW_WITH_MESSAGE(w.loadWorld("../testInput/testFail2.xml"),ParserException ,
+                              "Failed to load file: No root element.");
 }
 
+/**
+Tests InputNoLength: test if xml read without a length in baan works.
+*/
 TEST_F(Car_SimInputTest, InputNoLength) {
     World w = World();
 
-    EXPECT_THROW_WITH_MESSAGE(w.loadWorld("../testInput/testFail3.xml"),ParserException , "Failed to load file: invalid <BAAN> : 'missing argument' <lengte>");
+    EXPECT_THROW_WITH_MESSAGE(w.loadWorld("../testInput/testFail3.xml"),ParserException ,
+                              "Failed to load file: invalid <BAAN> : 'missing argument' <lengte>");
 }
 
+/**
+Tests InputLightToFar: test if xml read works when the position of the light is not on the road.
+*/
 TEST_F(Car_SimInputTest, InputLightToFar) {
     World w = World();
 
-    EXPECT_THROW_WITH_MESSAGE(w.loadWorld("../testInput/testFail4.xml"),ParserException , "Failed to load file: invalid <VOERTUIG> : '<baan> is not long enough");
+    EXPECT_THROW_WITH_MESSAGE(w.loadWorld("../testInput/testFail4.xml"),ParserException ,
+                              "Failed to load file: invalid <VOERTUIG> : '<baan> is not long enough");
 }
 
-
+/**
+Tests InputAlreadyExist: test if xml read works when the name of the road already exists.
+*/
 TEST_F(Car_SimInputTest, InputAlreadyExist) {
     World w = World();
 
-    EXPECT_THROW_WITH_MESSAGE(w.loadWorld("../testInput/testFail5.xml"),ParserException , "Failed to add road: road already exist");
+    EXPECT_THROW_WITH_MESSAGE(w.loadWorld("../testInput/testFail5.xml"),ParserException ,
+                              "Failed to add road: road already exist");
 }
 
+/**
+Tests InputNoPosition: test if xml read works when there is no position given for the light.
+*/
 TEST_F(Car_SimInputTest, InputNoPosition) {
     World w = World();
 
-    EXPECT_THROW_WITH_MESSAGE(w.loadWorld("../testInput/testFail6.xml"),ParserException , "Failed to load file: invalid <VERKEERSLICHT> : 'missing argument' <positie>");
+    EXPECT_THROW_WITH_MESSAGE(w.loadWorld("../testInput/testFail6.xml"),ParserException ,
+                              "Failed to load file: invalid <VERKEERSLICHT> : 'missing argument' <positie>");
 }
 
-TEST_F(Car_SimInputTest, InputNoGenerator) {
+/**
+Tests InputNoBaan: test if xml read works when there is no baan given for the CarGenerator.
+*/
+TEST_F(Car_SimInputTest, InputNoBaan) {
     World w = World();
 
-    EXPECT_THROW_WITH_MESSAGE(w.loadWorld("../testInput/testFail7.xml"),ParserException , "Failed to load file: invalid <VOERTUIGGENERATOR> : 'missing argument' <baan>");
+    EXPECT_THROW_WITH_MESSAGE(w.loadWorld("../testInput/testFail7.xml"),ParserException ,
+                              "Failed to load file: invalid <VOERTUIGGENERATOR> : 'missing argument' <baan>");
 }
 
+/**
+Tests InputCarToFar: test if xml read works when the position of the car is not on the road.
+*/
 TEST_F(Car_SimInputTest, InputCarToFar) {
     World w = World();
 
-    EXPECT_THROW_WITH_MESSAGE(w.loadWorld("../testInput/testFail8.xml"),ParserException , "Failed to load file: invalid <VOERTUIG> : '<baan> is not long enough");
+    EXPECT_THROW_WITH_MESSAGE(w.loadWorld("../testInput/testFail8.xml"),ParserException ,
+                              "Failed to load file: invalid <VOERTUIG> : '<baan> is not long enough");
 }
 
 
