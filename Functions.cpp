@@ -1,6 +1,10 @@
-//
-// Created by robbe on 17-3-2022.
-//
+//============================================================================
+// Name        : Car_SimDomainTest.cpp
+// Date        : 19/03/2022
+// Authors     : Simon Olivier & Robbe Teughels
+// Version     : 1
+//============================================================================
+
 
 #include "Functions.h"
 #include <iostream>

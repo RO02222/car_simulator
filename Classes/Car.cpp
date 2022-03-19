@@ -1,8 +1,15 @@
+//============================================================================
+// Name        : Car_SimDomainTest.cpp
+// Date        : 19/03/2022
+// Authors     : Simon Olivier & Robbe Teughels
+// Version     : 1
+//============================================================================
+
+
 #include "Car.h"
 #include "../Basic_Values.h"
 #include "../DesignByContract.h"
 #include "Road.h"
-
 #include <cmath>
 
 Car::Car(double distance, Road* road) : road(road), distance(distance) {

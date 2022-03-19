@@ -1,16 +1,17 @@
-//
-// Created by robbe on 3-3-2022.
-//
+//============================================================================
+// Name        : Car_SimDomainTest.cpp
+// Date        : 19/03/2022
+// Authors     : Simon Olivier & Robbe Teughels
+// Version     : 1
+//============================================================================
+
 #include <iostream>
 #include <exception>
 #include <vector>
 #include <iterator>
 #include <cstring>
-
-
 #include "../Exception/ParserException.h"
 #include "../DesignByContract.h"
-
 #include "World.h"
 #include "Road.h"
 #include "Light.h"
