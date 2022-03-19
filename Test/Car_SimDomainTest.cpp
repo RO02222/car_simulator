@@ -68,6 +68,10 @@ TEST_F(Car_SimDomainTest, Initialiser) {
     EXPECT_EQ(r1.getLights()[1]->getPosition(), 20);
     EXPECT_EQ(r1.getLights()[2]->getPosition(), 50);
     EXPECT_EQ(r2.getLights()[0]->getPosition(), 60);
+    EXPECT_EQ(r1.getLights()[0]->getState(), red);
+    EXPECT_EQ(r1.getLights()[1]->getState(), red);
+    EXPECT_EQ(r1.getLights()[2]->getState(), red);
+    EXPECT_EQ(r2.getLights()[0]->getState(), red);
     EXPECT_EQ(r1.getLights()[0]->getCycle(), 5);
     EXPECT_EQ(r1.getLights()[1]->getCycle(), 5);
     EXPECT_EQ(r1.getLights()[2]->getCycle(), 5);
@@ -96,7 +100,12 @@ TEST_F(Car_SimDomainTest, UpdateWorld) {
 
     w.updateWorld(1);
 
-    EXPECT_EQ(r1.getCarGen()[0]->getFrequency(), 5);
-    EXPECT_EQ(r2.getCarGen()[0]->getFrequency(), 5);
+    EXPECT_EQ(r1.getLights()[0]->getState(), red);
+    EXPECT_EQ(r1.getLights()[1]->getState(), red);
+    EXPECT_EQ(r1.getLights()[2]->getState(), red);
+    EXPECT_EQ(r2.getLights()[0]->getState(), red);
+
+
+
 }
 

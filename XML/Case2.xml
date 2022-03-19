@@ -1,0 +1,61 @@
+<World>
+    <BAAN>
+        <naam>Middelheimlaan</naam>
+        <lengte>100</lengte>
+    </BAAN>
+
+    <BAAN>
+        <naam>Groenenborgerlaan</naam>
+        <lengte>100</lengte>
+    </BAAN>
+
+    <VERKEERSLICHT>
+        <baan>Middelheimlaan</baan>
+        <positie>80</positie>
+        <cyclus>5</cyclus>
+    </VERKEERSLICHT>
+
+    <VERKEERSLICHT>
+        <baan>Middelheimlaan</baan>
+        <positie>20</positie>
+        <cyclus>5</cyclus>
+    </VERKEERSLICHT>
+
+    <VERKEERSLICHT>
+        <baan>Middelheimlaan</baan>
+        <positie>50</positie>
+        <cyclus>5</cyclus>
+    </VERKEERSLICHT>
+
+    <VERKEERSLICHT>
+        <baan>Groenenborgerlaan</baan>
+        <positie>60</positie>
+        <cyclus>5</cyclus>
+    </VERKEERSLICHT>
+
+    <VOERTUIG>
+        <baan>Middelheimlaan</baan>
+        <positie>25</positie>
+    </VOERTUIG>
+
+    <VOERTUIG>
+        <baan>Middelheimlaan</baan>
+        <positie>60</positie>
+    </VOERTUIG>
+
+    <VOERTUIG>
+        <baan>Groenenborgerlaan</baan>
+        <positie>90</positie>
+    </VOERTUIG>
+
+    <VOERTUIGGENERATOR>
+        <baan>Middelheimlaan</baan>
+        <frequentie>5</frequentie>
+    </VOERTUIGGENERATOR>
+
+    <VOERTUIGGENERATOR>
+        <baan>Groenenborgerlaan</baan>
+        <frequentie>5</frequentie>
+    </VOERTUIGGENERATOR>
+
+</World>
