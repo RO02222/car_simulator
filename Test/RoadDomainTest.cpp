@@ -1,26 +1,14 @@
-//
-// Created by simon on 17.03.22.
-//
+//============================================================================
+// Name        : Car_SimDomainTest.cpp
+// Date        : 19/03/2022
+// Authors     : Simon Olivier & Robbe Teughels
+// Version     : 1
+//============================================================================
 
-//
-// Created by simon on 17.03.22.
-//
-
-//
-// Created by simon on 17.03.22.
-//
 #include <iostream>
-#include <fstream>
-#include <sys/stat.h>
 #include "gtest/gtest.h"
 
 using namespace std;
-
-#include "../Classes/World.h"
-#include "../Classes/Car.h"
-#include "../Classes/CarGen.h"
-#include "../Classes/Light.h"
-#include "../Classes/Road.h"
 
 class RoadDomainTest: public ::testing::Test {
 protected:

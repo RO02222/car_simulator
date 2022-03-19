@@ -1,13 +1,15 @@
-//
-// Created by simon on 17.03.22.
-//
+//============================================================================
+// Name        : Car_SimDomainTest.cpp
+// Date        : 19/03/2022
+// Authors     : Simon Olivier & Robbe Teughels
+// Version     : 1
+//============================================================================
+
 
 #include <iostream>
 #include <fstream>
-#include <sys/stat.h>
 #include "gtest/gtest.h"
-#include "../Exception/ParserException.h"
-
+#include "../Car_SimUtils.h"
 
 
 using namespace std;
@@ -117,6 +119,8 @@ TEST_F(Car_SimOutputTest, FileOutputHappyDay) {
     EXPECT_TRUE(FileCompare("../Car_sim.txt", "../testOutput/testOutput1.txt"));
 }
 
+
+
 TEST_F(Car_SimOutputTest, FileExtreme) {
     World* w = new World();
     try {
@@ -136,4 +140,25 @@ TEST_F(Car_SimOutputTest, FileExtreme) {
     delete w;
 
     EXPECT_TRUE(FileCompare("../Car_sim.txt", "../testOutput/testOutput2.txt"));
+}
+
+TEST_F(Car_SimOutputTest, FileSimulation) {
+    World* w = new World();
+    try {
+        w->loadWorld("../XML/case2.xml");
+    }
+    catch(std::exception* e) {
+        std::cerr<<e->what()<<std::endl;
+    }
+    std::ofstream myFile;
+    myFile.open("../Car_sim.txt");
+    w->simulateWorld(myFile);
+    for (unsigned int i =0; i < 400; i++) {
+        w->updateWorld(0.0166);
+        w->simulateWorld(myFile);
+    }
+    myFile.close();
+    delete w;
+
+    EXPECT_TRUE(FileCompare("../Car_sim.txt", "../testOutput/testOutput3.txt"));
 }

@@ -1,16 +1,18 @@
-//
-// Created by simon on 17.03.22.
-//
+//============================================================================
+// Name        : Car_SimDomainTest.cpp
+// Date        : 19/03/2022
+// Authors     : Simon Olivier & Robbe Teughels
+// Version     : 1
+//============================================================================
 
 #include <iostream>
 #include <fstream>
-#include <sys/stat.h>
 #include "gtest/gtest.h"
 #include "../Exception/ParserException.h"
 
 
-
 using namespace std;
+
 //source: https://github.com/google/googletest/issues/952
 #define EXPECT_THROW_WITH_MESSAGE(stmt, etype, whatstring) EXPECT_THROW( \
         try { \
@@ -21,12 +23,7 @@ using namespace std;
         } \
     , etype)
 
-#include "../Classes/World.h"
-#include "../Classes/Car.h"
-#include "../Classes/CarGen.h"
-#include "../Classes/Light.h"
-#include "../Classes/Road.h"
-#include "../Car_SimUtils.h"
+
 
 class Car_SimInputTest: public ::testing::Test {
 protected:
@@ -155,13 +152,6 @@ TEST_F(Car_SimInputTest, InputAlreadyExist) {
     World w = World();
 
     EXPECT_THROW_WITH_MESSAGE(w.loadWorld("../testInput/testFail5.xml"),ParserException , "Failed to add road: road already exist");
-}
-
-TEST_F(Car_SimInputTest, InputNotInitialized) {
-    World* w = new World();
-    delete w;
-
-    EXPECT_DEATH(w->loadWorld("../testInput/testCase1.xml"), "World wasn't initialized when calling loadWorld");
 }
 
 TEST_F(Car_SimInputTest, InputNoPosition) {

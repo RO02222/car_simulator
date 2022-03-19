@@ -1,7 +1,3 @@
-//
-// Created by simon on 18.03.22.
-//
-
 #include "Car_SimUtils.h"
 //============================================================================
 // Name        : TicTacToeUtils.cpp

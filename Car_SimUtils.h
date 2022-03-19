@@ -1,6 +1,10 @@
-//
-// Created by simon on 18.03.22.
-//
+//============================================================================
+// Name        : TicTacToeUtils.cpp
+// Author      : Serge Demeyer
+// Version     :
+// Copyright   : Project Software Engineering - BA1 Informatica - Serge Demeyer - University of Antwerp
+// Description : TicTactToe in C++, Ansi-style
+//============================================================================
 
 #ifndef CAR_SIMULATION_CAR_SIMUTILS_H
 #define CAR_SIMULATION_CAR_SIMUTILS_H

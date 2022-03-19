@@ -16,7 +16,7 @@ int main() {
     myFile.open("../Car_sim.txt");
     w->simulateWorld(myFile);
     for (unsigned int i =0; i < 400; i++) {
-        w->updateWorld(1);
+        w->updateWorld(0.0166);
         w->simulateWorld(myFile);
     }
     myFile.close();
