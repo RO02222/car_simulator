@@ -134,7 +134,6 @@ TEST_F(Car_SimDomainTest, UpdateWorld) {
     EXPECT_EQ(r1->getLights()[2]->getState(), green);
     EXPECT_EQ(r1->getLights()[3]->getState(), green);
 
-    delete r1;
     delete w;
 }
 
