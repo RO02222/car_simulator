@@ -22,12 +22,18 @@ private:
 
 public:
 /**
+ * create a Car
+ * @param road: road where the Car is positioned
+ * @return: None
 \n ENSURE(properlyInitialized(), "constructor must end in properlyInitialized state");
 */
     Car (double distance,Road* road);
 
 
 /**
+ * Update the Car his position, speed and acceleration
+ * @param t: time since last update
+ * @return: None
 \n REQUIRE(properlyInitialized(), "Car wasn't initialized when calling setAcceleration");
 */
     void updateCar(double t);
@@ -44,57 +50,87 @@ public:
 //////////////
 public:
 /**
+ * get the road where the Car is positioned
+ * @return: (Road*), the road where the Car is positioned
 \n REQUIRE(properlyInitialized(), "Car wasn't initialized when calling getRoad");
 */
     Road *getRoad() const;
 
 protected:
 /**
+ * change the road of the CarGen
+ * @param road: the new road of the CarGen
+ * @return: None
 \n REQUIRE(properlyInitialized(), "Car wasn't initialized when calling setRoad");
 */
     void setRoad(Road *r);
 
 public:
 /**
+ * get the distance of the car
+ * @return: (double), the distance of the car
 \n REQUIRE(properlyInitialized(), "Car wasn't initialized when calling getDistance");
 */
     double getDistance();
 /**
+ * change the distance of the car
+ * @param distance: the new distance of the car
+ * @return: None
 \n REQUIRE(properlyInitialized(), "Car wasn't initialized when calling setDistance");
 */
     void setDistance(double distance);
 /**
+ * get the speed of the car
+ * @return: (double), the speed of the car
 \n REQUIRE(properlyInitialized(), "Car wasn't initialized when calling getSpeed");
 */
     double getSpeed();
 /**
+ * change the speed of the car
+ * @param speed: the new speed of the car
+ * @return: None
 \n REQUIRE(properlyInitialized(), "Car wasn't initialized when calling setSpeed");
 */
     void setSpeed(double speed);
 /**
+ * get the maxSpeed of the car
+ * @return: (double), the maxSpeed of the car
 \n REQUIRE(properlyInitialized(), "Car wasn't initialized when calling getMaxSpeed");
 */
     double getMaxSpeed();
 /**
+ * change the maxSpeed of the car
+ * @param maxSpeed: the new maxSpeed of the car
+ * @return: None
 \n REQUIRE(properlyInitialized(), "Car wasn't initialized when calling setMaxSpeed");
 */
-    void setMaxSpeed(double speed);
+    void setMaxSpeed(double maxSpeed);
 /**
+ * get the acceleration of the car
+ * @return: (double), the acceleration of the car
 \n REQUIRE(properlyInitialized(), "Car wasn't initialized when calling getAcceleration");
 */
     double getAcceleration();
 /**
+ * change the acceleration of the car
+ * @param acceleration: the new acceleration of the car
+ * @return: None
 \n REQUIRE(properlyInitialized(), "Car wasn't initialized when calling setAcceleration");
 */
-    void setAcceleration(double speed);
+    void setAcceleration(double acceleration);
 /**
+ * get the Acton that the car is doing
+ * @return: (action), the Acton that the car is doing
 \n REQUIRE(properlyInitialized(), "Car wasn't initialized when calling getAction");
 */
     Action getAction();
 /**
+ * change the Action of the car
+ * @param action: the new Action of the car
+ * @return: None
 \n REQUIRE(properlyInitialized(), "Car wasn't initialized when calling setAction");
 */
-    void setAction(Action a);
+    void setAction(Action action);
 //////////////
 
 

@@ -20,51 +20,70 @@ private:
 public:
 
 /**
+ * create a CarGen
+ * @param frequency: frequency of the CarGen
+ * @param road: road where the CarGen is positioned
+ * @return: None
 \n ENSURE(properlyInitialized(), "constructor must end in properlyInitialized state");
 */
     CarGen(double frequency,Road *road);
 
 /**
+ * Update the CarGen his cycle and create a car if needed
+ * @param t: time since last update
+ * @return: None
 \n REQUIRE(properlyInitialized(), "CarGen wasn't initialized when calling updateCarGen");
 */
     void updateCarGen(double t);
 
-
-
-
 /////////////
 public:
 /**
+ * get the road where the CarGen is positioned
+ * @return: (Road*), the road where the CarGen is positioned
 \n REQUIRE(properlyInitialized(), "CarGen wasn't initialized when calling getRoad);
 */
     Road *getRoad();
 
 protected:
 /**
+ * change the road of the CarGen
+ * @param road: the new road of the CarGen
+ * @return: None
 \n REQUIRE(properlyInitialized(), "CarGen wasn't initialized when calling setRoad);
 */
-    void setRoad(Road *r);
+    void setRoad(Road *road);
 
 public:
 /**
+ * get the frequency of the CarGen
+ * @return: (double), the frequency of the CarGen
 \n REQUIRE(properlyInitialized(), "CarGen wasn't initialized when calling getFrequency);
 */
     double getFrequency();
 /**
+ * change the frequency of the CarGen
+ * @param frequency: the frequency of the CarGen
+ * @return: None
 \n REQUIRE(properlyInitialized(), "CarGen wasn't initialized when calling setFrequency);
 */
     void setFrequency(double frequency);
 
 /**
+ * get the cycleTime of the CarGen
+ * @return: (double), the cycleTime of the CarGen
 \n REQUIRE(properlyInitialized(), "CarGen wasn't initialized when calling getCycle);
 */
     double getCycle();
 
 protected:
 /**
+ * change the time since last cycle of the CarGen
+ * @param cycle: the time since last cycle of the CarGen
+ * @return: None
 \n REQUIRE(properlyInitialized(), "CarGen wasn't initialized when calling setCycle);
 */
-    void setCycle(double c);
+    void setCycle(double cycle);
 /////////////
 
 

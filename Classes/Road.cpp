@@ -20,11 +20,23 @@ Road::Road(const std::string &name, double l) : name(name), length(l) {
     ENSURE(properlyInitialized(),"constructor must end in properlyInitialized state");
 }
 
-/*
- *
- * @param t:
- * @return:
- */
+Road::~Road() {
+    REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling ~Road");
+    std::vector<Car *> carIt = getCars();
+    for (std::vector<Car *>::iterator itC = carIt.begin(); itC != carIt.end(); itC++) {
+        delete(*itC);
+    }
+    std::vector<Light *> lightIt = getLights();
+    for (std::vector<Light *>::iterator itL = lightIt.begin(); itL != lightIt.end(); itL++) {
+        delete(*itL);
+    }
+    std::vector<CarGen *> carGenIt = getCarGen();
+    for (std::vector<CarGen *>::iterator itG = carGenIt.begin(); itG != carGenIt.end(); itG++) {
+        delete(*itG);
+    }
+}
+
+
 void Road::updateRoad(double t) {
     REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling updateWorld");
     std::vector<Car *> carIt = getCars();
@@ -42,11 +54,7 @@ void Road::updateRoad(double t) {
 }
 
 
-/*
- *
- * @param carToDelete:
- * @return:
- */
+
 void Road::removeCars(Car* carToDelete) {
     REQUIRE(this->properlyInitialized(), "Road wasn't initialized when calling removeCars");
     std::vector<Car *> carIt = getCars();
@@ -62,12 +70,7 @@ void Road::removeCars(Car* carToDelete) {
 
 
 /////////////
-/*
- *
- * @param position:
- * @param cycle:
- * @return:
- */
+
 void Road::addLight(double position, double cycle) {
     REQUIRE(this->properlyInitialized(), "Road wasn't initialized when calling addLight");
     if (position>getLength()) {
@@ -80,11 +83,7 @@ void Road::addLight(double position, double cycle) {
     lights.push_back(new Light(position, cycle,this));
 }
 
-/*
- *
- * @param distance:
- * @return:
- */
+
 void Road::addCar(double distance) {
     REQUIRE(this->properlyInitialized(), "Road wasn't initialized when calling addCar");
     if (distance > getLength()) {
@@ -96,11 +95,7 @@ void Road::addCar(double distance) {
     Road::cars.push_back(new Car (distance,this));
 }
 
-/*
- *
- * @param frequency:
- * @return:
- */
+
 void Road::addCarGen(double frequency) {
     REQUIRE(this->properlyInitialized(), "Road wasn't initialized when calling addCarGen");
     carGen.push_back(new CarGen(frequency, this));
@@ -110,109 +105,70 @@ void Road::addCarGen(double frequency) {
 
 
 /////////////
-/*
- *
- * @return:
- */
+
 const std::string &Road::getName() {
     REQUIRE(this->properlyInitialized(), "Road wasn't initialized when calling getName");
     return name;
 }
 
-/*
- *
- * @param n:
- * @return:
- */
+
 void Road::setName(const std::string &n) {
     REQUIRE(this->properlyInitialized(), "Road wasn't initialized when calling setName");
     Road::name = n;
 }
 
-/*
- *
- * @return:
- */
+
 double Road::getLength() {
     REQUIRE(this->properlyInitialized(), "Road wasn't initialized when calling getLength");
     return length;
 }
 
-/*
- *
- * @param l:
- * @return:
- */
+
 void Road::setLength(double l) {
     REQUIRE(this->properlyInitialized(), "Road wasn't initialized when calling setLength");
     Road::length = l;
 }
 
-/*
- *
- * @return:
- */
+
 const std::vector<Light *> &Road::getLights() {
     REQUIRE(this->properlyInitialized(), "Road wasn't initialized when calling getLights");
     return lights;
 }
 
-/*
- *
- * @param l:
- * @return:
- */
+
 void Road::setLights(const std::vector<Light *> &l) {
     REQUIRE(this->properlyInitialized(), "Road wasn't initialized when calling setLights");
     Road::lights = l;
 }
 
-/*
- *
- * @return:
- */
+
 const std::vector<Car *> &Road::getCars() {
     REQUIRE(this->properlyInitialized(), "Road wasn't initialized when calling getCars");
     return cars;
 }
 
-/*
- *
- * @param c:
- * @return:
- */
+
 void Road::setCars(const std::vector<Car *> &c) {
     REQUIRE(this->properlyInitialized(), "Road wasn't initialized when calling setCars");
     Road::cars = c;
 }
 
-/*
- *
- * @return:
- */
+
 const std::vector<CarGen *> &Road::getCarGen()  {
     REQUIRE(this->properlyInitialized(), "Road wasn't initialized when calling getCarGen");
     return carGen;
 }
 
-/*
- *
- * @param cG:
- * @return:
- */
-void Road::setCarGen(const std::vector<CarGen *> &cG) {
+
+void Road::setCarGen(const std::vector<CarGen *> &carGens) {
     REQUIRE(this->properlyInitialized(), "Road wasn't initialized when calling setCarGen");
-    Road::carGen = cG;
+    Road::carGen = carGens;
 }
 /////////////
 
 
 
 //////////////
-/*
- *
- * @return:
- */
 bool Road::properlyInitialized() const{
     return _initCheck == this;
 }
