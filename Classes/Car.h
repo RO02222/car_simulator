@@ -63,7 +63,7 @@ protected:
  * @return: None
 \n REQUIRE(properlyInitialized(), "Car wasn't initialized when calling setRoad");
 */
-    void setRoad(Road *r);
+    void setRoad(Road *road);
 
 public:
 /**

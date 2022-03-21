@@ -24,12 +24,12 @@ private:
 public:
 /**
  * create a traffic light
- * @param name: name of the road
- * @param length: lengt of the road
+ * @param position: position of the traffic light
+ * @param road: the road where the traffic light is placed on
  * @return: None
 \n ENSURE(properlyInitialized(), "constructor must end in properlyInitialized state");
 */
-    Light(double position, double cycle, Road* r);
+    Light(double position, double cycle, Road* road);
 
 
 /**
