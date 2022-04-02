@@ -10,5 +10,5 @@
 #define CAR_SIMULATOR_FUNCTIONS_H
 #include <string>
 
-int stringInt(std::string text);
+int stoi(std::string text);
 #endif //CAR_SIMULATOR_FUNCTIONS_H

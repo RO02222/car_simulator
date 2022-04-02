@@ -10,9 +10,9 @@
 #include <iostream>
 #include <sstream>
 
-int stringInt(std::string text) {
-std::istringstream iss(text);
-int number;
-iss >> number;
-return number;
+int stoi(std::string text) {
+    std::istringstream iss(text);
+    int number;
+    iss >> number;
+    return number;
 }

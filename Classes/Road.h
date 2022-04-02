@@ -14,7 +14,7 @@
 class Light;
 class Car;
 class CarGen;
-
+class BusStop;
 
 class Road{
 private:
@@ -26,6 +26,7 @@ private:
     std::vector<Light*> lights;
     std::vector<Car*> cars;
     std::vector<CarGen*> carGen;
+    std::vector<BusStop*> busStops;
 public:
 /**
  * create a road
@@ -86,9 +87,17 @@ public:
  * add a new carGen at the beginning of the road
  * @param frequency: frequency of the carGen
  * @return: None
-\n REQUIRE(properlyInitialized(), "Road wasn't initialized when calling setCarGen);
+\n REQUIRE(properlyInitialized(), "Road wasn't initialized when calling addCarGen);
 */
     void addCarGen(double frequency);
+/**
+ * add a new Busstop to the road
+ * * @param position: position of the Busstop
+ * @param stoptime: stoptime of the Busstop
+ * @return: None
+\n REQUIRE(properlyInitialized(), "Road wasn't initialized when calling addBusstop);
+*/
+    void addBusStop(double position, double stoptime);
 /////////////
 
 
@@ -165,6 +174,20 @@ public:
 \n REQUIRE(properlyInitialized(), "Road wasn't initialized when calling setCarGen);
 */
     void setCarGen(const std::vector<CarGen *> &carGens);
+
+/**
+ * get all the BusStops on the the road
+ * @return: (std::vector<BusStops*>), all the BusStops on the the road
+\n REQUIRE(properlyInitialized(), "Road wasn't initialized when calling getbusStops);
+*/
+    const std::vector<BusStop *> &getBusStops();
+/**
+ * change the BusStops of the road
+ * @param BusStops: the new BusStops of the road
+ * @return: None
+\n REQUIRE(properlyInitialized(), "Road wasn't initialized when calling setbusStops);
+*/
+    void setbusStops(const std::vector<BusStop *> &BusStops);
 /////////////
 
 

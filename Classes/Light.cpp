@@ -21,11 +21,6 @@ Light::Light(double position, double c, Road* r): road(r), position(position), c
     ENSURE(this->properlyInitialized(), "constructor must end in properlyInitialized state");
 }
 
-/*
- *
- * @param t:
- * @return:
- */
 void Light::updateLight(double t) {
     REQUIRE(this->properlyInitialized(), "Light wasn't initialized when calling updateLight");
     lastCycle += t;

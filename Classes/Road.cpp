@@ -10,6 +10,7 @@
 #include "Light.h"
 #include "Car.h"
 #include "CarGen.h"
+#include "BusStop.h"
 #include "../DesignByContract.h"
 
 Road::Road(const std::string &name, double l) : name(name), length(l) {
@@ -34,6 +35,10 @@ Road::~Road() {
     for (std::vector<CarGen *>::iterator itG = carGenIt.begin(); itG != carGenIt.end(); itG++) {
         delete(*itG);
     }
+    std::vector<BusStop *> busStopsIt = getBusStops();
+    for (std::vector<BusStop *>::iterator itB = busStopsIt.begin(); itB != busStopsIt.end(); itB++) {
+        delete(*itB);
+    }
 }
 
 
@@ -51,6 +56,10 @@ void Road::updateRoad(double t) {
     for (std::vector<CarGen *>::iterator itG = carGenIt.begin(); itG != carGenIt.end(); itG++) {
         (*itG)->updateCarGen(t);
     }
+    /*
+    for (std::vector<BusStop *>::iterator itB = busStops.begin(); itB != busStops.end(); itB++) {
+        (*itB)->updateBusStop(t);
+    }*/
 }
 
 
@@ -73,24 +82,19 @@ void Road::removeCars(Car* carToDelete) {
 
 void Road::addLight(double position, double cycle) {
     REQUIRE(this->properlyInitialized(), "Road wasn't initialized when calling addLight");
-    if (position>getLength()) {
-        position = getLength();
+    if (position > getLength() or position < 0) {
+        std::cerr<<"Failed to add light: position is not on the road"<<std::endl;
+        return;
     }
-    if (position<0){
-        position = 0;
-    }
-    std::vector<Light*> l = getLights();
     lights.push_back(new Light(position, cycle,this));
 }
 
 
 void Road::addCar(double distance) {
     REQUIRE(this->properlyInitialized(), "Road wasn't initialized when calling addCar");
-    if (distance > getLength()) {
-        distance = getLength();
-    }
-    if (distance<0){
-        distance = 0;
+    if (distance > getLength() or distance < 0) {
+        std::cerr<<"Failed to add car: position is not on the road"<<std::endl;
+        return;
     }
     Road::cars.push_back(new Car (distance,this));
 }
@@ -98,7 +102,23 @@ void Road::addCar(double distance) {
 
 void Road::addCarGen(double frequency) {
     REQUIRE(this->properlyInitialized(), "Road wasn't initialized when calling addCarGen");
+    if (frequency < 1){
+        frequency = 1;
+    }
     carGen.push_back(new CarGen(frequency, this));
+}
+
+
+void Road::addBusStop(double position, double stoptime) {
+    REQUIRE(this->properlyInitialized(), "Road wasn't initialized when calling addCarGen");
+    if (stoptime < 1){
+        stoptime = 1;
+    }
+    if (position > getLength() or position < 0) {
+        std::cerr<<"Failed to add BusStop: position is not on the road"<<std::endl;
+        return;
+    }
+    busStops.push_back(new BusStop(position, stoptime, this));
 }
 /////////////
 
@@ -163,6 +183,17 @@ const std::vector<CarGen *> &Road::getCarGen()  {
 void Road::setCarGen(const std::vector<CarGen *> &carGens) {
     REQUIRE(this->properlyInitialized(), "Road wasn't initialized when calling setCarGen");
     Road::carGen = carGens;
+}
+
+const std::vector<BusStop *> &Road::getBusStops() {
+    REQUIRE(this->properlyInitialized(), "Road wasn't initialized when calling getBusStops");
+    return busStops;
+}
+
+
+void Road::setbusStops(const std::vector<BusStop *> &BusStops) {
+    REQUIRE(this->properlyInitialized(), "Road wasn't initialized when calling setBusStops");
+    Road::busStops = BusStops;
 }
 /////////////
 

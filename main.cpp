@@ -2,16 +2,12 @@
 #include <fstream>
 #include "Classes/World.h"
 #include "Basic_Values.h"
+#include "Input.h"
+#include "Classes/BusStop.h"
+#include "Classes/Junction.h"
 
 int main() {
-
-    World* w = new World();
-    try {
-        w->loadWorld("../XML/case2.xml");
-    }
-    catch(std::exception* e) {
-        std::cerr<<e->what()<<std::endl;
-    }
+    World* w = input::loadWorldXML("../XML/case1.xml");
     std::ofstream myFile;
     myFile.open("../Car_sim.txt");
     w->simulateWorld(myFile);

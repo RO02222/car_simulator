@@ -16,6 +16,7 @@
 #include "Road.h"
 #include "Light.h"
 #include "Car.h"
+#include "Junction.h"
 #include "../Functions.h"
 #include "../Basic_Values.h"
 
@@ -48,7 +49,6 @@ void World::simulateWorld(std::ostream & onStream){
             onStream << " -> positie: " << (*itC)->getDistance() << std::endl;
             onStream << " -> snelheid: " << (*itC)->getSpeed() << std::endl << std::endl;
             numVehicle +=1;
-
         }
     }
 }
@@ -65,222 +65,7 @@ void World::updateWorld(double t) {
 
 
 
-///////////////////////
-void World::loadWorld(const char *worldName) {
-    REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling loadWorld");
-    TiXmlDocument doc;
-    if (!doc.LoadFile(worldName)) {
-        throw (doc.ErrorDesc());
-    }
-    TiXmlElement *root = doc.FirstChildElement();
-    if (root == NULL) {
-        throw (ParserException("Failed to load file: No root element."));
-    }
-    TiXmlElement *elem = root;
-    if ((std::string) elem->Value() != "World") {
-        throw (ParserException("Failed to load file: <World> ... </World>"));
-    }
-    for (TiXmlElement *elem1 = elem->FirstChildElement(); elem1 != 0; elem1 = elem1->NextSiblingElement()) {
-        if ((std::string) elem1->Value() == "BAAN") {
-            loadRoad(elem1);
-        }
-    }
-    for (TiXmlElement *elem1 = elem->FirstChildElement(); elem1 != NULL; elem1 = elem1->NextSiblingElement()) {
-        if ((std::string) elem1->Value() == "BAAN") {
-            continue;
-        }
-        if ((std::string) elem1->Value() == "VERKEERSLICHT") {
-            loadLight(elem1);
-            continue;
-        }
-        if ((std::string) elem1->Value() == "VOERTUIG") {
-            loadCar(elem1);
-            continue;
-        }
-        if ((std::string) elem1->Value() == "VOERTUIGGENERATOR") {
-            loadCarGen(elem1);
-            continue;
-        }
-        std::string error = "Failed to load file: <" + (std::string) elem1->Value() + "> is not valid";
-        throw (ParserException(error.c_str()));
-    }
-}
 
-
-void World::loadRoad(TiXmlElement* elem1) {
-    REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling loadRoad");
-    std::string name = "";
-    std::string length = "";
-    for (TiXmlElement *elem2 = elem1->FirstChildElement(); elem2 != 0; elem2 = elem2->NextSiblingElement()) {
-        if (elem2->GetText() == NULL){
-            std::string error = "Failed to load file: <" + (std::string)elem2->Value()  + "> has no value";
-            throw (ParserException(error.c_str()));
-        }
-        if ((std::string) elem2->Value() == "naam") {
-            name = elem2->GetText();
-        } else {
-            if ((std::string) elem2->Value() == "lengte") {
-                length = elem2->GetText();
-            } else {
-                std::string error = "Failed to load file: <BAAN> : <" + (std::string) elem2->Value() + "> is not valid";
-                throw (ParserException(error.c_str()));
-            }
-        }
-    }
-    if (name == "") {
-        throw (ParserException("Failed to load file: invalid <BAAN> : 'missing argument' <naam>"));
-    }
-    if (length == "") {
-        throw (ParserException("Failed to load file: invalid <BAAN> : 'missing argument' <lengte>"));
-    }
-    std::vector<Road*> roadIt = getRoads();
-    for (std::vector<Road*>::iterator it = roadIt.begin(); it != roadIt.end(); it++) {
-        if ((*it)->getName() == name) {
-            throw (ParserException("Failed to add road: road already exist"));
-        }
-    }
-    roads.push_back(new Road(name, stringInt(length)));
-}
-
-
-void World::loadLight(TiXmlElement* elem1) {
-    REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling loadLight");
-    std::string roadName = "";
-    std::string position = "";
-    std::string cycle = "";
-    for (TiXmlElement *elem2 = elem1->FirstChildElement(); elem2 != 0; elem2 = elem2->NextSiblingElement()) {
-        if (elem2->GetText() == NULL){
-            std::string error = "Failed to load file: <" + (std::string)elem2->Value()  + "> has no value";
-            throw (ParserException(error.c_str()));
-        }
-        if ((std::string) elem2->Value() == "baan") {
-            roadName = elem2->GetText();
-        } else {
-            if ((std::string) elem2->Value() == "positie") {
-                position = elem2->GetText();
-            } else {
-                if ((std::string) elem2->Value() == "cyclus") {
-                    cycle = elem2->GetText();
-                } else {
-                    std::string error = "Failed to load file: <VERKEERSLICHT> : <" + (std::string) elem2->Value() + "> is not valid";
-                    throw (ParserException(error.c_str()));
-                }
-            }
-        }
-    }
-    if (roadName == "") {
-        throw (ParserException("Failed to load file: invalid <VERKEERSLICHT> : 'missing argument' <baan>"));
-    }
-    if (position == "") {
-        throw (ParserException("Failed to load file: invalid <VERKEERSLICHT> : 'missing argument' <positie>"));
-    }
-    if (cycle == "") {
-        throw (ParserException("Failed to load file: invalid <VERKEERSLICHT> : 'missing argument' <cyclus>"));
-    }
-    Road *road = NULL;
-    std::vector<Road*> roadIt = getRoads();
-    for (std::vector<Road*>::iterator it = roadIt.begin(); it != roadIt.end(); it++) {
-
-        if ((*it)->getName() == roadName) {
-            road = (*it);
-            break;
-        }
-    }
-    if (road == NULL){
-        throw (ParserException("Failed to load file: invalid <VERKEERSLICHT> : '<baan>' does not exist"));
-    }
-    if (stringInt (position) > road->getLength()){
-        throw (ParserException("Failed to load file: invalid <VERKEERSLICHT> : '<baan> is not long enough"));
-    }
-    road->addLight(stringInt(position),stringInt(cycle));
-}
-
-
-void World::loadCar(TiXmlElement *elem1) {
-    REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling loadCar");
-    std::string roadName = "";
-    std::string position = "";
-    for (TiXmlElement *elem2 = elem1->FirstChildElement(); elem2 != 0; elem2 = elem2->NextSiblingElement()) {
-        if (elem2->GetText() == NULL){
-            std::string error = "Failed to load file: <" + (std::string)elem2->Value()  + "> has no value";
-            throw (ParserException(error.c_str()));
-        }
-        if ((std::string) elem2->Value() == "baan") {
-            roadName = elem2->GetText();
-        } else {
-            if ((std::string) elem2->Value() == "positie") {
-                position = elem2->GetText();
-            } else {
-                std::string error =
-                        "Failed to load file: <VOERTUIG> : <" + (std::string) elem2->Value() + "> is not valid";
-                throw ParserException(error.c_str());
-            }
-        }
-    }
-    if (roadName == "") {
-        throw (ParserException("Failed to load file: invalid <VOERTUIG> : 'missing argument' <baan>"));
-    }
-    if (position == "") {
-        throw (ParserException("Failed to load file: invalid <VOERTUIG> : 'missing argument' <positie>"));
-    }
-    Road *road = NULL;
-    std::vector<Road*> roadIt = getRoads();
-    for (std::vector<Road*>::iterator it = roadIt.begin(); it != roadIt.end(); it++) {
-        if ((*it)->getName() == roadName) {
-            road = (*it);
-            break;
-        }
-        throw (ParserException("Failed to load file: invalid <VOERTUIG> : '<baan> does not exist"));
-    }
-    if (stringInt (position) > road->getLength()){
-        throw (ParserException("Failed to load file: invalid <VOERTUIG> : '<baan> is not long enough"));
-    }
-    road->addCar(stringInt(position));
-}
-
-
-void World::loadCarGen(TiXmlElement *elem1) {
-    REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling loadCarGen");
-    std::string roadName = "";
-    std::string frequency = "";
-    for (TiXmlElement *elem2 = elem1->FirstChildElement(); elem2 != 0; elem2 = elem2->NextSiblingElement()) {
-        if (elem2->GetText() == NULL){
-            std::string error = "Failed to load file: <" + (std::string)elem2->Value()  + "> has no value";
-            throw (ParserException(error.c_str()));
-        }
-        if ((std::string) elem2->Value() == "baan") {
-            roadName = elem2->GetText();
-        } else {
-            if ((std::string) elem2->Value() == "frequentie") {
-                frequency = elem2->GetText();
-            } else {
-                std::string error =
-                        "Failed to load file: <VOERTUIGGENERATOR> : <" + (std::string) elem2->Value() + "> is not valid";
-                throw (ParserException(error.c_str()));
-            }
-        }
-    }
-    if (roadName == "") {
-        throw (ParserException("Failed to load file: invalid <VOERTUIGGENERATOR> : 'missing argument' <baan>"));
-    }
-    if (frequency == "") {
-        throw (ParserException("Failed to load file: invalid <VOERTUIGGENERATOR> : 'missing argument' <frequentie>"));
-    }
-    Road *road = NULL;
-    std::vector<Road*> roadIt = getRoads();
-    for (std::vector<Road*>::iterator it = roadIt.begin(); it != roadIt.end(); it++) {
-        if ((*it)->getName() == roadName) {
-            road = (*it);
-            break;
-        }
-        throw (ParserException("Failed to load file: invalid <VOERTUIGGENERATOR> : '<baan> does not exist"));
-    }
-    if (stringInt (frequency) > road->getLength()){
-        throw (ParserException("Failed to load file: invalid <VOERTUIGGENERATOR> : '<baan> is not long enough"));
-    }
-    road->addCarGen(stringInt(frequency));
-}
-///////////////////////
 
 
 
@@ -297,6 +82,39 @@ void World::setRoad(const std::vector<Road *> &banen) {
     World::roads = banen;
 }
 
+void World::addRoad(std::string name, double length) {
+    if (length < 0){
+        std::cerr<<"Failed to add road: length can't be negative"<<std::endl;
+        return;
+    }
+    for (std::vector<Road *>::iterator it = roads.begin(); it != roads.end(); it++) {
+        if ((*it)->getName() == name) {
+            std::cerr<<"Failed to add road: road already exist"<<std::endl;
+            return;
+        }
+    }
+    roads.push_back(new Road(name,length));
+}
+
+const std::vector<Junction *> &World::getJunctions() {
+    REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling getJunctions");
+    return junctions;
+}
+
+
+void World::setJunctions(const std::vector<Junction *> & junction) {
+    REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling setJunctions");
+    World::junctions = junction;
+}
+
+void World::addJunction(std::pair<Road* , double> road1,std::pair<Road* , double> road2) {
+    if (road1.second > road1.first->getLength() or road2.second > road2.first->getLength()
+            or road1.second < 0 or road2.second < 0) {
+        std::cerr << "Failed to add Junction: position is not on the road" << std::endl;
+        return;
+    }
+    junctions.push_back(new Junction(road1,road2));
+}
 
 double World::getTime() const {
     REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling getTime");

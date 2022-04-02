@@ -3,6 +3,10 @@
         <naam>Middelheimlaan</naam>
         <lengte>400</lengte>
     </BAAN>
+    <BAAN>
+        <naam>Floralienlaan</naam>
+        <lengte>750</lengte>
+    </BAAN>
 
     <VERKEERSLICHT>
         <baan>Middelheimlaan</baan>
@@ -24,5 +28,20 @@
         <baan>Middelheimlaan</baan>
         <frequentie>5</frequentie>
     </VOERTUIGGENERATOR>
+
+    <BUSHALTE>
+        <baan>Middelheimlaan</baan>
+        <positie>250</positie>
+        <wachttijd>20</wachttijd>
+    </BUSHALTE>
+    <BUSHALTE>
+        <baan>Middelheimlaan</baan>
+        <positie>100</positie>
+        <wachttijd>20</wachttijd>
+    </BUSHALTE>
+    <KRUISPUNT>
+        <baan positie="250">Middelheimlaan</baan>
+        <baan positie="500">Floralienlaan</baan>
+    </KRUISPUNT>
 
 </World>

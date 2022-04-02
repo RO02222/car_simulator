@@ -15,11 +15,12 @@
 #include "../tinyxml/tinystr.h"
 #include "Road.h"
 #include "CarGen.h"
-
+class Junction;
 class World {
 private:
     World *_initCheck;
 
+    std::vector<Junction*> junctions;
     std::vector<Road *> roads;
     double time;
 public:
@@ -57,53 +58,6 @@ function:
     void updateWorld(double t);
 
 
-//////////////
-/**
- * Basic Getters/Setters
-*/
-public:
-/**
- * load a World from a file
- * @param worldName: name of the file
- * @return: None
-\n REQUIRE(properlyInitialized(), "World wasn't initialized when calling loadWorld);
-*/
-    void loadWorld(const char *worldName);
-
-private:
-/**
- * load a Road from a file
- * @param elem1: part of the file
- * @return: None
-\n REQUIRE(properlyInitialized(), "World wasn't initialized when calling loadRoad);
-*/
-    void loadRoad(TiXmlElement *elem1);
-
-/**
- * load a Light from a file
- * @param elem1: part of the file
- * @return: None
-\n REQUIRE(properlyInitialized(), "World wasn't initialized when calling loadLight);
-*/
-    void loadLight(TiXmlElement *elem1);
-
-/**
- * load a Car from a file
- * @param elem1: part of the file
- * @return: None
-\n REQUIRE(properlyInitialized(), "World wasn't initialized when calling loadCar);
-*/
-    void loadCar(TiXmlElement *elem1);
-
-/**
- * load a CarGen from a file
- * @param elem1: part of the file
- * @return: None
-\n REQUIRE(properlyInitialized(), "World wasn't initialized when calling loadCarGen);
-*/
-    void loadCarGen(TiXmlElement *elem1);
-//////////////
-
 
 
 /////////////
@@ -122,6 +76,39 @@ public:
 \n REQUIRE(properlyInitialized(), "World wasn't initialized when calling setRoad);
 */
     void setRoad(const std::vector<Road *> &r);
+
+/**
+ * add a road to the simulationWorld
+ * @param name: the name of the new road
+ * @param length: the length of the new road
+ * @return: None
+\n REQUIRE(properlyInitialized(), "World wasn't initialized when calling addRoad);
+*/
+    void addRoad(std::string name, double length);
+
+/**
+ * get all the Junctions of the simulationWorld
+ * @return: (std::vector<Junction*>), the Junctions in the simulationWorld
+\n REQUIRE(properlyInitialized(), "World wasn't initialized when calling getJunctions);
+*/
+    const std::vector<Junction *> &getJunctions();
+
+/**
+ * change the Junctions of the simulationWorld
+ * @param junction: the new Junctions of the simulationWorld
+ * @return: None
+\n REQUIRE(properlyInitialized(), "World wasn't initialized when calling setJunctions);
+*/
+    void setJunctions(const std::vector<Junction *> & junction);
+
+/**
+ * add a Junction to the simulationWorld
+ * @param name: the name of the new road
+ * @param length: the length of the new road
+ * @return: None
+\n REQUIRE(properlyInitialized(), "World wasn't initialized when calling addJunction);
+*/
+    void addJunction(std::pair<Road* , double> road1,std::pair<Road* , double> road2);
 
 /**
  * get the time of the simulationWorld
