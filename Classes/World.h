@@ -15,11 +15,14 @@
 #include "../tinyxml/tinystr.h"
 #include "Road.h"
 #include "CarGen.h"
+#include "Car.h"
+
 class Junction;
+class CarData;
 class World {
 private:
     World *_initCheck;
-
+    std::vector<CarData*> carData;
     std::vector<Junction*> junctions;
     std::vector<Road *> roads;
     double time;
@@ -124,6 +127,21 @@ public:
 \n REQUIRE(properlyInitialized(), "World wasn't initialized when calling setTime);
 */
     void setTime(double t);
+
+/**
+ * get data of a specific carType
+ * @param type: the type of carData
+ * @return: (double), the carData
+\n REQUIRE(properlyInitialized(), "World wasn't initialized when calling getCarData);
+*/
+    CarData* getCarData(Type type);
+
+/**
+ * get the data of all the cars
+ * @return: (std::vector<CarData*>*), all the carData
+\n REQUIRE(properlyInitialized(), "World wasn't initialized when calling getAllData);
+*/
+    std::vector<CarData*>* getAllData();
 /////////////
 
 

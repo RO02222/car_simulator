@@ -13,6 +13,8 @@
 
 Junction::Junction(std::pair<Road *, double> R1, std::pair<Road *, double> R2) : road1(R1), road2(R2){
     _initCheck = this;
+    road1.first->addJunction(road1.second,this);
+    road2.first->addJunction(road2.second,this);
     ENSURE(this->properlyInitialized(), "constructor must end in properlyInitialized state");
 }
 

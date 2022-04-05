@@ -12,12 +12,13 @@
 #include "Road.h"
 #include <cmath>
 
-Car::Car(double distance, Road* road) : road(road), distance(distance) {
+Car::Car(double distance, CarData* data, Road* road) : road(road), distance(distance) {
     _initCheck = this;
     speed = gMaxSpeed;
     maxSpeed = gMaxSpeed;
     acceleration = 0;
     action = fast;
+    this->data = data;
     ENSURE(properlyInitialized(),"constructor must end in properlyInitialized state");
 }
 

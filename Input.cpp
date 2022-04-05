@@ -160,6 +160,8 @@ namespace input {
                     "World wasn't initialized when calling private function of loadWorldXML");
             std::string roadName = "";
             std::string position = "";
+            std::string type = "";
+            Type Type;
             for (TiXmlElement *elem2 = elem1->FirstChildElement(); elem2 != 0; elem2 = elem2->NextSiblingElement()) {
                 if (elem2->GetText() == NULL) {
                     std::cerr << "Failed to load file: <" + (std::string) elem2->Value() + "> has no value"
@@ -174,6 +176,10 @@ namespace input {
                     position = elem2->GetText();
                     continue;
                 }
+                if ((std::string) elem2->Value() == "type") {
+                    type = elem2->GetText();
+                    continue;
+                }
                 std::cerr << "Failed to load file: <VOERTUIG> : <" + (std::string) elem2->Value()
                              + "> is not valid" << std::endl;
             }
@@ -185,6 +191,25 @@ namespace input {
                 std::cerr << "Failed to load file: invalid <VOERTUIG> : 'missing argument' <positie>" << std::endl;
                 return;
             }
+            if (type.empty()) {
+                std::cerr << "Failed to load file: invalid <VOERTUIG> : 'missing argument' <type>" << std::endl;
+                return;
+            }
+            if (type == "auto") {
+                Type = car;
+            }else if (type == "bus") {
+                Type = bus;
+            }else if (type == "brandweerwagen") {
+                Type = fire;
+            }else if (type == "ziekenwagen") {
+                Type = police;
+            }else if (type == "politiecombi") {
+                Type = ambulance;
+            }else{
+                std::cerr << "Failed to load file: invalid <VOERTUIG> : 'invalid argument' <type>" << std::endl;
+                return;
+            }
+
             Road *road = NULL;
             std::vector<Road *> roadIt = world->getRoads();
             for (std::vector<Road *>::iterator it = roadIt.begin(); it != roadIt.end(); it++) {
@@ -197,7 +222,7 @@ namespace input {
                 std::cerr << "Failed to load file: invalid <VOERTUIG> : '<baan> does not exist" << std::endl;
                 return;
             }
-            road->addCar(stoi(position));
+            road->addCar(stoi(position),world->getCarData(Type));
         }
 
 
@@ -206,6 +231,8 @@ namespace input {
                     "World wasn't initialized when calling private function of loadWorldXML");
             std::string roadName = "";
             std::string frequency = "";
+            std::string type = "";
+            Type Type;
             for (TiXmlElement *elem2 = elem1->FirstChildElement(); elem2 != 0; elem2 = elem2->NextSiblingElement()) {
                 if (elem2->GetText() == NULL) {
                     std::cerr << "Failed to load file: <" + (std::string) elem2->Value()
@@ -220,6 +247,10 @@ namespace input {
                     frequency = elem2->GetText();
                     continue;
                 }
+                if ((std::string) elem2->Value() == "type") {
+                    type = elem2->GetText();
+                    continue;
+                }
                 std::cerr << "Failed to load file: <VOERTUIGGENERATOR> : <" + (std::string) elem2->Value()
                              + "> is not valid" << std::endl;
             }
@@ -231,6 +262,23 @@ namespace input {
             if (frequency.empty()) {
                 std::cerr << "Failed to load file: invalid <VOERTUIGGENERATOR> : 'missing argument' <frequentie>"
                           << std::endl;
+                return;
+            }
+            if (type.empty() or type == "none" or type == "None") {
+                Type = none;
+            } else if (type == "auto") {
+                Type = car;
+            }else if (type == "bus") {
+                Type = bus;
+            }else if (type == "brandweerwagen") {
+                Type = fire;
+            }else if (type == "ziekenwagen") {
+                Type = police;
+            }else if (type == "politiecombi") {
+                Type = ambulance;
+            }else{
+                std::cerr << "Failed to load file: invalid <VOERTUIGGENERATOR> : 'invalid argument' <type>" << std::endl;
+                return;
             }
             Road *road = NULL;
             std::vector<Road *> roadIt = world->getRoads();
@@ -244,7 +292,11 @@ namespace input {
                 std::cerr << "Failed to load file: invalid <VOERTUIGGENERATOR> : '<baan> does not exist" << std::endl;
                 return;
             }
-            road->addCarGen(stoi(frequency));
+            if (Type == none){
+                road->addCarGen(stoi(frequency),world->getAllData());
+            } else {
+                road->addCarGen(stoi(frequency), world->getCarData(Type));
+            }
         }
 
         void loadBusstopXML(World *world, TiXmlElement *elem1) {

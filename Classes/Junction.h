@@ -31,15 +31,6 @@ public:
     Junction(std::pair<Road* , double> R1,std::pair<Road* , double> R2);
 
 
-/**
- * Update the traffic light, changes the first cars behavior depending on the lights state
- * @param t: time since last update
- * @return: None
-\n REQUIRE(properlyInitialized(), "Light wasn't initialized when calling updateLight");
-*/
-    void updateLight(double t);
-
-
 
 
 

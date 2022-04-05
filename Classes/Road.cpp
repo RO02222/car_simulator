@@ -90,22 +90,30 @@ void Road::addLight(double position, double cycle) {
 }
 
 
-void Road::addCar(double distance) {
+void Road::addCar(double distance, CarData* data) {
     REQUIRE(this->properlyInitialized(), "Road wasn't initialized when calling addCar");
     if (distance > getLength() or distance < 0) {
         std::cerr<<"Failed to add car: position is not on the road"<<std::endl;
         return;
     }
-    Road::cars.push_back(new Car (distance,this));
+    Road::cars.push_back(new Car (distance, data, this));
 }
 
 
-void Road::addCarGen(double frequency) {
+void Road::addCarGen(double frequency, CarData* data) {
     REQUIRE(this->properlyInitialized(), "Road wasn't initialized when calling addCarGen");
     if (frequency < 1){
         frequency = 1;
     }
-    carGen.push_back(new CarGen(frequency, this));
+    carGen.push_back(new CarGen(frequency, this, data));
+}
+
+void Road::addCarGen(double frequency, std::vector<CarData*>* allData) {
+    REQUIRE(this->properlyInitialized(), "Road wasn't initialized when calling addCarGen");
+    if (frequency < 1){
+        frequency = 1;
+    }
+    carGen.push_back(new CarGen(frequency, this, allData));
 }
 
 
@@ -119,6 +127,16 @@ void Road::addBusStop(double position, double stoptime) {
         return;
     }
     busStops.push_back(new BusStop(position, stoptime, this));
+}
+
+
+void Road::addJunction(double position, Junction *junction) {
+    REQUIRE(this->properlyInitialized(), "Road wasn't initialized when calling addJuction");
+    if (position > getLength() or position < 0) {
+        std::cerr<<"Failed to add Junction: position is not on the road"<<std::endl;
+        return;
+    }
+    junctions.push_back( junction );
 }
 /////////////
 

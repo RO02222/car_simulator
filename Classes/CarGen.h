@@ -8,25 +8,44 @@
 
 #ifndef CAR_SIMULATOR_CARGEN_H
 #define CAR_SIMULATOR_CARGEN_H
+#include "Car.h"
+#include "vector"
 class Road;
 
 class CarGen {
 private:
     CarGen* _initCheck;
+
     Road *road;
     double frequency;
     double lastCycle;
 
+    bool random;
+    CarData* data;
+    std::vector<CarData*>* AllData;
+
+
 public:
 
 /**
- * create a CarGen
+ * create a CarGen which generate a specific type of car
  * @param frequency: frequency of the CarGen
  * @param road: road where the CarGen is positioned
+ * @param data: data of the car to generate
  * @return: None
 \n ENSURE(properlyInitialized(), "constructor must end in properlyInitialized state");
 */
-    CarGen(double frequency,Road *road);
+    CarGen(double frequency,Road *road, CarData* data);
+
+/**
+ * create a CarGen which generate a random type of car
+ * @param frequency: frequency of the CarGen
+ * @param road: road where the CarGen is positioned
+ * @param allData: data of all the posible cars to generate
+ * @return: None
+\n ENSURE(properlyInitialized(), "constructor must end in properlyInitialized state");
+*/
+    CarGen(double frequency,Road *road, std::vector<CarData*>* allData);
 
 /**
  * Update the CarGen his cycle and create a car if needed

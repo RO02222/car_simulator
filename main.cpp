@@ -5,6 +5,7 @@
 #include "Input.h"
 #include "Classes/BusStop.h"
 #include "Classes/Junction.h"
+#include "Classes/CarData.h"
 
 int main() {
     World* w = input::loadWorldXML("../XML/case1.xml");

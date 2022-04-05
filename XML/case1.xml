@@ -17,11 +17,13 @@
     <VOERTUIG>
         <baan>Middelheimlaan</baan>
         <positie>40</positie>
+        <type>auto</type>
     </VOERTUIG>
 
     <VOERTUIG>
         <baan>Middelheimlaan</baan>
         <positie>20</positie>
+        <type>bus</type>
     </VOERTUIG>
 
     <VOERTUIGGENERATOR>
@@ -34,11 +36,13 @@
         <positie>250</positie>
         <wachttijd>20</wachttijd>
     </BUSHALTE>
+
     <BUSHALTE>
         <baan>Middelheimlaan</baan>
         <positie>100</positie>
         <wachttijd>20</wachttijd>
     </BUSHALTE>
+
     <KRUISPUNT>
         <baan positie="250">Middelheimlaan</baan>
         <baan positie="500">Floralienlaan</baan>

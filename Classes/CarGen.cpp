@@ -11,7 +11,16 @@
 #include "Car.h"
 #include "../DesignByContract.h"
 
-CarGen::CarGen(double f,Road* road) : road(road), frequency(f) {
+CarGen::CarGen(double frequency, Road *road, CarData *data) : road(road), frequency(frequency), random(false), data(data), AllData(NULL) {
+    _initCheck = this;
+    if (frequency < 1){
+        frequency = 1;
+    }
+    lastCycle = frequency;
+    ENSURE(properlyInitialized(),"constructor must end in properlyInitialized state");
+}
+
+CarGen::CarGen(double frequency, Road *road, std::vector<CarData *>* allData)  : road(road), frequency(frequency), random(true), data(NULL), AllData(allData)  {
     _initCheck = this;
     if (frequency < 1){
         frequency = 1;
@@ -34,7 +43,9 @@ void CarGen::updateCarGen(double t) {
             return;
         }
     }
-    getRoad()->addCar(0);
+    if (!random) {
+        getRoad()->addCar(0, data);
+    }
 }
 
 

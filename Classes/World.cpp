@@ -17,14 +17,22 @@
 #include "Light.h"
 #include "Car.h"
 #include "Junction.h"
+#include "CarData.h"
 #include "../Functions.h"
 #include "../Basic_Values.h"
 
 
 World::World() {
     _initCheck = this;
-    ENSURE(properlyInitialized(),"constructor must end in properlyInitialized state");
     time = 0;
+
+    //all carTypes (without none)
+    carData.push_back(new CarData(car));
+    carData.push_back(new CarData(bus));
+    carData.push_back(new CarData(fire));
+    carData.push_back(new CarData(ambulance));
+    carData.push_back(new CarData(police));
+    ENSURE(properlyInitialized(),"constructor must end in properlyInitialized state");
 }
 
 
@@ -34,6 +42,16 @@ World::~World() {
     for (std::vector<Road*>::iterator itR = roadIt.begin(); itR != roadIt.end(); itR++) {
         delete (*itR);
     }
+    std::vector<Junction*> junctionIT = getJunctions();
+    for (std::vector<Junction*>::iterator itJ = junctionIT.begin(); itJ != junctionIT.end(); itJ++) {
+        delete (*itJ);
+    }
+    ///////////////////////
+    std::vector<CarData*> carDataIT = carData;
+    for (std::vector<CarData*>::iterator itD = carDataIT.begin(); itD != carDataIT.end(); itD++) {
+        delete (*itD);
+    }
+    ////////////////
 }
 
 void World::simulateWorld(std::ostream & onStream){
@@ -125,6 +143,21 @@ double World::getTime() const {
 void World::setTime(double t) {
     REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling setTime");
     World::time = t;
+}
+
+CarData* World::getCarData(Type type)  {
+    REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling getCarData");
+    for (std::vector<CarData*>::iterator data = carData.begin(); data != carData.end(); data++){
+        if ((*data)->getType() == type){
+            return (*data);
+        }
+    }
+    return carData[0];
+}
+
+std::vector<CarData*>* World::getAllData() {
+    REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling getCarData");
+    return &carData;
 }
 //////////////
 

@@ -9,6 +9,8 @@
 #ifndef CAR_SIMULATOR_CAR_H
 #define CAR_SIMULATOR_CAR_H
 class Road;
+class CarData;
+enum Type{car,bus,fire,police,ambulance,none};
 enum Action{fast,slow,stop};
 class Car{
 private:
@@ -19,15 +21,18 @@ private:
     double maxSpeed;
     double acceleration;
     Action action;
+    CarData* data;
 
 public:
 /**
  * create a Car
- * @param road: road where the Car is positioned
+ * @param distance: position on the road
+ * @param data: the data of the car
+ * @param road: road where the Car is positioned.
  * @return: None
 \n ENSURE(properlyInitialized(), "constructor must end in properlyInitialized state");
 */
-    Car (double distance,Road* road);
+    Car (double distance, CarData* data, Road* road);
 
 
 /**
