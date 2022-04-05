@@ -6,6 +6,7 @@
 //============================================================================
 
 #include <iostream>
+#include <iomanip>
 #include <exception>
 #include <vector>
 #include <iterator>
@@ -18,6 +19,7 @@
 #include "Car.h"
 #include "Junction.h"
 #include "CarData.h"
+#include "BusStop.h"
 #include "../Functions.h"
 #include "../Basic_Values.h"
 
@@ -54,7 +56,7 @@ World::~World() {
     ////////////////
 }
 
-void World::simulateWorld(std::ostream & onStream){
+void World::simpleSimulateWorld(std::ostream &onStream) {
     REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling simulateWorld");
     onStream << "Tijd: " <<time<<std::endl;
     int numVehicle = 1;
@@ -69,6 +71,119 @@ void World::simulateWorld(std::ostream & onStream){
             numVehicle +=1;
         }
     }
+}
+
+void World::graficImpSimulateWorld(std::ostream &onStream) {
+    REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling simulateWorld");
+    const char separator = ' ';
+    unsigned int nameWidth = 18;
+    std::vector<Road*> roadIt = getRoads();
+    for (std::vector<Road*>::iterator itR = roadIt.begin(); itR != roadIt.end(); itR++) {
+        if ((*itR)->getName().size() > nameWidth){
+            nameWidth = (*itR)->getName().size();
+        }
+    }
+    nameWidth += 2;
+    unsigned int roadlength = 110 - nameWidth;
+    std::cout << "Tijd: " <<time<<std::endl;
+    for (std::vector<Road*>::iterator itR = roadIt.begin(); itR != roadIt.end(); itR++) {
+        //////////////////
+        std::string road = std::string(roadlength,'=');
+        std::string light = std::string(roadlength,' ');
+        std::string bus = std::string(roadlength,' ');
+        //////////////////
+        const double numWidth = (*itR)->getLength()/roadlength;
+        std::vector<Car*> carIt = (*itR)->getCars();
+        std::vector<Light*> lightIt = (*itR)->getLights();
+        std::vector<BusStop*> busIt = (*itR)->getBusStops();
+        for (std::vector<Car*>::iterator itC = carIt.begin(); itC != carIt.end(); itC++) {
+            unsigned int x = lround((*itC)->getDistance()/numWidth);
+            if (x >= roadlength){
+                x = roadlength -1;
+            }
+            switch ((*itC)->getData()->getType()) {
+                case car:
+                    road[x] = 'C';
+                    continue;
+                case ::bus:
+                    road[x] = 'B';
+                    continue;
+                case fire:
+                    road[x] = 'F';
+                    continue;
+                case police:
+                    road[x] = 'P';
+                    continue;
+                case ambulance:
+                    road[x] = 'A';
+                    continue;
+                case none:
+                    continue;
+            }
+        }
+        for (std::vector<Light*>::iterator itL = lightIt.begin(); itL != lightIt.end(); itL++) {
+            unsigned int x = floor((*itL)->getPosition()/numWidth);
+            if (x >= roadlength){
+                x = roadlength -1;
+            }
+            switch ((*itL)->getState()) {
+                case red:
+                    light[x] = 'R';
+                    continue;
+                case green:
+                    light[x] = 'G';
+                    continue;
+            }
+        }
+        for (std::vector<BusStop*>::iterator itB = busIt.begin(); itB != busIt.end(); itB++) {
+            unsigned int x = floor((*itB)->getPosition()/numWidth);
+            if (x >= roadlength){
+                x = roadlength -1;
+            }
+            bus[x] = 'B';
+            light[x] = '|';
+        }
+
+        //////////////////
+        std::cout << std::left << std::setw(nameWidth) << std::setfill(separator) << (*itR)->getName();
+        std::cout << std::left << std::setw(4) << std::setfill(separator) << "|";
+        std::cout << std::left << std::setw(4) << std::setfill(separator) << road << std::endl;
+        //////////////////
+        std::cout << std::left << std::setw(nameWidth) << std::setfill(separator) <<  "> verkeerslichten";
+        std::cout << std::left << std::setw(4) << std::setfill(separator) << "|";
+        std::cout << std::left << std::setw(4) << std::setfill(separator) << light << std::endl;
+        //////////////////
+        std::cout << std::left << std::setw(nameWidth) << std::setfill(separator) <<  "> bushaltes";
+        std::cout << std::left << std::setw(4) << std::setfill(separator) << "|";
+        std::cout << std::left << std::setw(4) << std::setfill(separator) << bus << std::endl;
+        //////////////////
+        std::cout << std::endl;
+        //////////////////
+
+        //////////////////
+        onStream << std::left << std::setw(nameWidth) << std::setfill(separator) << (*itR)->getName();
+        onStream << std::left << std::setw(4) << std::setfill(separator) << "|";
+        onStream << std::left << std::setw(4) << std::setfill(separator) << road << std::endl;
+        //////////////////
+        onStream << std::left << std::setw(nameWidth) << std::setfill(separator) <<  "> verkeerslichten";
+        onStream << std::left << std::setw(4) << std::setfill(separator) << "|";
+        onStream << std::left << std::setw(4) << std::setfill(separator) << light << std::endl;
+        //////////////////
+        onStream << std::left << std::setw(nameWidth) << std::setfill(separator) <<  "> bushaltes";
+        onStream << std::left << std::setw(4) << std::setfill(separator) << "|";
+        onStream << std::left << std::setw(4) << std::setfill(separator) << bus << std::endl;
+        //////////////////
+        onStream << std::endl;
+        //////////////////
+
+    }
+    onStream << std::endl;
+    std::cout << std::endl;
+
+
+
+
+
 }
 
 
