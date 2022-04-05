@@ -7,6 +7,7 @@
 
 
 #include "Car.h"
+#include "CarData.h"
 #include "../Basic_Values.h"
 #include "../DesignByContract.h"
 #include "Road.h"
@@ -14,11 +15,12 @@
 
 Car::Car(double distance, CarData* data, Road* road) : road(road), distance(distance) {
     _initCheck = this;
-    speed = gMaxSpeed;
-    maxSpeed = gMaxSpeed;
+    this->data = data;
+    speed = data->getvMax();
+    maxSpeed = data->getvMax();
     acceleration = 0;
     action = fast;
-    this->data = data;
+
     ENSURE(properlyInitialized(),"constructor must end in properlyInitialized state");
 }
 
@@ -26,9 +28,9 @@ Car::Car(double distance, CarData* data, Road* road) : road(road), distance(dist
 void Car::updateCar(double t) {
     REQUIRE(this->properlyInitialized(), "Car wasn't initialized when calling updateCar");
     if (getAction() == fast) {
-        maxSpeed = gMaxSpeed;
+        maxSpeed = data->getvMax();
     } else if (getAction() == slow) {
-        maxSpeed = gSlowFactor * gMaxSpeed;
+        maxSpeed = gSlowFactor * data->getvMax();
     }
     double v0 = getSpeed();
 
@@ -47,13 +49,13 @@ void Car::updateCar(double t) {
         if (nextCar == NULL) {
             delta = 0.0;
         } else {
-            double dx = nextCar->getDistance() - getDistance() - gLength;
+            double dx = nextCar->getDistance() - getDistance() - data->getlength();
             double dv = getSpeed() - nextCar->getSpeed();
-            delta = (gMinDistance + std::max(0.0, v0 + ((v0 * dv) / (2 * sqrt(gMaxAcceleration * gMaxBrake))))) / dx;
+            delta = (data->getfMin() + std::max(0.0, v0 + ((v0 * dv) / (2 * sqrt(data->getaMax() * data->getbMax()))))) / dx;
         }
-        a = (gMaxAcceleration)*(1.0 - (pow(v0 / getMaxSpeed(), 4)) - pow(delta, 2));
+        a = (data->getaMax())*(1.0 - (pow(v0 / getMaxSpeed(), 4)) - pow(delta, 2));
     }else{
-        a = -(gMaxBrake*v0)/getMaxSpeed();
+        a = -(data->getbMax()*v0)/getMaxSpeed();
     }
     setAcceleration(a);
     double v1 = v0 + a * t;
@@ -145,6 +147,12 @@ Action Car::getAction() {
 void Car::setAction(Action a) {
     REQUIRE(this->properlyInitialized(), "Car wasn't initialized when calling setAction");
     Car::action = a;
+}
+
+
+CarData* Car::getData() {
+    REQUIRE(this->properlyInitialized(), "Car wasn't initialized when calling getData");
+    return data;
 }
 //////////////
 

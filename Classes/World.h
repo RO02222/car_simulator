@@ -50,7 +50,15 @@ function:
  * @return: None
 \n REQUIRE(properlyInitialized(), "World wasn't initialized when calling simulateWorld);
 */
-    void simulateWorld(std::ostream &onStream);
+    void simpleSimulateWorld(std::ostream &onStream);
+
+/**
+ * draw the current state of the simulation to the file
+ * @param onStream: a stream where the current state of all cars is written to
+ * @return: None
+\n REQUIRE(properlyInitialized(), "World wasn't initialized when calling simulateWorld);
+*/
+    void graficImpSimulateWorld(std::ostream &onStream);
 
 /**
  * Update the world, update all the roads

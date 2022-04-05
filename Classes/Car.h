@@ -136,6 +136,13 @@ public:
 \n REQUIRE(properlyInitialized(), "Car wasn't initialized when calling setAction");
 */
     void setAction(Action action);
+
+/**
+ * get the data of the car
+ * @return: (CarData*), the data of the car
+\n REQUIRE(properlyInitialized(), "Car wasn't initialized when calling getData");
+*/
+    CarData* getData();
 //////////////
 
 

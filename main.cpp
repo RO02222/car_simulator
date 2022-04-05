@@ -10,13 +10,19 @@
 int main() {
     World* w = input::loadWorldXML("../XML/case1.xml");
     std::ofstream myFile;
+    std::ofstream myFile2;
     myFile.open("../Car_sim.txt");
-    w->simulateWorld(myFile);
-    for (unsigned int i =0; i < 400; i++) {
-        w->updateWorld(0.0166);
-        w->simulateWorld(myFile);
+    myFile2.open("../Car_sim2.txt");
+    for (unsigned int i =0; i < 100; i++) {
+        w->simpleSimulateWorld(myFile);
+        w->graficImpSimulateWorld(myFile2);
+        for (unsigned int _ = 0; _ < 10; _ += 1) {
+            w->updateWorld(0.1);
+        }
     }
     myFile.close();
+    myFile2.close();
+
     delete w;
     return 0;
 }

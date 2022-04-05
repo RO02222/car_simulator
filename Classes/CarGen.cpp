@@ -5,10 +5,11 @@
 // Version     : 1
 //============================================================================
 
-
+#include <stdlib.h>
 #include "CarGen.h"
 #include "Road.h"
 #include "Car.h"
+#include "CarData.h"
 #include "../DesignByContract.h"
 
 CarGen::CarGen(double frequency, Road *road, CarData *data) : road(road), frequency(frequency), random(false), data(data), AllData(NULL) {
@@ -31,22 +32,37 @@ CarGen::CarGen(double frequency, Road *road, std::vector<CarData *>* allData)  :
 
 
 void CarGen::updateCarGen(double t) {
-    REQUIRE(this->properlyInitialized(), "Light wasn't initialized when calling updateCarGen");
+    REQUIRE(this->properlyInitialized(), "CarGen wasn't initialized when calling updateCarGen");
     lastCycle += t;
     if (lastCycle < frequency) {
         return;
     }
     lastCycle -= frequency;
+    if (random){
+        unsigned int v1 = rand() % 10;
+        if (v1 < 4){
+            data = (*AllData)[v1];
+        } else {
+            for (std::vector<CarData *>::iterator alldata = (*AllData).begin();
+                 alldata != (*AllData).end(); alldata++) {
+                if ((*alldata)->getType() == car) {
+                    data = *alldata;
+                    continue;
+                }
+            }
+        }
+        if (data == NULL){
+            data = (*AllData)[0];
+        }
+    }
     std::vector<Car *> carsOnRoad = getRoad()->getCars();
     for (std::vector<Car *>::iterator itC = carsOnRoad.begin(); itC != carsOnRoad.end(); itC++) {
-        if ((*itC)->getDistance() <= 2) {
+        if ((*itC)->getDistance() <= 2*data->getlength()) {
             return;
         }
     }
-    if (!random) {
-        getRoad()->addCar(0, data);
+    getRoad()->addCar(0, data);
     }
-}
 
 
 
