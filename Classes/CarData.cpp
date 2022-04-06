@@ -12,6 +12,7 @@ CarData::CarData(Type type) {
     switch (type) {
         case bus:
             this->type = type;
+            priority = false;
             l = gl_bus;
             vMax = gvMax_bus;
             aMax = gaMax_bus;
@@ -20,6 +21,7 @@ CarData::CarData(Type type) {
             return;
         case fire:
             this->type = type;
+            priority = true;
             l = gl_brandweerwagen;
             vMax = gvMax_brandweerwagen;
             aMax = gaMax_brandweerwagen;
@@ -28,6 +30,7 @@ CarData::CarData(Type type) {
             return;
         case ambulance:
             this->type = type;
+            priority = true;
             l = gl_ziekenwagen;
             vMax = gvMax_ziekenwagen;
             aMax = gaMax_ziekenwagen;
@@ -36,6 +39,7 @@ CarData::CarData(Type type) {
             return;
         case police:
             this->type = type;
+            priority = true;
             l = gl_politiecombi;
             vMax = gvMax_politiecombi;
             aMax = gaMax_politiecombi;
@@ -44,6 +48,7 @@ CarData::CarData(Type type) {
             return;
         default:
             this->type = car;
+            priority = false;
             l = gl_auto;
             vMax = gvMax_auto;
             aMax = gaMax_auto;
@@ -63,6 +68,11 @@ Type CarData::getType() const {
 double CarData::getlength() const {
     REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling getlength");
     return l;
+}
+
+bool CarData::getpriority() const {
+    REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling getpriority");
+    return priority;
 }
 
 double CarData::getvMax() const {

@@ -10,6 +10,7 @@
 
 class Light;
 class Road;
+class Car;
 class BusStop {
     private:
         BusStop* _initCheck;
@@ -18,6 +19,9 @@ class BusStop {
         double position;
         double stoptime;
         double timestopped;
+        Car* currentBus;
+public:
+        bool busey;
     public:
 /**
  * create a BusStop
@@ -28,6 +32,13 @@ class BusStop {
 */
     BusStop(double position, double stoptime, Road* road);
 
+/**
+ * Update the BusStop, changes the first bus his behavior
+ * @param t: time since last update
+ * @return: None
+\n REQUIRE(properlyInitialized(), "BusStop wasn't initialized when calling updateBusStop");
+*/
+    void updateBusStop(double t);
 
 /////////////
 /**

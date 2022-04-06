@@ -8,6 +8,7 @@
 #include "Light.h"
 #include "Car.h"
 #include "Road.h"
+#include "CarData.h"
 #include "../Basic_Values.h"
 #include "../DesignByContract.h"
 
@@ -35,10 +36,13 @@ void Light::updateLight(double t) {
     std::vector<Car *> carsOnRoad = getRoad()->getCars();
     Car *firstCar = NULL;
     for (std::vector<Car *>::iterator itC = carsOnRoad.begin(); itC != carsOnRoad.end(); itC++) {
-        if ((*itC)->getDistance()< getPosition()){
-            if ((*itC)->getDistance() + gStopDistance < getPosition() or (*itC)->getAction() == slow or (*itC)->getAction() == stop){
-                if (firstCar == NULL or (*itC)->getDistance() > firstCar->getDistance()) {
-                    firstCar = (*itC);
+        if (!(*itC)->getData()->getpriority()) {
+            if ((*itC)->getDistance() < getPosition()) {
+                if ((*itC)->getDistance() + gStopDistance < getPosition() or (*itC)->getAction() == slow or
+                    (*itC)->getAction() == stop) {
+                    if (firstCar == NULL or (*itC)->getDistance() > firstCar->getDistance()) {
+                        firstCar = (*itC);
+                    }
                 }
             }
         }

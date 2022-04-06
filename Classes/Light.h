@@ -33,7 +33,7 @@ public:
 
 
 /**
- * Update the traffic light, changes the first cars behavior depending on the lights state
+ * Update the traffic light, changes the first (not priority) car his behavior depending on the lights state
  * @param t: time since last update
  * @return: None
 \n REQUIRE(properlyInitialized(), "Light wasn't initialized when calling updateLight");

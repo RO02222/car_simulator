@@ -56,10 +56,9 @@ void Road::updateRoad(double t) {
     for (std::vector<CarGen *>::iterator itG = carGenIt.begin(); itG != carGenIt.end(); itG++) {
         (*itG)->updateCarGen(t);
     }
-    /*
     for (std::vector<BusStop *>::iterator itB = busStops.begin(); itB != busStops.end(); itB++) {
         (*itB)->updateBusStop(t);
-    }*/
+    }
 }
 
 

@@ -11,6 +11,7 @@ private:
     CarData* _initCheck;
 
     Type type;
+    bool priority;
     double l;
     double vMax;
     double aMax;
@@ -31,6 +32,13 @@ public:
 \n REQUIRE(properlyInitialized(), "CarData wasn't initialized when calling getType);
 */
     Type getType() const;
+
+/**
+ * get the priority of the car
+ * @return: (bool),  the priority of the car
+\n REQUIRE(properlyInitialized(), "CarData wasn't initialized when calling getpriority);
+*/
+    bool getpriority() const;
 
 /**
  * get the length of the car

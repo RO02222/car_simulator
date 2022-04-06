@@ -29,7 +29,7 @@
     <VOERTUIGGENERATOR>
         <baan>Middelheimlaan</baan>
         <frequentie>5</frequentie>
-        <type>None</type>
+        <type>bus</type>
     </VOERTUIGGENERATOR>
 
     <BUSHALTE>
@@ -41,7 +41,7 @@
     <BUSHALTE>
         <baan>Middelheimlaan</baan>
         <positie>100</positie>
-        <wachttijd>20</wachttijd>
+        <wachttijd>5</wachttijd>
     </BUSHALTE>
 
     <KRUISPUNT>
