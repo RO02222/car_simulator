@@ -25,8 +25,9 @@ class CarData;
 class World {
 private:
     World *_initCheck;
-
+public:
     std::ofstream error;
+private:
     std::vector<CarData*> carData;
     std::vector<Junction*> junctions;
     std::vector<Road *> roads;

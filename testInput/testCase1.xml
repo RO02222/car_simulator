@@ -13,6 +13,7 @@
     <VOERTUIG>
         <baan>Middelheimlaan</baan>
         <positie>40</positie>
+        <type>auto</type>
     </VOERTUIG>
 
     <VOERTUIG>

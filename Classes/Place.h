@@ -8,7 +8,22 @@
 
 class Place {
 private:
-    Place* _initCheck;
+    Place* __initCheck;
+
+public:
+/**
+ * create a Place for cars
+ * @return: None
+\n ENSURE(properlyInitialized(), "constructor must end in properlyInitialized state");
+*/
+    Place();
+
+
+/////////////
+public:
+    bool properlyInitialized() const;
+
+/////////////
 };
 
 
