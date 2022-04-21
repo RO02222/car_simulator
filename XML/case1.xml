@@ -3,21 +3,22 @@
         <naam>Middelheimlaan</naam>
         <lengte>400</lengte>
     </BAAN>
+
     <BAAN>
         <naam>Floralienlaan</naam>
-        <lengte>750</lengte>
+        <lengte>500</lengte>
     </BAAN>
 
     <VERKEERSLICHT>
         <baan>Middelheimlaan</baan>
         <positie>400</positie>
-        <cyclus>75</cyclus>
+        <cyclus>20</cyclus>
     </VERKEERSLICHT>
 
     <VOERTUIG>
         <baan>Middelheimlaan</baan>
         <positie>40</positie>
-        <type>bus</type>
+        <type>auto</type>
     </VOERTUIG>
 
     <VOERTUIG>
@@ -29,7 +30,7 @@
     <VOERTUIGGENERATOR>
         <baan>Middelheimlaan</baan>
         <frequentie>5</frequentie>
-        <type>bus</type>
+        <type>None</type>
     </VOERTUIGGENERATOR>
 
     <BUSHALTE>
