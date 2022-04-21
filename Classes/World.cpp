@@ -11,6 +11,7 @@
 #include <vector>
 #include <iterator>
 #include <cstring>
+#include "fstream"
 #include "../Exception/ParserException.h"
 #include "../DesignByContract.h"
 #include "World.h"
@@ -25,6 +26,7 @@
 
 
 World::World() {
+    error.open("../error.txt");
     _initCheck = this;
     time = 0;
 
@@ -40,6 +42,7 @@ World::World() {
 
 World::~World() {
     REQUIRE(properlyInitialized(), "World wasn't initialized when calling ~World");
+    error.close();
     std::vector<Road*> roadIt = getRoads();
     for (std::vector<Road*>::iterator itR = roadIt.begin(); itR != roadIt.end(); itR++) {
         delete (*itR);

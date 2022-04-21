@@ -10,7 +10,6 @@
 #define CAR_SIMULATOR_CAR_H
 class Road;
 class CarData;
-enum Type{car,bus,fire,police,ambulance,none};
 enum Action{fast,slow,stop};
 class Car{
 private:

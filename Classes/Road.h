@@ -10,6 +10,7 @@
 #define CAR_SIMULATOR_ROAD_H
 #include <vector>
 #include <iostream>
+#include "Place.h"
 
 class Light;
 class Car;
@@ -18,7 +19,7 @@ class BusStop;
 class Junction;
 class CarData;
 
-class Road{
+class Road : private Place{
 private:
     Road* _initCheck;
 

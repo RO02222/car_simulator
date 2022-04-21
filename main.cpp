@@ -11,7 +11,6 @@ int main() {
     World* w = input::loadWorldXML("../XML/case1.xml");
     std::ofstream myFile;
     std::ofstream myFile2;
-    error.open("../error.txt");
     myFile.open("../Car_sim.txt");
     myFile2.open("../Car_sim2.txt");
     for (unsigned int i =0; i < 100; i++) {
@@ -21,7 +20,6 @@ int main() {
             w->updateWorld(0.1);
         }
     }
-    error.close();
     myFile.close();
     myFile2.close();
 

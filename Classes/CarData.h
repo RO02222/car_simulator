@@ -4,8 +4,8 @@
 
 #ifndef CAR_SIMULATION_CARDATA_H
 #define CAR_SIMULATION_CARDATA_H
-#include "Car.h"
 
+enum Type{car,bus,fire,police,ambulance,none};
 class CarData {
 private:
     CarData* _initCheck;

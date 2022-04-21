@@ -11,10 +11,12 @@
 #include <vector>
 #include <iostream>
 #include <cmath>
+#include <fstream>
 #include "../tinyxml/tinyxml.h"
 #include "../tinyxml/tinystr.h"
 #include "Road.h"
 #include "CarGen.h"
+#include "CarData.h"
 #include "Car.h"
 
 class Junction;
@@ -22,6 +24,8 @@ class CarData;
 class World {
 private:
     World *_initCheck;
+
+    std::ofstream error;
     std::vector<CarData*> carData;
     std::vector<Junction*> junctions;
     std::vector<Road *> roads;
