@@ -9,9 +9,9 @@
 #include <iostream>
 #include "gtest/gtest.h"
 #include "../Classes/World.h"
-#include "../Classes/Car.h"
 #include "../Classes/Light.h"
-
+#include "../Classes/Car.h"
+#include "../Classes/CarGen.h"
 using namespace std;
 
 class Car_SimDomainTest: public ::testing::Test {
@@ -32,11 +32,13 @@ protected:
     }
 
     // Declares the variables your tests want to use.
-    friend class Car;
     friend class World;
+    friend class Road;
+    friend class Car;
     friend class CarGen;
     friend class Light;
-    friend class Road;
+    friend class BusStop;
+    friend class Junction;
     // You should make the members protected s.t. they can be
     // accessed from sub-classes.
 };

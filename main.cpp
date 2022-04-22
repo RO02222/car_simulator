@@ -24,7 +24,7 @@ int main() {
     std::ofstream myFile2;
     myFile.open("../outputFile/Car_sim.txt");
     myFile2.open("../outputFile/Car_sim2.txt");
-    for (unsigned int i =0; i < 100; i++) {
+    for (unsigned int i =0; i < 1000; i++) {
         w->simpleSimulateWorld(myFile);
         w->graficImpSimulateWorld(myFile2);
 #if VERSION == 14

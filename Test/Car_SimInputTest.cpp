@@ -7,18 +7,14 @@
 
 #include <iostream>
 #include <fstream>
-#include "gtest/gtest.h"
 #include "../Input.h"
-#include "../Exception/ParserException.h"
+#include "gtest/gtest.h"
+#include "../Classes/World.h"
+#include "../Car_SimUtils.h"
+
 
 
 using namespace std;
-
-void Test_error(const char* inputfile, std::string compareFile){
-    World* w = input::loadWorldXML(inputfile);
-    delete w;
-    EXPECT_TRUE(FileCompare("../outputFile/error.txt", compareFile));
-}
 
 
 class Car_SimInputTest: public ::testing::Test {
@@ -40,9 +36,21 @@ protected:
 
     // Declares the variables your tests want to use.
     friend class World;
+    friend class Road;
+    friend class Car;
+    friend class CarGen;
+    friend class Light;
+    friend class BusStop;
+    friend class Junction;
     // You should make the members protected s.t. they can be
     // accessed from sub-classes.
 };
+
+void Test_error(const char* inputfile, std::string compareFile){
+    World* w = input::loadWorldXML(inputfile);
+    delete w;
+    EXPECT_TRUE(FileCompare("../outputFile/error.txt", compareFile));
+}
 
 /**
 Tests InputHappyDay
