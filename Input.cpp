@@ -96,7 +96,7 @@ namespace input {
                 std::cerr << "Failed to load file: invalid <BAAN> : 'missing argument' <lengte>" << std::endl;
                 return;
             }
-            world->addRoad(name, stoi(length));
+            world->addRoad(name, std::stoi(length));
         }
 
 
@@ -151,7 +151,7 @@ namespace input {
                 std::cerr << "Failed to load file: invalid <VERKEERSLICHT> : '<baan>' does not exist" << std::endl;
                 return;
             }
-            road->addLight(stoi(position), stoi(cycle));
+            road->addLight(std::stoi(position), std::stoi(cycle));
         }
 
 
@@ -222,7 +222,7 @@ namespace input {
                 std::cerr << "Failed to load file: invalid <VOERTUIG> : '<baan> does not exist" << std::endl;
                 return;
             }
-            road->addCar(stoi(position),world->getCarData(Type));
+            road->addCar(std::stoi(position),world->getCarData(Type));
         }
 
 
@@ -293,9 +293,9 @@ namespace input {
                 return;
             }
             if (Type == none){
-                road->addCarGen(stoi(frequency),world->getAllData());
+                road->addCarGen(std::stoi(frequency),world->getAllData());
             } else {
-                road->addCarGen(stoi(frequency), world->getCarData(Type));
+                road->addCarGen(std::stoi(frequency), world->getCarData(Type));
             }
         }
 
@@ -350,7 +350,7 @@ namespace input {
                 std::cerr << "Failed to load file: invalid <BUSHALTE> : '<baan>' does not exist" << std::endl;
                 return;
             }
-            road->addBusStop(stoi(position), stoi(stoptime));
+            road->addBusStop(std::stoi(position), std::stoi(stoptime));
         }
 
 
@@ -407,8 +407,8 @@ namespace input {
                 std::cerr << "Failed to load file: invalid <KRUISPUNT> : '<baan>' does not exist" << std::endl;
                 return;
             }
-            world->addJunction(std::pair<Road *, double>(road1, stoi(position1)),
-                               std::pair<Road *, double>(road2, stoi(position2)));
+            world->addJunction(std::pair<Road *, double>(road1, std::stoi(position1)),
+                               std::pair<Road *, double>(road2, std::stoi(position2)));
         }
     }
 }

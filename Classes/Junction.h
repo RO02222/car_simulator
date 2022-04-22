@@ -11,11 +11,10 @@
 
 #include <iostream>
 #include <vector>
-#include "Place.h"
 
 class Road;
 class Car;
-class Junction : private Place {
+class Junction {
 private:
     Junction* _initCheck;
     std::pair<Road* , double> road1;

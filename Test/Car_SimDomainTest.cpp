@@ -45,7 +45,7 @@ protected:
 Tests if every object is initialised right.
 */
 TEST_F(Car_SimDomainTest, Initialiser) {
-    World w = World();
+    World* w = new World();
     Road r1 = Road("Middelheimlaan", 100);
     Road r2 = Road("Groenenborgerlaan", 100);
     r1.addCar(25);

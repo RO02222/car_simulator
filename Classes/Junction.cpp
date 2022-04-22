@@ -62,8 +62,7 @@ void Junction::setPosition(double p, int n) {
 
 
 //////////////
-
-bool Junction::properlyInitialized () const{
+bool Junction::properlyInitialized() const{
     return _initCheck == this;
 }
 //////////////

@@ -45,7 +45,7 @@ protected:
 Tests Initialiser: test if every object is initialised right.
 */
 TEST_F(WorldDomainTest, Initialiser) {
-    World w = World();
+    World* w = new World();
 
-    EXPECT_EQ(w.getTime(), 0);
+    EXPECT_EQ(w->getTime(), 0);
 }

@@ -8,21 +8,17 @@
 #include <iostream>
 #include <fstream>
 #include "gtest/gtest.h"
+#include "../Input.h"
 #include "../Exception/ParserException.h"
 
 
 using namespace std;
 
-//source: https://github.com/google/googletest/issues/952
-#define EXPECT_THROW_WITH_MESSAGE(stmt, etype, whatstring) EXPECT_THROW( \
-        try { \
-            stmt; \
-        } catch (const etype& ex) { \
-            EXPECT_EQ(std::string(ex.what()), whatstring); \
-            throw; \
-        } \
-    , etype)
-
+void Test_error(const char* inputfile, std::string compareFile){
+    World* w = input::loadWorldXML(inputfile);
+    delete w;
+    EXPECT_TRUE(FileCompare("../outputFile/error.txt", compareFile));
+}
 
 
 class Car_SimInputTest: public ::testing::Test {
@@ -56,20 +52,21 @@ TEST_F(Car_SimInputTest, InputHappyDay) {
     w.loadWorld("../testInput/testCase1.xml");
 
 
-    EXPECT_EQ(w.getRoads()[0]->getName(), "Middelheimlaan");
-    EXPECT_EQ(w.getRoads()[0]->getLength(), 400);
+    EXPECT_EQ(w->getRoads()[0]->getName(), "Middelheimlaan");
+    EXPECT_EQ(w->getRoads()[0]->getLength(), 400);
 
-    EXPECT_EQ(w.getRoads()[0]->getLights()[0]->getRoad()->getName(), "Middelheimlaan");
-    EXPECT_EQ(w.getRoads()[0]->getLights()[0]->getPosition(), 400);
-    EXPECT_EQ(w.getRoads()[0]->getLights()[0]->getCycle(), 20);
+    EXPECT_EQ(w->getRoads()[0]->getLights()[0]->getRoad()->getName(), "Middelheimlaan");
+    EXPECT_EQ(w->getRoads()[0]->getLights()[0]->getPosition(), 400);
+    EXPECT_EQ(w->getRoads()[0]->getLights()[0]->getCycle(), 20);
 
-    EXPECT_EQ(w.getRoads()[0]->getCars()[0]->getRoad()->getName(), "Middelheimlaan");
-    EXPECT_EQ(w.getRoads()[0]->getCars()[0]->getDistance(), 40);
-    EXPECT_EQ(w.getRoads()[0]->getCars()[1]->getRoad()->getName(), "Middelheimlaan");
-    EXPECT_EQ(w.getRoads()[0]->getCars()[1]->getDistance(), 20);
+    EXPECT_EQ(w->getRoads()[0]->getCars()[0]->getRoad()->getName(), "Middelheimlaan");
+    EXPECT_EQ(w->getRoads()[0]->getCars()[0]->getDistance(), 40);
+    EXPECT_EQ(w->getRoads()[0]->getCars()[1]->getRoad()->getName(), "Middelheimlaan");
+    EXPECT_EQ(w->getRoads()[0]->getCars()[1]->getDistance(), 20);
 
-    EXPECT_EQ(w.getRoads()[0]->getCarGen()[0]->getRoad()->getName(), "Middelheimlaan");
-    EXPECT_EQ(w.getRoads()[0]->getCarGen()[0]->getFrequency(), 5);
+    EXPECT_EQ(w->getRoads()[0]->getCarGen()[0]->getRoad()->getName(), "Middelheimlaan");
+    EXPECT_EQ(w->getRoads()[0]->getCarGen()[0]->getFrequency(), 5);
+    delete w;
 }
 
 /**
@@ -123,81 +120,21 @@ TEST_F(Car_SimInputTest, InputMixed2) {
 /**
 Tests InputNoWorld: test if xml read without a world part works.
 */
-TEST_F(Car_SimInputTest, InputNoWorld) {
-    World w = World();
-
-    EXPECT_THROW_WITH_MESSAGE(w.loadWorld("../testInput/testFail1.xml"),ParserException ,
-                              "Failed to load file: <World> ... </World>");
+TEST_F(Car_SimInputTest, InputFail) {
+    //InputNoWorld: test if xml read without a world part works.
+    Test_error("../testInput/testFail1.xml","../testOutput/testFail1.txt");
+    //InputNoRootTest if xml read without a root works.
+    Test_error("../testInput/testFail2.xml","../testOutput/testFail2.txt");
+    //InputNoLength: test if xml read without a length in baan works.
+    Test_error("../testInput/testFail3.xml","../testOutput/testFail3.txt");
+    //InputLightToFar: test if xml read works when the position of the light is not on the road.
+    Test_error("../testInput/testFail4.xml","../testOutput/testFail4.txt");
+    //InputAlreadyExist: test if xml read works when the name of the road already exists.
+    Test_error("../testInput/testFail5.xml","../testOutput/testFail5.txt");
+    //InputNoPosition: test if xml read works when there is no position given for the light.
+    Test_error("../testInput/testFail6.xml","../testOutput/testFail6.txt");
+    //InputNoBaan: test if xml read works when there is no baan given for the CarGenerator.
+    Test_error("../testInput/testFail7.xml","../testOutput/testFail7.txt");
+    //InputCarToFar: test if xml read works when the position of the car is not on the road.
+    Test_error("../testInput/testFail8.xml","../testOutput/testFail8.txt");
 }
-
-/**
-Tests InputNoRoot: test if xml read without a root works.
-*/
-TEST_F(Car_SimInputTest, InputNoRoot) {
-    World w = World();
-
-    EXPECT_THROW_WITH_MESSAGE(w.loadWorld("../testInput/testFail2.xml"),ParserException ,
-                              "Failed to load file: No root element.");
-}
-
-/**
-Tests InputNoLength: test if xml read without a length in baan works.
-*/
-TEST_F(Car_SimInputTest, InputNoLength) {
-    World w = World();
-
-    EXPECT_THROW_WITH_MESSAGE(w.loadWorld("../testInput/testFail3.xml"),ParserException ,
-                              "Failed to load file: invalid <BAAN> : 'missing argument' <lengte>");
-}
-
-/**
-Tests InputLightToFar: test if xml read works when the position of the light is not on the road.
-*/
-TEST_F(Car_SimInputTest, InputLightToFar) {
-    World w = World();
-
-    EXPECT_THROW_WITH_MESSAGE(w.loadWorld("../testInput/testFail4.xml"),ParserException ,
-                              "Failed to load file: invalid <VOERTUIG> : '<baan> is not long enough");
-}
-
-/**
-Tests InputAlreadyExist: test if xml read works when the name of the road already exists.
-*/
-TEST_F(Car_SimInputTest, InputAlreadyExist) {
-    World w = World();
-
-    EXPECT_THROW_WITH_MESSAGE(w.loadWorld("../testInput/testFail5.xml"),ParserException ,
-                              "Failed to add road: road already exist");
-}
-
-/**
-Tests InputNoPosition: test if xml read works when there is no position given for the light.
-*/
-TEST_F(Car_SimInputTest, InputNoPosition) {
-    World w = World();
-
-    EXPECT_THROW_WITH_MESSAGE(w.loadWorld("../testInput/testFail6.xml"),ParserException ,
-                              "Failed to load file: invalid <VERKEERSLICHT> : 'missing argument' <positie>");
-}
-
-/**
-Tests InputNoBaan: test if xml read works when there is no baan given for the CarGenerator.
-*/
-TEST_F(Car_SimInputTest, InputNoBaan) {
-    World w = World();
-
-    EXPECT_THROW_WITH_MESSAGE(w.loadWorld("../testInput/testFail7.xml"),ParserException ,
-                              "Failed to load file: invalid <VOERTUIGGENERATOR> : 'missing argument' <baan>");
-}
-
-/**
-Tests InputCarToFar: test if xml read works when the position of the car is not on the road.
-*/
-TEST_F(Car_SimInputTest, InputCarToFar) {
-    World w = World();
-
-    EXPECT_THROW_WITH_MESSAGE(w.loadWorld("../testInput/testFail8.xml"),ParserException ,
-                              "Failed to load file: invalid <VOERTUIG> : '<baan> is not long enough");
-}
-
-

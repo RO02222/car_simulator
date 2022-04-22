@@ -13,7 +13,7 @@
 #include "BusStop.h"
 #include "../DesignByContract.h"
 
-Road::Road(const std::string &name, double l) : Place(), name(name), length(l) {
+Road::Road(const std::string &name, double l) : name(name), length(l) {
     _initCheck = this;
     if (l < 1){
         length = 1;
@@ -63,7 +63,7 @@ void Road::updateRoad(double t) {
 
 
 
-void Road::removeCars(Car* carToDelete) {
+void Road::removeCar(Car* carToDelete) {
     REQUIRE(this->properlyInitialized(), "Road wasn't initialized when calling removeCars");
     std::vector<Car *> carIt = getCars();
     for (unsigned int i = 0; i<cars.size();i++) {
@@ -218,10 +218,6 @@ void Road::setbusStops(const std::vector<BusStop *> &BusStops) {
 
 //////////////
 bool Road::properlyInitialized() const{
-    if (!Place::properlyInitialized()){
-        std::cout<<"rrrrrrrreeeeeeeeeee";
-        return false;
-    }
     return _initCheck == this;
 }
 //////////////

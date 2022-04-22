@@ -85,8 +85,8 @@ Tests addCar: test if function addCar works properly.
 */
 TEST_F(RoadDomainTest, addCar){
     Road r1 = Road("Middelheimlaan", 100);
-
-    r1.addCar(10);
+    World* w = new World();
+    r1.addCar(10,w->getCarData(car));
     EXPECT_EQ(r1.getCars()[0]->getDistance(), 10);
 
     r1.addCar(50);

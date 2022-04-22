@@ -13,47 +13,47 @@ CarData::CarData(Type type) {
         case bus:
             this->type = type;
             priority = false;
-            l = gl_bus;
-            vMax = gvMax_bus;
-            aMax = gaMax_bus;
-            bMax = gbMax_bus;
-            fMin = gfMin_bus;
+            l = 12;
+            vMax = 11.4;
+            aMax = 1.22;
+            bMax = 4.29;
+            fMin = 12;
             return;
         case fire:
             this->type = type;
             priority = true;
-            l = gl_brandweerwagen;
-            vMax = gvMax_brandweerwagen;
-            aMax = gaMax_brandweerwagen;
-            bMax = gbMax_brandweerwagen;
-            fMin = gfMin_brandweerwagen;
+            l = 10;
+            vMax = 14.6;
+            aMax = 1.33;
+            bMax = 4.56;
+            fMin = 10;
             return;
         case ambulance:
             this->type = type;
-            priority = true;
-            l = gl_ziekenwagen;
-            vMax = gvMax_ziekenwagen;
-            aMax = gaMax_ziekenwagen;
-            bMax = gbMax_ziekenwagen;
-            fMin = gfMin_ziekenwagen;
+            priority = false;
+            l = 8;
+            vMax = 15.5;
+            aMax = 1.44;
+            bMax = 4.47;
+            fMin = 8;
             return;
         case police:
             this->type = type;
             priority = true;
-            l = gl_politiecombi;
-            vMax = gvMax_politiecombi;
-            aMax = gaMax_politiecombi;
-            bMax = gbMax_politiecombi;
-            fMin = gfMin_politiecombi;
+            l = 6;
+            vMax = 17.2;
+            aMax = 1.55;
+            bMax = 4.92;
+            fMin = 6;
             return;
         default:
             this->type = car;
             priority = false;
-            l = gl_auto;
-            vMax = gvMax_auto;
-            aMax = gaMax_auto;
-            bMax = gbMax_auto;
-            fMin = gfMin_auto;
+            l = 4;
+            vMax = 16.6;
+            aMax = 1.44;
+            bMax = 4.61;
+            fMin = 4;
             return;
     }
 }

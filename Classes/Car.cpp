@@ -67,7 +67,7 @@ void Car::updateCar(double t) {
     setSpeed(v1);
     setDistance(distance + v0 * t + a * (pow(t, 2) / 2.0));
     if (getDistance() > road->getLength()) {
-        road->removeCars(this);
+        road->removeCar(this);
     }
     return;
 }

@@ -10,7 +10,6 @@
 #define CAR_SIMULATOR_ROAD_H
 #include <vector>
 #include <iostream>
-#include "Place.h"
 
 class Light;
 class Car;
@@ -19,7 +18,7 @@ class BusStop;
 class Junction;
 class CarData;
 
-class Road : private Place{
+class Road {
 private:
     Road* _initCheck;
 
@@ -56,7 +55,7 @@ public:
  * @return: None
 \n REQUIRE(properlyInitialized(), "Road wasn't initialized when calling removeCars);
 */
-    void removeCars(Car* car);
+    void removeCar(Car* car);
 
 
 
@@ -207,6 +206,20 @@ public:
 \n REQUIRE(properlyInitialized(), "Road wasn't initialized when calling setbusStops);
 */
     void setbusStops(const std::vector<BusStop *> &BusStops);
+
+/**
+ * get all the BusStops on the the road
+ * @return: (std::vector<BusStops*>), all the BusStops on the the road
+\n REQUIRE(properlyInitialized(), "Road wasn't initialized when calling getbusStops);
+*/
+    const std::vector<Junction *> &getJunctions();
+/**
+ * change the BusStops of the road
+ * @param BusStops: the new BusStops of the road
+ * @return: None
+\n REQUIRE(properlyInitialized(), "Road wasn't initialized when calling setbusStops);
+*/
+    void setJunctions(const std::vector<Junction *> &Junctions);
 /////////////
 
 

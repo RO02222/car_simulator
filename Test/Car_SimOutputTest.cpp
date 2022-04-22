@@ -12,8 +12,6 @@
 #include "../Car_SimUtils.h"
 
 
-using namespace std;
-
 class Car_SimOutputTest: public ::testing::Test {
 protected:
     // You should make the members protected s.t. they can be
@@ -36,6 +34,39 @@ protected:
     // You should make the members protected s.t. they can be
     // accessed from sub-classes.
 };
+
+void Test_Simulation(const char* inputfile, std::string compareFile, bool graphic, std::string errorFile = "../testOutput/emptyFile.txt") {
+    World *w = input::loadWorldXML(inputfile);
+    std::ofstream myFile;
+    myFile.open("../Car_sim.txt");
+    if (graphic){
+        w->graficImpSimulateWorld(myFile);
+    }
+    else{
+        w->simpleSimulateWorld(myFile);
+    }
+    for (unsigned int i =0; i < 200; i++) {
+        for (unsigned int _ = 0; _ < 50; _++) {
+            w->updateWorld(0.01);
+        }
+        if(graphic){
+            w->graficImpSimulateWorld(myFile);
+        }
+        else{
+            w->simpleSimulateWorld(myFile);
+        }
+    }
+    myFile.close();
+    delete w;
+    if(graphic){
+        EXPECT_TRUE(FileCompare("../Car_sim.txt", compareFile));
+    }
+    else{
+        EXPECT_TRUE(FileCompare("../Car_sim2.txt", compareFile));
+    }
+    EXPECT_TRUE(FileCompare("../error.txt", errorFile));
+}
+
 
 // Tests the compare files
 TEST_F(Car_SimOutputTest, FileCompare) {
@@ -151,23 +182,8 @@ TEST_F(Car_SimOutputTest, FileExtreme) {
 /**
 Tests FileSimulation: test if the output is right for many updates of the world, with the given simulation update time.
 */
-TEST_F(Car_SimOutputTest, FileSimulation) {
-    World* w = new World();
-    try {
-        w->loadWorld("../XML/case2.xml");
-    }
-    catch(std::exception* e) {
-        std::cerr<<e->what()<<std::endl;
-    }
-    std::ofstream myFile;
-    myFile.open("../Car_sim.txt");
-    w->simulateWorld(myFile);
-    for (unsigned int i =0; i < 400; i++) {
-        w->updateWorld(0.0166);
-        w->simulateWorld(myFile);
-    }
-    myFile.close();
-    delete w;
-
-    EXPECT_TRUE(FileCompare("../Car_sim.txt", "../testOutput/testOutput3.txt"));
+TEST_F(Car_SimOutputTest, GraphicFileOutputHappyDay) {
+    Test_Simulation("../XML/case2.xml",  "../testOutput/testOutput1.0.txt", false);
 }
+
+
