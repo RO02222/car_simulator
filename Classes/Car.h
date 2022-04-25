@@ -37,13 +37,21 @@ public:
 /**
  * Update the Car his position, speed and acceleration
  * @param t: time since last update
+ * @param onJunction: if car is near Junction
  * @return: None
 \n REQUIRE(properlyInitialized(), "Car wasn't initialized when calling setAcceleration");
 */
-    void updateCar(double t);
+    void updateCar(double t, bool onJunction = false);
 
 
-
+/**
+ * move the Car to a onother road
+ * @param road: the new road
+ * @param position: the new position of the car
+ * @return: None
+\n REQUIRE(properlyInitialized(), "Car wasn't initialized when calling moveCar");
+*/
+    void moveCar(Road* road, double position);
 
 
 
@@ -60,10 +68,10 @@ public:
 */
     Road *getRoad() const;
 
-protected:
+
 /**
- * change the road of the CarGen
- * @param road: the new road of the CarGen
+ * change the road of the Car
+ * @param road: the new road of the CarG
  * @return: None
 \n REQUIRE(properlyInitialized(), "Car wasn't initialized when calling setRoad");
 */

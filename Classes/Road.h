@@ -29,7 +29,7 @@ private:
     std::vector<Car*> cars;
     std::vector<CarGen*> carGen;
     std::vector<BusStop*> busStops;
-    std::vector<Junction*> junctions;
+    std::vector<std::pair<Junction*,double*> > junctions;
 public:
 /**
  * create a road
@@ -55,6 +55,14 @@ public:
  * @return: None
 \n REQUIRE(properlyInitialized(), "Road wasn't initialized when calling removeCars);
 */
+    void deleteCar(Car* car);
+
+/**
+ * remove a car from the road.
+ * @param car: the car that needs to be removed
+ * @return: None
+\n REQUIRE(properlyInitialized(), "Road wasn't initialized when calling removeCars);
+*/
     void removeCar(Car* car);
 
 
@@ -63,7 +71,7 @@ public:
  * Update the road, update everything on the road: Cars, light, CarGen.
  * @param t: time since last update
  * @return: None
-\n REQUIRE(properlyInitialized(), "Car wasn't initialized when calling setAcceleration");
+\n REQUIRE(properlyInitialized(), "Car wasn't initialized when calling updateRoad");
 */
     void updateRoad(double t);
 
@@ -87,6 +95,13 @@ public:
 \n REQUIRE(properlyInitialized(), "Road wasn't initialized when calling addCars);
 */
     void addCar(double distance, CarData* data);
+/**
+ * add a car to the road
+ * @param car: the new car car on the road
+ * @return: None
+\n REQUIRE(properlyInitialized(), "Road wasn't initialized when calling addCars);
+*/
+    void addCar(Car* car);
 /**
  * add a new carGen at the beginning of the road
  * @param frequency: frequency of the carGen
@@ -113,12 +128,11 @@ public:
     void addBusStop(double position, double stoptime);
 /**
  * add a Junction to the road
- * @param position: position of the junction
- * @param junction: the Junction
+ * @param junction: the Junction and the position
  * @return: None
 \n REQUIRE(properlyInitialized(), "Road wasn't initialized when calling addJunction);
 */
-    void addJunction(double position, Junction* junction);
+    void addJunction(std::pair<Junction*,double*> junction);
 /////////////
 
 
@@ -212,14 +226,14 @@ public:
  * @return: (std::vector<BusStops*>), all the BusStops on the the road
 \n REQUIRE(properlyInitialized(), "Road wasn't initialized when calling getbusStops);
 */
-    const std::vector<Junction *> &getJunctions();
+    const std::vector<std::pair<Junction*,double*> >  &getJunctions();
 /**
  * change the BusStops of the road
  * @param BusStops: the new BusStops of the road
  * @return: None
 \n REQUIRE(properlyInitialized(), "Road wasn't initialized when calling setbusStops);
 */
-    void setJunctions(const std::vector<Junction *> &Junctions);
+    void setJunctions(const std::vector<std::pair<Junction*,double*> >  &Junctions);
 /////////////
 
 

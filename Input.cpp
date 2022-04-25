@@ -357,10 +357,8 @@ namespace input {
         void loadJunctionXML(World *world, TiXmlElement *elem1) {
             REQUIRE(world->properlyInitialized(),
                     "World wasn't initialized when calling private function of loadWorldXML");
-            std::string roadName1 = "";
-            std::string roadName2 = "";
-            std::string position1 = "";
-            std::string position2 = "";
+            std::vector<std::string> roadNames;
+            std::vector<std::string> positions;
             for (TiXmlElement *elem2 = elem1->FirstChildElement(); elem2 != 0; elem2 = elem2->NextSiblingElement()) {
                 if (elem2->GetText() == NULL) {
                     std::cerr << "Failed to load file: <" + (std::string) elem2->Value() + "> has no value"
@@ -369,14 +367,8 @@ namespace input {
                 }
                 if ((std::string) elem2->Value() == "baan") { ;
                     if (elem2->LastAttribute() != 0) {
-                        if (roadName1.empty()) {
-                            roadName1 = elem2->GetText();
-                            position1 = elem2->LastAttribute()->Value();
-                            continue;
-                        }
-                        roadName2 = elem2->GetText();
-                        position2 = elem2->LastAttribute()->Value();
-                        continue;
+                        roadNames.push_back(elem2->GetText());
+                        positions.push_back(elem2->LastAttribute()->Value());
                     }
                 }
                 std::cerr << "Failed to load file: <KRUISPUNT> : <"
@@ -390,17 +382,20 @@ namespace input {
                 std::cerr << "Failed to load file: invalid <KRUISPUNT> : 'missing argument' <baan>" << std::endl;
                 return;
             }
-            Road *road1 = NULL;
-            Road *road2 = NULL;
+            std::vector<std::pair<Road*, double> >roads;
             std::vector<Road *> roadIt = world->getRoads();
-            for (std::vector<Road *>::iterator it = roadIt.begin(); it != roadIt.end(); it++) {
-                if ((*it)->getName() == roadName1) {
-                    road1 = (*it);
-                    continue;
+            unsigned int n = 0;
+            for (std::vector<Road *>::iterator it = roadIt.begin(); it != roadIt.end(); it++,n++) {
+                bool found = false;
+                for (unsigned int i = 0; i < roadNames.size(); i++){
+                    if ((*it)->getName() == roadNames[i]){
+                        roads.push_back(std::pair<Road*, double> (*it,std::stoi(positions[n])));
+                        found = true;
+                        break;
+                    }
                 }
-                if ((*it)->getName() == roadName2) {
-                    road2 = (*it);
-                    continue;
+                if (!found){
+                        world->error << "Failed to load file: invalid <KRUISPUNT> : '<baan>' does not exist" << std::endl;
                 }
             }
             if (road1 == NULL or road2 == NULL) {

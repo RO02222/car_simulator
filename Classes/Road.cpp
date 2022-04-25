@@ -5,13 +5,15 @@
 // Version     : 1
 //============================================================================
 
-
+#include <cmath>
 #include "Road.h"
 #include "Light.h"
 #include "Car.h"
 #include "CarGen.h"
 #include "BusStop.h"
+#include "Junction.h"
 #include "../DesignByContract.h"
+#include "../Basic_Values.h"
 
 Road::Road(const std::string &name, double l) : name(name), length(l) {
     _initCheck = this;
@@ -35,18 +37,27 @@ Road::~Road() {
     for (std::vector<CarGen *>::iterator itG = carGenIt.begin(); itG != carGenIt.end(); itG++) {
         delete(*itG);
     }
-    std::vector<BusStop *> busStopsIt = getBusStops();
-    for (std::vector<BusStop *>::iterator itB = busStopsIt.begin(); itB != busStopsIt.end(); itB++) {
+    std::vector<BusStop *> busStopIt = getBusStops();
+    for (std::vector<BusStop *>::iterator itB = busStopIt.begin(); itB != busStopIt.end(); itB++) {
         delete(*itB);
     }
 }
 
 
 void Road::updateRoad(double t) {
-    REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling updateWorld");
+    REQUIRE(this->properlyInitialized(), "Road wasn't initialized when calling updateRoad");
     std::vector<Car *> carIt = getCars();
     for (std::vector<Car *>::iterator itC = carIt.begin(); itC != carIt.end(); itC++) {
-        (*itC)->updateCar(t);
+        bool update = true;
+        for (unsigned int i = 0; i < junctions.size(); i++) {
+            if (std::abs((*itC)->getDistance() - *junctions[i].second) < gStopDistance) {
+                update = false;
+                break;
+            }
+        }
+        if (update) {
+            (*itC)->updateCar(t);
+        }
     }
     std::vector<Light *> lightIt = getLights();
     for (std::vector<Light *>::iterator itL = lightIt.begin(); itL != lightIt.end(); itL++) {
@@ -63,13 +74,24 @@ void Road::updateRoad(double t) {
 
 
 
-void Road::removeCar(Car* carToDelete) {
+void Road::deleteCar(Car* car) {
     REQUIRE(this->properlyInitialized(), "Road wasn't initialized when calling removeCars");
     std::vector<Car *> carIt = getCars();
     for (unsigned int i = 0; i<cars.size();i++) {
-        if (cars[i] == carToDelete){
+        if (cars[i] == car){
             cars.erase(cars.begin()+i);
-            delete carToDelete;
+            delete car;
+            return;
+        }
+    }
+}
+
+void Road::removeCar(Car* car) {
+    REQUIRE(this->properlyInitialized(), "Road wasn't initialized when calling removeCars");
+    std::vector<Car *> carIt = getCars();
+    for (unsigned int i = 0; i<cars.size();i++) {
+        if (cars[i] == car){
+            cars.erase(cars.begin()+i);
             return;
         }
     }
@@ -88,7 +110,6 @@ void Road::addLight(double position, double cycle) {
     lights.push_back(new Light(position, cycle,this));
 }
 
-
 void Road::addCar(double distance, CarData* data) {
     REQUIRE(this->properlyInitialized(), "Road wasn't initialized when calling addCar");
     if (distance > getLength() or distance < 0) {
@@ -98,6 +119,11 @@ void Road::addCar(double distance, CarData* data) {
     Road::cars.push_back(new Car (distance, data, this));
 }
 
+void Road::addCar(Car *car) {
+    REQUIRE(this->properlyInitialized(), "Road wasn't initialized when calling addCar");
+    cars.push_back(car);
+    car->setRoad(this);
+}
 
 void Road::addCarGen(double frequency, CarData* data) {
     REQUIRE(this->properlyInitialized(), "Road wasn't initialized when calling addCarGen");
@@ -129,9 +155,9 @@ void Road::addBusStop(double position, double stoptime) {
 }
 
 
-void Road::addJunction(double position, Junction *junction) {
+void Road::addJunction(std::pair<Junction*, double*> junction) {
     REQUIRE(this->properlyInitialized(), "Road wasn't initialized when calling addJuction");
-    if (position > getLength() or position < 0) {
+    if (*junction.second > getLength() or *junction.second < 0) {
         std::cerr<<"Failed to add Junction: position is not on the road"<<std::endl;
         return;
     }
@@ -211,6 +237,18 @@ const std::vector<BusStop *> &Road::getBusStops() {
 void Road::setbusStops(const std::vector<BusStop *> &BusStops) {
     REQUIRE(this->properlyInitialized(), "Road wasn't initialized when calling setBusStops");
     Road::busStops = BusStops;
+}
+
+
+const std::vector<std::pair<Junction *, double *> > &Road::getJunctions() {
+    REQUIRE(this->properlyInitialized(), "Road wasn't initialized when calling getJunctions");
+    return junctions;
+}
+
+
+void Road::setJunctions(const std::vector<std::pair<Junction *, double *> > &Junctions) {
+    REQUIRE(this->properlyInitialized(), "Road wasn't initialized when calling setJunctions");
+    Road::junctions = Junctions;
 }
 /////////////
 

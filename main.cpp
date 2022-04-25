@@ -24,14 +24,17 @@ int main() {
     std::ofstream myFile2;
     myFile.open("../outputFile/Car_sim.txt");
     myFile2.open("../outputFile/Car_sim2.txt");
+#if VERSION == 14
+    std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+#endif
     for (unsigned int i =0; i < 1000; i++) {
         w->simpleSimulateWorld(myFile);
         w->graficImpSimulateWorld(myFile2);
 #if VERSION == 14
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        std::this_thread::sleep_for(std::chrono::milliseconds(200));
 #endif
-        for (unsigned int _ = 0; _ < 10; _ += 1) {
-            w->updateWorld(0.1);
+        for (unsigned int _ = 0; _ < 5; _ += 1) {
+            w->updateWorld(0.05);
         }
     }
     myFile.close();

@@ -11,6 +11,7 @@
 #include "../Basic_Values.h"
 #include "../DesignByContract.h"
 #include "Road.h"
+#include "Junction.h"
 #include <cmath>
 
 Car::Car(double distance, CarData* data, Road* road) : road(road), distance(distance) {
@@ -25,7 +26,7 @@ Car::Car(double distance, CarData* data, Road* road) : road(road), distance(dist
 }
 
 
-void Car::updateCar(double t) {
+void Car::updateCar(double t, bool onJunction) {
     REQUIRE(this->properlyInitialized(), "Car wasn't initialized when calling updateCar");
     if (getAction() == fast) {
         maxSpeed = data->getvMax();
@@ -62,18 +63,33 @@ void Car::updateCar(double t) {
     if (v1 < 0) {
         setDistance(distance - pow(v0, 2) / (2 * a));
         setSpeed(0);
-        return;
+    } else {
+        setSpeed(v1);
+        setDistance(distance + v0 * t + a * (pow(t, 2) / 2.0));
     }
-    setSpeed(v1);
-    setDistance(distance + v0 * t + a * (pow(t, 2) / 2.0));
-    if (getDistance() > road->getLength()) {
-        road->removeCar(this);
+    //near Junction
+    if (!onJunction) {
+        std::vector<std::pair<Junction *, double *> > junctions = road->getJunctions();
+        for (unsigned int i = 0; i < junctions.size(); i++) {
+            if (std::abs(distance - *junctions[i].second) < gStopDistance) {
+                junctions[i].first->addCar(this, true);
+                return;
+            }
+        }
+        //car off the road
+        if (getDistance() > road->getLength()) {
+            road->deleteCar(this);
+        }
     }
-    return;
 }
 
 
-
+void Car::moveCar(Road *r, double position) {
+    road->removeCar(this);
+    road = r;
+    distance = position;
+    road->addCar(this);
+}
 
 
 //////////////

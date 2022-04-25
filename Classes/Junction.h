@@ -17,30 +17,41 @@ class Car;
 class Junction {
 private:
     Junction* _initCheck;
-    std::pair<Road* , double> road1;
-    std::pair<Road* , double> road2;
-    std::vector<Car*> cars;
+    std::vector<std::pair<Road* , double> > roads;
+    std::vector<std::pair<Car*,bool> > cars;
 public:
 /**
  * create a Junction
- * @param R1: the first road of the Junction
- * @param R2: the second road of the Junction
+ * @param roads: the roads connected to the junction
  * @return: None
 \n ENSURE(properlyInitialized(), "constructor must end in properlyInitialized state");
 */
-    Junction(std::pair<Road* , double> R1,std::pair<Road* , double> R2);
+    Junction(std::vector<std::pair<Road* , double> > roads);
 
 
+/**
+ * Update the junction, update cars near the junction and switch lanes.
+ * @param t: time since last update
+ * @return: None
+\n REQUIRE(properlyInitialized(), "Junction wasn't initialized when calling updateJunction");
+*/
+    void updateJunction(double t);
 
-
-
+/**
+ * add a car the junction, junction takes control of the car.
+ * @param car: new car on the Junction
+ * @param updated: already updated
+ * @return: None
+\n REQUIRE(properlyInitialized(), "Junction wasn't initialized when calling addCar");
+*/
+    void addCar(Car* car, bool updated);
 
 
 
 
 /////////////
 /**
- * get the first road of the junction
+ * get the n'th road of the junction (starting from 0)
  * @param n: the n road of the Junction
  * @return: (Road*), the n road of the junction
 \n REQUIRE(properlyInitialized(), "Junction wasn't initialized when calling getRoad");
@@ -50,7 +61,7 @@ public:
 
 protected:
 /**
- * change the n road of the Junction
+ * change the n'th road of the Junction (starting from 0)
  * @param road: the new road of the Junction
  * @param n: the n road of the Junction
  * @return: None

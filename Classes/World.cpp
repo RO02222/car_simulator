@@ -183,7 +183,7 @@ void World::graficImpSimulateWorld(std::ostream &onStream) {
         //////////////////
 #else
         //////////////////
-        std::cout << i << " " << std::left << std::setw(nameWidth) << std::setfill(separator) << (*itR)->getName();
+        std::cout << i << " " << std::left << std::setw(nameWidth - 1 - ceil(log10(i + 1))) << std::setfill(separator) << (*itR)->getName();
         std::cout << std::left << std::setw(4) << std::setfill(separator) << "|";
         std::cout << std::left << std::setw(4) << std::setfill(separator) << road << std::endl;
         //////////////////
@@ -237,6 +237,10 @@ void World::updateWorld(double t) {
     for (std::vector<Road *>::iterator itR = roadIt.begin(); itR != roadIt.end(); itR++) {
         (*itR)->updateRoad(t);
     }
+    std::vector<Junction *> junctionIt = getJunctions();
+    for (std::vector<Junction *>::iterator itJ = junctionIt.begin(); itJ != junctionIt.end(); itJ++) {
+        (*itJ)->updateJunction(t);
+    }
 }
 
 
@@ -272,6 +276,7 @@ void World::addRoad(std::string name, double length) {
     roads.push_back(new Road(name,length));
 }
 
+
 const std::vector<Junction *> &World::getJunctions() {
     REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling getJunctions");
     return junctions;
@@ -283,14 +288,12 @@ void World::setJunctions(const std::vector<Junction *> & junction) {
     World::junctions = junction;
 }
 
-void World::addJunction(std::pair<Road* , double> road1,std::pair<Road* , double> road2) {
-    if (road1.second > road1.first->getLength() or road2.second > road2.first->getLength()
-            or road1.second < 0 or road2.second < 0) {
-        std::cerr << "Failed to add Junction: position is not on the road" << std::endl;
-        return;
-    }
-    junctions.push_back(new Junction(road1,road2));
+
+void World::addJunction(std::vector<std::pair<Road* , double> > road) {
+    REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling addJuction");
+    junctions.push_back( new Junction(road) );
 }
+
 
 double World::getTime() const {
     REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling getTime");

@@ -103,6 +103,7 @@ public:
 */
     void addRoad(std::string name, double length);
 
+
 /**
  * get all the Junctions of the simulationWorld
  * @return: (std::vector<Junction*>), the Junctions in the simulationWorld
@@ -119,13 +120,12 @@ public:
     void setJunctions(const std::vector<Junction *> & junction);
 
 /**
- * add a Junction to the simulationWorld
- * @param name: the name of the new road
- * @param length: the length of the new road
+ * add a Junction to the simulation
+ * @param roads: roads with the position of the junction on that road
  * @return: None
 \n REQUIRE(properlyInitialized(), "World wasn't initialized when calling addJunction);
 */
-    void addJunction(std::pair<Road* , double> road1,std::pair<Road* , double> road2);
+    void addJunction(std::vector<std::pair<Road* , double> > roads);
 
 /**
  * get the time of the simulationWorld
