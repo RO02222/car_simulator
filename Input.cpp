@@ -17,17 +17,17 @@ namespace input {
         REQUIRE(world->properlyInitialized(), "World wasn't initialized when calling loadWorldXML");
         TiXmlDocument doc;
         if (!doc.LoadFile(worldName)) {
-            std::cerr << doc.ErrorDesc() << std::endl;
+            world->error << doc.ErrorDesc() << std::endl;
             return world;
         }
         TiXmlElement *root = doc.FirstChildElement();
         if (root == NULL) {
-            std::cerr << "Failed to load file: No root element." << std::endl;
+            world->error << "Failed to load file: No root element." << std::endl;
             return world;
         }
         TiXmlElement *elem = root;
         if ((std::string) elem->Value() != "World") {
-            std::cerr << "Failed to load file: <World> ... </World>" << std::endl;
+            world->error << "Failed to load file: <World> ... </World>" << std::endl;
             return world;
         }
         for (TiXmlElement *elem1 = elem->FirstChildElement(); elem1 != 0; elem1 = elem1->NextSiblingElement()) {
@@ -59,7 +59,7 @@ namespace input {
                 _::loadJunctionXML(world, elem1);
                 continue;
             }
-            std::cerr << "Failed to load file: <" + (std::string) elem1->Value() + "> is not valid" << std::endl;
+            world->error << "Failed to load file: <" + (std::string) elem1->Value() + "> is not valid" << std::endl;
         }
         return world;
     }
@@ -73,7 +73,7 @@ namespace input {
             std::string length = "";
             for (TiXmlElement *elem2 = elem1->FirstChildElement(); elem2 != 0; elem2 = elem2->NextSiblingElement()) {
                 if (elem2->GetText() == NULL) {
-                    std::cerr << "Failed to load file: <" + (std::string) elem2->Value() + "> has no value"
+                    world->error << "Failed to load file: <" + (std::string) elem2->Value() + "> has no value"
                               << std::endl;
                     continue;
                 }
@@ -85,15 +85,15 @@ namespace input {
                     length = elem2->GetText();
                     continue;
                 }
-                std::cerr << "Failed to load file: <BAAN> : <" + (std::string) elem2->Value()
+                world->error << "Failed to load file: <BAAN> : <" + (std::string) elem2->Value()
                              + "> is not valid" << std::endl;
             }
             if (name.empty()) {
-                std::cerr << "Failed to load file: invalid <BAAN> : 'missing argument' <naam>" << std::endl;
+                world->error << "Failed to load file: invalid <BAAN> : 'missing argument' <naam>" << std::endl;
                 return;
             }
             if (length.empty()) {
-                std::cerr << "Failed to load file: invalid <BAAN> : 'missing argument' <lengte>" << std::endl;
+                world->error << "Failed to load file: invalid <BAAN> : 'missing argument' <lengte>" << std::endl;
                 return;
             }
             world->addRoad(name, std::stoi(length));
@@ -108,7 +108,7 @@ namespace input {
             std::string cycle = "";
             for (TiXmlElement *elem2 = elem1->FirstChildElement(); elem2 != 0; elem2 = elem2->NextSiblingElement()) {
                 if (elem2->GetText() == NULL) {
-                    std::cerr << "Failed to load file: <" + (std::string) elem2->Value() + "> has no value"
+                    world->error << "Failed to load file: <" + (std::string) elem2->Value() + "> has no value"
                               << std::endl;
                     continue;
                 }
@@ -124,19 +124,19 @@ namespace input {
                     cycle = elem2->GetText();
                     continue;
                 }
-                std::cerr << "Failed to load file: <VERKEERSLICHT> : <"
+                world->error << "Failed to load file: <VERKEERSLICHT> : <"
                              + (std::string) elem2->Value() + "> is not valid" << std::endl;
             }
             if (roadName.empty()) {
-                std::cerr << "Failed to load file: invalid <VERKEERSLICHT> : 'missing argument' <baan>" << std::endl;
+                world->error << "Failed to load file: invalid <VERKEERSLICHT> : 'missing argument' <baan>" << std::endl;
                 return;
             }
             if (position.empty()) {
-                std::cerr << "Failed to load file: invalid <VERKEERSLICHT> : 'missing argument' <positie>" << std::endl;
+                world->error << "Failed to load file: invalid <VERKEERSLICHT> : 'missing argument' <positie>" << std::endl;
                 return;
             }
             if (cycle.empty()) {
-                std::cerr << "Failed to load file: invalid <VERKEERSLICHT> : 'missing argument' <cyclus>" << std::endl;
+                world->error << "Failed to load file: invalid <VERKEERSLICHT> : 'missing argument' <cyclus>" << std::endl;
                 return;
             }
             Road *road = NULL;
@@ -148,7 +148,7 @@ namespace input {
                 }
             }
             if (road == NULL) {
-                std::cerr << "Failed to load file: invalid <VERKEERSLICHT> : '<baan>' does not exist" << std::endl;
+                world->error << "Failed to load file: invalid <VERKEERSLICHT> : '<baan>' does not exist" << std::endl;
                 return;
             }
             road->addLight(std::stoi(position), std::stoi(cycle));
@@ -164,7 +164,7 @@ namespace input {
             Type Type;
             for (TiXmlElement *elem2 = elem1->FirstChildElement(); elem2 != 0; elem2 = elem2->NextSiblingElement()) {
                 if (elem2->GetText() == NULL) {
-                    std::cerr << "Failed to load file: <" + (std::string) elem2->Value() + "> has no value"
+                    world->error << "Failed to load file: <" + (std::string) elem2->Value() + "> has no value"
                               << std::endl;
                     return;
                 }
@@ -180,19 +180,19 @@ namespace input {
                     type = elem2->GetText();
                     continue;
                 }
-                std::cerr << "Failed to load file: <VOERTUIG> : <" + (std::string) elem2->Value()
+                world->error << "Failed to load file: <VOERTUIG> : <" + (std::string) elem2->Value()
                              + "> is not valid" << std::endl;
             }
             if (roadName.empty()) {
-                std::cerr << "Failed to load file: invalid <VOERTUIG> : 'missing argument' <baan>" << std::endl;
+                world->error << "Failed to load file: invalid <VOERTUIG> : 'missing argument' <baan>" << std::endl;
                 return;
             }
             if (position.empty()) {
-                std::cerr << "Failed to load file: invalid <VOERTUIG> : 'missing argument' <positie>" << std::endl;
+                world->error << "Failed to load file: invalid <VOERTUIG> : 'missing argument' <positie>" << std::endl;
                 return;
             }
             if (type.empty()) {
-                std::cerr << "Failed to load file: invalid <VOERTUIG> : 'missing argument' <type>" << std::endl;
+                world->error << "Failed to load file: invalid <VOERTUIG> : 'missing argument' <type>" << std::endl;
                 return;
             }
             if (type == "auto") {
@@ -206,7 +206,7 @@ namespace input {
             }else if (type == "politiecombi") {
                 Type = ambulance;
             }else{
-                std::cerr << "Failed to load file: invalid <VOERTUIG> : 'invalid argument' <type>" << std::endl;
+                world->error << "Failed to load file: invalid <VOERTUIG> : 'invalid argument' <type>" << std::endl;
                 return;
             }
 
@@ -219,7 +219,7 @@ namespace input {
                 }
             }
             if (road == NULL) {
-                std::cerr << "Failed to load file: invalid <VOERTUIG> : '<baan> does not exist" << std::endl;
+                world->error << "Failed to load file: invalid <VOERTUIG> : '<baan> does not exist" << std::endl;
                 return;
             }
             road->addCar(std::stoi(position),world->getCarData(Type));
@@ -235,7 +235,7 @@ namespace input {
             Type Type;
             for (TiXmlElement *elem2 = elem1->FirstChildElement(); elem2 != 0; elem2 = elem2->NextSiblingElement()) {
                 if (elem2->GetText() == NULL) {
-                    std::cerr << "Failed to load file: <" + (std::string) elem2->Value()
+                    world->error << "Failed to load file: <" + (std::string) elem2->Value()
                                  + "> has no value" << std::endl;
                     continue;
                 }
@@ -251,16 +251,16 @@ namespace input {
                     type = elem2->GetText();
                     continue;
                 }
-                std::cerr << "Failed to load file: <VOERTUIGGENERATOR> : <" + (std::string) elem2->Value()
+                world->error << "Failed to load file: <VOERTUIGGENERATOR> : <" + (std::string) elem2->Value()
                              + "> is not valid" << std::endl;
             }
             if (roadName.empty()) {
-                std::cerr << "Failed to load file: invalid <VOERTUIGGENERATOR> : 'missing argument' <baan>"
+                world->error << "Failed to load file: invalid <VOERTUIGGENERATOR> : 'missing argument' <baan>"
                           << std::endl;
                 return;
             }
             if (frequency.empty()) {
-                std::cerr << "Failed to load file: invalid <VOERTUIGGENERATOR> : 'missing argument' <frequentie>"
+                world->error << "Failed to load file: invalid <VOERTUIGGENERATOR> : 'missing argument' <frequentie>"
                           << std::endl;
                 return;
             }
@@ -277,7 +277,7 @@ namespace input {
             }else if (type == "politiecombi") {
                 Type = ambulance;
             }else{
-                std::cerr << "Failed to load file: invalid <VOERTUIGGENERATOR> : 'invalid argument' <type>" << std::endl;
+                world->error << "Failed to load file: invalid <VOERTUIGGENERATOR> : 'invalid argument' <type>" << std::endl;
                 return;
             }
             Road *road = NULL;
@@ -289,7 +289,7 @@ namespace input {
                 }
             }
             if (road == NULL) {
-                std::cerr << "Failed to load file: invalid <VOERTUIGGENERATOR> : '<baan> does not exist" << std::endl;
+                world->error << "Failed to load file: invalid <VOERTUIGGENERATOR> : '<baan> does not exist" << std::endl;
                 return;
             }
             if (Type == none){
@@ -307,7 +307,7 @@ namespace input {
             std::string stoptime = "";
             for (TiXmlElement *elem2 = elem1->FirstChildElement(); elem2 != 0; elem2 = elem2->NextSiblingElement()) {
                 if (elem2->GetText() == NULL) {
-                    std::cerr << "Failed to load file: <" + (std::string) elem2->Value() + "> has no value"
+                    world->error << "Failed to load file: <" + (std::string) elem2->Value() + "> has no value"
                               << std::endl;
                     continue;
                 }
@@ -323,19 +323,19 @@ namespace input {
                     stoptime = elem2->GetText();
                     continue;
                 }
-                std::cerr << "Failed to load file: <BUSHALTE> : <"
+                world->error << "Failed to load file: <BUSHALTE> : <"
                              + (std::string) elem2->Value() + "> is not valid" << std::endl;
             }
             if (roadName.empty()) {
-                std::cerr << "Failed to load file: invalid <BUSHALTE> : 'missing argument' <baan>" << std::endl;
+                world->error << "Failed to load file: invalid <BUSHALTE> : 'missing argument' <baan>" << std::endl;
                 return;
             }
             if (position.empty()) {
-                std::cerr << "Failed to load file: invalid <BUSHALTE> : 'missing argument' <positie>" << std::endl;
+                world->error << "Failed to load file: invalid <BUSHALTE> : 'missing argument' <positie>" << std::endl;
                 return;
             }
             if (stoptime.empty()) {
-                std::cerr << "Failed to load file: invalid <BUSHALTE> : 'missing argument' <wachttijd>" << std::endl;
+                world->error << "Failed to load file: invalid <BUSHALTE> : 'missing argument' <wachttijd>" << std::endl;
                 return;
             }
             Road *road = NULL;
@@ -347,7 +347,7 @@ namespace input {
                 }
             }
             if (road == NULL) {
-                std::cerr << "Failed to load file: invalid <BUSHALTE> : '<baan>' does not exist" << std::endl;
+                world->error << "Failed to load file: invalid <BUSHALTE> : '<baan>' does not exist" << std::endl;
                 return;
             }
             road->addBusStop(std::stoi(position), std::stoi(stoptime));
@@ -361,7 +361,7 @@ namespace input {
             std::vector<std::string> positions;
             for (TiXmlElement *elem2 = elem1->FirstChildElement(); elem2 != 0; elem2 = elem2->NextSiblingElement()) {
                 if (elem2->GetText() == NULL) {
-                    std::cerr << "Failed to load file: <" + (std::string) elem2->Value() + "> has no value"
+                    world->error << "Failed to load file: <" + (std::string) elem2->Value() + "> has no value"
                               << std::endl;
                     continue;
                 }
@@ -371,15 +371,13 @@ namespace input {
                         positions.push_back(elem2->LastAttribute()->Value());
                     }
                 }
-                std::cerr << "Failed to load file: <KRUISPUNT> : <"
-                             + (std::string) elem2->Value() + "> is not valid" << std::endl;
             }
-            if (roadName1.empty()) {
-                std::cerr << "Failed to load file: invalid <KRUISPUNT> : 'missing argument' <baan>" << std::endl;
+            if (roadNames.empty()) {
+                world->error << "Failed to load file: invalid <KRUISPUNT> : 'missing argument' <baan>" << std::endl;
                 return;
             }
-            if (roadName2.empty()) {
-                std::cerr << "Failed to load file: invalid <KRUISPUNT> : 'missing argument' <baan>" << std::endl;
+            if (positions.empty()) {
+                world->error << "Failed to load file: invalid <KRUISPUNT> : 'missing argument' <baan>" << std::endl;
                 return;
             }
             std::vector<std::pair<Road*, double> >roads;
@@ -398,12 +396,11 @@ namespace input {
                         world->error << "Failed to load file: invalid <KRUISPUNT> : '<baan>' does not exist" << std::endl;
                 }
             }
-            if (road1 == NULL or road2 == NULL) {
-                std::cerr << "Failed to load file: invalid <KRUISPUNT> : '<baan>' does not exist" << std::endl;
+            if (roads.size() < 2){
+                world->error << "Failed to load file: invalid <KRUISPUNT> : not enough roads" << std::endl;
                 return;
             }
-            world->addJunction(std::pair<Road *, double>(road1, std::stoi(position1)),
-                               std::pair<Road *, double>(road2, std::stoi(position2)));
+            world->addJunction(roads);
         }
     }
 }
