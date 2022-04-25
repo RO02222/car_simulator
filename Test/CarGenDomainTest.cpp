@@ -45,7 +45,6 @@ void test_CarGen(Type type){
     w->getRoads()[0]->addCarGen(3, w->getCarData(type));
     double time = w->getRoads()[0]->getCarGen()[0]->getCycle();
     w->getRoads()[0]->getCarGen()[0]->updateCarGen(2);
-    time = time + 2;
     EXPECT_EQ(w->getRoads()[0]->getCarGen()[0]->getCycle(),time);
     EXPECT_EQ(int (w->getRoads()[0]->getCars().size()), 0);
     w->getRoads()[0]->getCarGen()[0]->updateCarGen(2);

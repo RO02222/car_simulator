@@ -6,6 +6,7 @@
 //============================================================================
 
 #include <stdlib.h>
+#include <cmath>
 #include "CarGen.h"
 #include "Road.h"
 #include "Car.h"
@@ -17,7 +18,7 @@ CarGen::CarGen(double frequency, Road *road, CarData *data) : road(road), freque
     if (frequency < 1){
         frequency = 1;
     }
-    lastCycle = frequency;
+    lastCycle = rand() % lround(frequency) - 1;
     ENSURE(properlyInitialized(),"constructor must end in properlyInitialized state");
 }
 
