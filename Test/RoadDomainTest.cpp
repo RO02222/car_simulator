@@ -89,7 +89,7 @@ TEST_F(RoadDomainTest, addCar){
     r1.addCar(10,w->getCarData(car));
     EXPECT_EQ(r1.getCars()[0]->getDistance(), 10);
 
-    r1.addCar(50);
+    r1.addCar(50, w->getCarData(car));
     EXPECT_EQ(r1.getCars()[1]->getDistance(), 50);
 }
 
@@ -97,9 +97,10 @@ TEST_F(RoadDomainTest, addCar){
 Tests addCarGen: test if function addCarGen works properly.
 */
 TEST_F(RoadDomainTest, addCarGen){
+    World* w = new World();
     Road r1 = Road("Middelheimlaan", 100);
 
-    r1.addCarGen(5);
+    r1.addCarGen(5, w->getCarData(car));
     EXPECT_EQ(r1.getCarGen()[0]->getFrequency(), 5);
 }
 

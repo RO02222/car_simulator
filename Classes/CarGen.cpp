@@ -108,6 +108,11 @@ void CarGen::setCycle(double c) {
     REQUIRE(this->properlyInitialized(), "CarGen wasn't initialized when calling setCycle");
     CarGen::lastCycle = c;
 }
+
+CarData* CarGen::getData() {
+    REQUIRE(this->properlyInitialized(), "CarGen wasn't initialized when calling getCycle");
+    return data;
+}
 /////////////
 
 

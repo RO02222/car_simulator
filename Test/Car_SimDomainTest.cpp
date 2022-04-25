@@ -50,15 +50,16 @@ TEST_F(Car_SimDomainTest, Initialiser) {
     World* w = new World();
     Road r1 = Road("Middelheimlaan", 100);
     Road r2 = Road("Groenenborgerlaan", 100);
-    r1.addCar(25);
-    r1.addCar(60);
-    r2.addCar(90);
+    r1.addCar(25, w->getCarData(car));
+    r1.addCar(60, w->getCarData(bus));
+    r1.addCar(90,w->getCarData(ambulance));
+    r2.addCar(90, w->getCarData(fire));
     r1.addLight(80, 5);
     r1.addLight( 20, 5);
     r1.addLight(50, 5);
     r2.addLight(60,5);
-    r1.addCarGen(5);
-    r2.addCarGen(5);
+    r1.addCarGen(5, w->getCarData(car));
+    r2.addCarGen(5, w->getCarData(bus));
 
     EXPECT_EQ(r1.getName(), "Middelheimlaan");
     EXPECT_EQ(r1.getLength(), 100);
@@ -67,6 +68,7 @@ TEST_F(Car_SimDomainTest, Initialiser) {
 
     EXPECT_EQ(r1.getCars()[0]->getDistance(),25);
     EXPECT_EQ(r1.getCars()[1]->getDistance(),60);
+    EXPECT_EQ(r1.getCars()[2]->getDistance(), 90);
     EXPECT_EQ(r2.getCars()[0]->getDistance(),90);
 
     EXPECT_EQ(r1.getLights()[0]->getPosition(), 80);
@@ -92,14 +94,14 @@ Tests update simulated world and see if the new situation is right (here just th
 TEST_F(Car_SimDomainTest, UpdateWorld) {
     World* w = new World();
     Road* r1 = new Road("Middelheimlaan", 100);
-    r1->addCar(25);
-    r1->addCar(60);
-    r1->addCar(90);
+    r1->addCar(25, w->getCarData(car));
+    r1->addCar(60, w->getCarData(ambulance));
+    r1->addCar(90, w->getCarData(bus));
     r1->addLight(80, 2);
     r1->addLight( 20, 3);
     r1->addLight(50, 4);
     r1->addLight(60,5);
-    r1->addCarGen(5);
+    r1->addCarGen(5, w->getCarData(car));
     vector<Road*> roads;
     roads.push_back(r1);
     w->setRoad(roads);

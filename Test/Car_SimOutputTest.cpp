@@ -137,56 +137,14 @@ TEST_F(Car_SimOutputTest, FileCompare) {
 }
 
 /**
-Tests FileOutputHappyDay: test if the output is right in a simple case.
+Tests FileOutputHappyDay: test if the output is right for a simple impression.
 */
-TEST_F(Car_SimOutputTest, FileOutputHappyDay) {
-    World* w = new World();
-    try {
-        w->loadWorld("../XML/case2.xml");
-    }
-    catch(std::exception* e) {
-        std::cerr<<e->what()<<std::endl;
-    }
-    std::ofstream myFile;
-    myFile.open("../Car_sim.txt");
-    w->simulateWorld(myFile);
-    for (unsigned int i =0; i < 1; i++) {
-        w->updateWorld(1);
-        w->simulateWorld(myFile);
-    }
-    myFile.close();
-    delete w;
-
-    EXPECT_TRUE(FileCompare("../Car_sim.txt", "../testOutput/testOutput1.txt"));
-}
-
-
-/**
-Tests FileExtreme: test if the output is right for many updates of the world.
-*/
-TEST_F(Car_SimOutputTest, FileExtreme) {
-    World* w = new World();
-    try {
-        w->loadWorld("../XML/case2.xml");
-    }
-    catch(std::exception* e) {
-        std::cerr<<e->what()<<std::endl;
-    }
-    std::ofstream myFile;
-    myFile.open("../Car_sim.txt");
-    w->simulateWorld(myFile);
-    for (unsigned int i =0; i < 400; i++) {
-        w->updateWorld(1);
-        w->simulateWorld(myFile);
-    }
-    myFile.close();
-    delete w;
-
-    EXPECT_TRUE(FileCompare("../Car_sim.txt", "../testOutput/testOutput2.txt"));
+TEST_F(Car_SimOutputTest, SimpleFileOutputHappyDay) {
+    Test_Simulation("../XML/case2.xml",  "../testOutput/testOutput1.txt", false);
 }
 
 /**
-Tests FileSimulation: test if the output is right for many updates of the world, with the given simulation update time.
+Tests GraphicFileOutputHappyDay: test if the output is right for the graphical impression.
 */
 TEST_F(Car_SimOutputTest, GraphicFileOutputHappyDay) {
     Test_Simulation("../XML/case2.xml",  "../testOutput/testOutput1.0.txt", false);

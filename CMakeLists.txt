@@ -24,7 +24,10 @@ set(RELEASE_SOURCE_FILES
         Classes/CarData.cpp Classes/CarData.h
         Input.cpp Input.h
         Exception/ParserException.h
-        Classes/CarGen.cpp Classes/CarGen.h DesignByContract.h Basic_Values.h Functions.cpp Functions.h Car_SimUtils.cpp Car_SimUtils.h Input.cpp Input.h Classes/BusStop.cpp Classes/BusStop.h Classes/Junction.cpp Classes/Junction.h Classes/CarData.cpp Classes/CarData.h Classes/Place.cpp Classes/Place.h)
+        Classes/CarGen.cpp Classes/CarGen.h
+        DesignByContract.h Basic_Values.h
+        Functions.cpp Functions.h
+        Car_SimUtils.cpp Car_SimUtils.h)
 
 # Set source files for DEBUG target
 set(DEBUG_SOURCE_FILES

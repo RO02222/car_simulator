@@ -10,7 +10,7 @@
 
 using namespace std;
 
-class CarDomainTest: public ::testing::Test {
+class CarGenDomainTest: public ::testing::Test {
 protected:
     // You should make the members protected s.t. they can be
     // accessed from sub-classes.
@@ -39,13 +39,54 @@ protected:
 
 
 };
+void test_CarGen(Type type){
+    World* w = new World();
+    w->addRoad("Middelheimlaan", 100);
+    w->getRoads()[0]->addCarGen(3, w->getCarData(type));
+    double time = w->getRoads()[0]->getCarGen()[0]->getCycle();
+    w->getRoads()[0]->getCarGen()[0]->updateCarGen(2);
+    time = time + 2;
+    EXPECT_EQ(w->getRoads()[0]->getCarGen()[0]->getCycle(),time);
+    EXPECT_EQ(int (w->getRoads()[0]->getCars().size()), 0);
+    w->getRoads()[0]->getCarGen()[0]->updateCarGen(2);
+    time = time + 2;
+    EXPECT_EQ(w->getRoads()[0]->getCarGen()[0]->getCycle(),time);
+    EXPECT_EQ(int(w->getRoads()[0]->getCars().size()), 1);
+    EXPECT_EQ(w->getRoads()[0]->getCars()[0]->getData(), w->getRoads()[0]->getCarGen()[0]->getData());
+    EXPECT_EQ(w->getRoads()[0]->getCarGen()[0]->getFrequency(), 3);
+
+    delete w;
+}
 
 /**
 Tests Initialiser: test if every object is initialised right.
 */
-TEST_F(CarDomainTest, Initialiser) {
-    Road r1 = Road("Middelheimlaan", 100);
-    r1.addCarGen(3);
+TEST_F(CarGenDomainTest, Initialiser) {
+//CargenCar: test if CarGen works for cars.
+    test_CarGen(car);
+//CargenCar: test if CarGen works for ambulances.
+    test_CarGen(ambulance);
+//CargenCar: test if CarGen works for firetrucks.
+    test_CarGen(fire);
+//CargenCar: test if CarGen works for busses.
+    test_CarGen(bus);
+}
 
-    EXPECT_EQ(r1.getCarGen()[0]->getFrequency(), 3);
+TEST_F(CarGenDomainTest, Initialiser2) {
+    World *w = new World();
+    w->addRoad("Middelheimlaan", 100);
+    w->getRoads()[0]->addCarGen(3, w->getAllData());
+    double time = w->getRoads()[0]->getCarGen()[0]->getCycle();
+    w->getRoads()[0]->getCarGen()[0]->updateCarGen(2);
+    time = time + 2;
+    EXPECT_EQ(w->getRoads()[0]->getCarGen()[0]->getCycle(), time);
+    EXPECT_EQ(int(w->getRoads()[0]->getCars().size()), 0);
+    w->getRoads()[0]->getCarGen()[0]->updateCarGen(2);
+    time = time + 2;
+    EXPECT_EQ(w->getRoads()[0]->getCarGen()[0]->getCycle(), time);
+    EXPECT_EQ(int(w->getRoads()[0]->getCars().size()), 1);
+    EXPECT_EQ(w->getRoads()[0]->getCars()[0]->getData(), w->getRoads()[0]->getCarGen()[0]->getData());
+    EXPECT_EQ(w->getRoads()[0]->getCarGen()[0]->getFrequency(), 3);
+
+    delete w;
 }

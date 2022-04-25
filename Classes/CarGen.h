@@ -95,6 +95,8 @@ public:
 */
     double getCycle();
 
+    CarData* getData();
+
 protected:
 /**
  * change the time since last cycle of the CarGen
@@ -103,6 +105,8 @@ protected:
 \n REQUIRE(properlyInitialized(), "CarGen wasn't initialized when calling setCycle);
 */
     void setCycle(double cycle);
+
+
 /////////////
 
 

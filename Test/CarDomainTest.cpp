@@ -49,13 +49,24 @@ protected:
 Tests Initialiser: test if every object is initialised right.
 */
 TEST_F(CarDomainTest, Initialiser) {
+    World* w = new World();
     Road r1 = Road("Middelheimlaan", 100);
-    r1.addCar(3);
 
+    r1.addCar(3, w->getCarData(car));
     EXPECT_EQ(r1.getCars()[0]->getDistance(), 3);
+    EXPECT_EQ(r1.getCars()[0]->getData(), w->getCarData(car));
 
-    r1.addCar(29);
+    r1.addCar(29, w->getCarData(ambulance));
     EXPECT_EQ(r1.getCars()[1]->getDistance(), 29);
+    EXPECT_EQ(r1.getCars()[1]->getData(), w->getCarData(ambulance));
+
+    r1.addCar(35, w->getCarData(fire));
+    EXPECT_EQ(r1.getCars()[2]->getDistance(), 35);
+    EXPECT_EQ(r1.getCars()[3]->getData(), w->getCarData(fire));
+
+    r1.addCar(60, w->getCarData(bus));
+    EXPECT_EQ(r1.getCars()[3]->getDistance(), 60);
+    EXPECT_EQ(r1.getCars()[3]->getData(), w->getCarData(bus));
 }
 
 
@@ -63,17 +74,23 @@ TEST_F(CarDomainTest, Initialiser) {
 Tests InitialiserEdge: test if every object is initialised right with some edge cases.
 */
 TEST_F(CarDomainTest, InitialiserEdge) {
+    World* w = new World();
     Road r1 = Road("Middelheimlaan", 100);
-    r1.addCar(0);
 
+    r1.addCar(0, w->getCarData(car));
     EXPECT_EQ(r1.getCars()[0]->getDistance(), 0);
+    EXPECT_EQ(r1.getCars()[0]->getData(), w->getCarData(car));
 
-    r1.addCar(100);
+    r1.addCar(100, w->getCarData(ambulance));
     EXPECT_EQ(r1.getCars()[1]->getDistance(), 100);
+    EXPECT_EQ(r1.getCars()[1]->getData(), w->getCarData(ambulance));
 
-    r1.addCar(-1);
+    r1.addCar(-1, w->getCarData(fire));
     EXPECT_EQ(r1.getCars()[2]->getDistance(), 0);
+    EXPECT_EQ(r1.getCars()[3]->getData(), w->getCarData(fire));
 
-    r1.addCar(101);
+    r1.addCar(101, w->getCarData(bus));
     EXPECT_EQ(r1.getCars()[3]->getDistance(), 100);
+    EXPECT_EQ(r1.getCars()[3]->getData(), w->getCarData(bus));
 }
+

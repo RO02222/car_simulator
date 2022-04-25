@@ -56,9 +56,7 @@ void Test_error(const char* inputfile, std::string compareFile){
 Tests InputHappyDay
 */
 TEST_F(Car_SimInputTest, InputHappyDay) {
-    World w = World();
-    w.loadWorld("../testInput/testCase1.xml");
-
+    World* w = input::loadWorldXML("../testInput/tetsCase1.xml");
 
     EXPECT_EQ(w->getRoads()[0]->getName(), "Middelheimlaan");
     EXPECT_EQ(w->getRoads()[0]->getLength(), 400);
@@ -81,52 +79,52 @@ TEST_F(Car_SimInputTest, InputHappyDay) {
 Tests InputMixed: test if xml read in different order of Classes also works.
 */
 TEST_F(Car_SimInputTest, InputMixed) {
-    World w = World();
-    w.loadWorld("../testInput/testCase2.xml");
+    World* w = input::loadWorldXML("../testInput/testCase2.xml");
 
+    EXPECT_EQ(w->getRoads()[0]->getName(), "Middelheimlaan");
+    EXPECT_EQ(w->getRoads()[0]->getLength(), 400);
 
-    EXPECT_EQ(w.getRoads()[0]->getName(), "Middelheimlaan");
-    EXPECT_EQ(w.getRoads()[0]->getLength(), 400);
+    EXPECT_EQ(w->getRoads()[0]->getLights()[0]->getRoad()->getName(), "Middelheimlaan");
+    EXPECT_EQ(w->getRoads()[0]->getLights()[0]->getPosition(), 400);
+    EXPECT_EQ(w->getRoads()[0]->getLights()[0]->getCycle(), 20);
 
-    EXPECT_EQ(w.getRoads()[0]->getLights()[0]->getRoad()->getName(), "Middelheimlaan");
-    EXPECT_EQ(w.getRoads()[0]->getLights()[0]->getPosition(), 400);
-    EXPECT_EQ(w.getRoads()[0]->getLights()[0]->getCycle(), 20);
+    EXPECT_EQ(w->getRoads()[0]->getCars()[0]->getRoad()->getName(), "Middelheimlaan");
+    EXPECT_EQ(w->getRoads()[0]->getCars()[0]->getDistance(), 40);
+    EXPECT_EQ(w->getRoads()[0]->getCars()[1]->getRoad()->getName(), "Middelheimlaan");
+    EXPECT_EQ(w->getRoads()[0]->getCars()[1]->getDistance(), 20);
 
-    EXPECT_EQ(w.getRoads()[0]->getCars()[0]->getRoad()->getName(), "Middelheimlaan");
-    EXPECT_EQ(w.getRoads()[0]->getCars()[0]->getDistance(), 40);
-    EXPECT_EQ(w.getRoads()[0]->getCars()[1]->getRoad()->getName(), "Middelheimlaan");
-    EXPECT_EQ(w.getRoads()[0]->getCars()[1]->getDistance(), 20);
-
-    EXPECT_EQ(w.getRoads()[0]->getCarGen()[0]->getRoad()->getName(), "Middelheimlaan");
-    EXPECT_EQ(w.getRoads()[0]->getCarGen()[0]->getFrequency(), 5);
+    EXPECT_EQ(w->getRoads()[0]->getCarGen()[0]->getRoad()->getName(), "Middelheimlaan");
+    EXPECT_EQ(w->getRoads()[0]->getCarGen()[0]->getFrequency(), 5);
+    delete w;
 }
 
 /**
 Tests InputMixed2: test if xml read in different order of variables also works.
 */
 TEST_F(Car_SimInputTest, InputMixed2) {
-    World w = World();
-    w.loadWorld("../testInput/testCase3.xml");
+    World* w = input::loadWorldXML("../testInput/testCase3.xml");
 
 
-    EXPECT_EQ(w.getRoads()[0]->getName(), "Middelheimlaan");
-    EXPECT_EQ(w.getRoads()[0]->getLength(), 400);
+    EXPECT_EQ(w->getRoads()[0]->getName(), "Middelheimlaan");
+    EXPECT_EQ(w->getRoads()[0]->getLength(), 400);
 
-    EXPECT_EQ(w.getRoads()[0]->getLights()[0]->getRoad()->getName(), "Middelheimlaan");
-    EXPECT_EQ(w.getRoads()[0]->getLights()[0]->getPosition(), 400);
-    EXPECT_EQ(w.getRoads()[0]->getLights()[0]->getCycle(), 20);
+    EXPECT_EQ(w->getRoads()[0]->getLights()[0]->getRoad()->getName(), "Middelheimlaan");
+    EXPECT_EQ(w->getRoads()[0]->getLights()[0]->getPosition(), 400);
+    EXPECT_EQ(w->getRoads()[0]->getLights()[0]->getCycle(), 20);
 
-    EXPECT_EQ(w.getRoads()[0]->getCars()[0]->getRoad()->getName(), "Middelheimlaan");
-    EXPECT_EQ(w.getRoads()[0]->getCars()[0]->getDistance(), 40);
-    EXPECT_EQ(w.getRoads()[0]->getCars()[1]->getRoad()->getName(), "Middelheimlaan");
-    EXPECT_EQ(w.getRoads()[0]->getCars()[1]->getDistance(), 20);
+    EXPECT_EQ(w->getRoads()[0]->getCars()[0]->getRoad()->getName(), "Middelheimlaan");
+    EXPECT_EQ(w->getRoads()[0]->getCars()[0]->getDistance(), 40);
+    EXPECT_EQ(w->getRoads()[0]->getCars()[1]->getRoad()->getName(), "Middelheimlaan");
+    EXPECT_EQ(w->getRoads()[0]->getCars()[1]->getDistance(), 20);
 
-    EXPECT_EQ(w.getRoads()[0]->getCarGen()[0]->getRoad()->getName(), "Middelheimlaan");
-    EXPECT_EQ(w.getRoads()[0]->getCarGen()[0]->getFrequency(), 5);
+    EXPECT_EQ(w->getRoads()[0]->getCarGen()[0]->getRoad()->getName(), "Middelheimlaan");
+    EXPECT_EQ(w->getRoads()[0]->getCarGen()[0]->getFrequency(), 5);
 }
 
+
+
 /**
-Tests InputNoWorld: test if xml read without a world part works.
+Tests InputNoWorld
 */
 TEST_F(Car_SimInputTest, InputFail) {
     //InputNoWorld: test if xml read without a world part works.
