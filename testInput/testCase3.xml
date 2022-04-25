@@ -14,17 +14,19 @@
     <VOERTUIG>
         <baan>Middelheimlaan</baan>
         <positie>40</positie>
+        <type>ambulance</type>
     </VOERTUIG>
 
     <VOERTUIG>
         <baan>Middelheimlaan</baan>
         <positie>20</positie>
+        <type>bus</type>
     </VOERTUIG>
 
     <VOERTUIGGENERATOR>
         <frequentie>5</frequentie>
         <baan>Middelheimlaan</baan>
-
+        <type>auto</type>
     </VOERTUIGGENERATOR>
 
 </World>

@@ -11,6 +11,7 @@
 #include "gtest/gtest.h"
 #include "../Classes/World.h"
 #include "../Car_SimUtils.h"
+#include "../Classes/Light.h"
 
 
 
@@ -56,7 +57,7 @@ void Test_error(const char* inputfile, std::string compareFile){
 Tests InputHappyDay
 */
 TEST_F(Car_SimInputTest, InputHappyDay) {
-    World* w = input::loadWorldXML("../testInput/tetsCase1.xml");
+    World* w = input::loadWorldXML("../testInput/testCase1.xml");
 
     EXPECT_EQ(w->getRoads()[0]->getName(), "Middelheimlaan");
     EXPECT_EQ(w->getRoads()[0]->getLength(), 400);
