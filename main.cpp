@@ -27,11 +27,11 @@ int main() {
 #if VERSION == 14
     std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 #endif
-    for (unsigned int i =0; i < 1000; i++) {
+    for (unsigned int i =0; i < 100; i++) {
         w->simpleSimulateWorld(myFile);
         w->graficImpSimulateWorld(myFile2);
 #if VERSION == 14
-        std::this_thread::sleep_for(std::chrono::milliseconds(200));
+        std::this_thread::sleep_for(std::chrono::milliseconds(50));
 #endif
         for (unsigned int _ = 0; _ < 5; _ += 1) {
             w->updateWorld(0.05);

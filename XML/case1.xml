@@ -14,6 +14,12 @@
         <lengte>400</lengte>
     </BAAN>
 
+    <VERKEERSLICHT>
+        <baan>Middelheimlaan</baan>
+        <positie>400</positie>
+        <cyclus>20</cyclus>
+    </VERKEERSLICHT>
+
     <VOERTUIGGENERATOR>
         <baan>Middelheimlaan</baan>
         <frequentie>4</frequentie>
