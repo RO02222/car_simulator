@@ -77,6 +77,15 @@ public:
 \n REQUIRE(properlyInitialized(), "Light wasn't initialized when calling getPosition");
 */
     double getPosition(int n);
+
+/**
+ * get the position of the Junction on the road
+ * @param roadname: the name of the road from the Junction
+ * @return: (double), the position of the Junction on the road
+\n REQUIRE(properlyInitialized(), "Light wasn't initialized when calling getPosition");
+*/
+    double getPosition(std::string roadname);
+
 /**
  * change the position of the Junction
  * @param n: the n road of the Junction

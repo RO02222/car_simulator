@@ -50,7 +50,7 @@ Tests Initialiser: test if every object is initialised right.
 */
 TEST_F(CarDomainTest, Initialiser) {
     World* w = new World();
-    Road r1 = Road("Middelheimlaan", 100);
+    Road r1 = Road("Middelheimlaan", 100, &w->error);
 
     r1.addCar(3, w->getCarData(car));
     EXPECT_EQ(r1.getCars()[0]->getDistance(), 3);
@@ -75,7 +75,7 @@ Tests InitialiserEdge: test if every object is initialised right with some edge 
 */
 TEST_F(CarDomainTest, InitialiserEdge) {
     World* w = new World();
-    Road r1 = Road("Middelheimlaan", 100);
+    Road r1 = Road("Middelheimlaan", 100, &w->error);
 
     r1.addCar(0, w->getCarData(car));
     EXPECT_EQ(r1.getCars()[0]->getDistance(), 0);

@@ -71,7 +71,7 @@ void Car::updateCar(double t, bool onJunction) {
     if (!onJunction) {
         std::vector<std::pair<Junction *, double *> > junctions = road->getJunctions();
         for (unsigned int i = 0; i < junctions.size(); i++) {
-            if (std::abs(distance - *junctions[i].second) < gStopDistance) {
+            if (std::abs(distance - *junctions[i].second) <= gStopDistance) {
                 junctions[i].first->addCar(this, true);
                 return;
             }

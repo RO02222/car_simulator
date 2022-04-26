@@ -48,7 +48,7 @@ void Junction::updateJunction(double t) {
                     }
                 }
                 //check if car is still near
-                if (std::abs(cars[i].first->getDistance() - roads[j].second) < gStopDistance) {
+                if (std::abs(cars[i].first->getDistance() - roads[j].second) <= gStopDistance) {
                     newCars.push_back(cars[i]);
                     break;
                 }
@@ -82,6 +82,17 @@ void Junction::setRoad(Road *r, int n) {
 double Junction::getPosition(int n) {
     REQUIRE(this->properlyInitialized(), "Junction wasn't initialized when calling getPosition");
     return roads[n].second;
+}
+
+
+double Junction::getPosition(std::string roadname) {
+    REQUIRE(this->properlyInitialized(), "Junction wasn't initialized when calling getPosition");
+    for (std::vector<std::pair<Road*,double>>::iterator x = roads.begin(); x != roads.end(); x++){
+        if (x->first->getName() == roadname){
+            return x->second;
+        }
+    }
+    return roads[0].second;
 }
 
 

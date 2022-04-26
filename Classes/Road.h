@@ -19,6 +19,8 @@ class Junction;
 class CarData;
 
 class Road {
+public:
+    std::ofstream* error;
 private:
     Road* _initCheck;
 
@@ -35,10 +37,11 @@ public:
  * create a road
  * @param name: name of the road
  * @param length: lengt of the road
+ * @param error: errorfile
  * @return: None
 \n ENSURE(properlyInitialized(), "constructor must end in properlyInitialized state");
 */
-    Road(const std::string &name, double length);
+    Road(const std::string &name, double length, std::ofstream* error);
 
 
 /**

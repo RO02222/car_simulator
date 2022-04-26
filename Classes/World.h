@@ -22,12 +22,13 @@
 
 class Junction;
 class CarData;
+
 class World {
-private:
-    World *_initCheck;
 public:
     std::ofstream error;
 private:
+    World *_initCheck;
+
     std::vector<CarData*> carData;
     std::vector<Junction*> junctions;
     std::vector<Road *> roads;

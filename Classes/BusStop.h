@@ -21,7 +21,7 @@ class BusStop {
         double timestopped;
         Car* currentBus;
 public:
-        bool busey;
+        bool bussy;
     public:
 /**
  * create a BusStop

@@ -44,7 +44,8 @@ protected:
 Tests Initialiser: test if every object is initialised right.
 */
 TEST_F(RoadDomainTest, Initialiser) {
-    Road r1 = Road("Middelheimlaan", 100);
+    std::ofstream error;
+    Road r1 = Road("Middelheimlaan", 100, &error);
 
     EXPECT_EQ(r1.getName(), "Middelheimlaan");
     EXPECT_EQ(r1.getLength(), 100);
@@ -55,9 +56,10 @@ TEST_F(RoadDomainTest, Initialiser) {
 Tests InitialiserEdge: test if every object is initialised right with some edge cases or extreme numbers.
 */
 TEST_F(RoadDomainTest, InitialiserEdge) {
-    Road r1 = Road("Middelheimlaan", 1000000000000);
-    Road r2 = Road("Groenenborgerlaan", 1);
-    Road r3 = Road("Keyserlei", -1);
+    std::ofstream error;
+    Road r1 = Road("Middelheimlaan", 1000000000000, &error);
+    Road r2 = Road("Groenenborgerlaan", 1, &error);
+    Road r3 = Road("Keyserlei", -1, &error);
 
 
     EXPECT_EQ(r1.getLength(), 1000000000000);
@@ -69,7 +71,8 @@ TEST_F(RoadDomainTest, InitialiserEdge) {
 Tests addLight: test if function addLight works properly.
 */
 TEST_F(RoadDomainTest, addLight){
-    Road r1 = Road("Middelheimlaan", 100);
+    std::ofstream error;
+    Road r1 = Road("Middelheimlaan", 100, &error);
 
     r1.addLight(10,3);
     EXPECT_EQ(r1.getLights()[0]->getPosition(), 10);
@@ -84,7 +87,8 @@ TEST_F(RoadDomainTest, addLight){
 Tests addCar: test if function addCar works properly.
 */
 TEST_F(RoadDomainTest, addCar){
-    Road r1 = Road("Middelheimlaan", 100);
+    std::ofstream error;
+    Road r1 = Road("Middelheimlaan", 100, &error);
     World* w = new World();
     r1.addCar(10,w->getCarData(car));
     EXPECT_EQ(r1.getCars()[0]->getDistance(), 10);
@@ -98,7 +102,7 @@ Tests addCarGen: test if function addCarGen works properly.
 */
 TEST_F(RoadDomainTest, addCarGen){
     World* w = new World();
-    Road r1 = Road("Middelheimlaan", 100);
+    Road r1 = Road("Middelheimlaan", 100, &w->error);
 
     r1.addCarGen(5, w->getCarData(car));
     EXPECT_EQ(r1.getCarGen()[0]->getFrequency(), 5);

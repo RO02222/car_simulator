@@ -5,6 +5,7 @@
 // Version     : 1
 //============================================================================
 
+#include <cmath>
 #include "Light.h"
 #include "Car.h"
 #include "Road.h"
@@ -12,13 +13,13 @@
 #include "../Basic_Values.h"
 #include "../DesignByContract.h"
 
-Light::Light(double position, double c, Road* r): road(r), position(position), cycle(c) {
+Light::Light(double position, double c, Road* r, std::ofstream* error): error(error), road(r), position(position), cycle(c) {
     _initCheck = this;
     if (c < 1){
         cycle = 1;
     }
-    lastCycle = 0;
-    state = red;
+    lastCycle = rand() % lround(cycle);
+    state = color(rand() % 2);
     ENSURE(this->properlyInitialized(), "constructor must end in properlyInitialized state");
 }
 

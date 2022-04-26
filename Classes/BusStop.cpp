@@ -15,7 +15,7 @@
 #include "../DesignByContract.h"
 
 BusStop::BusStop(double position, double stoptime, Road *road) : road(road), position(position), stoptime(stoptime),
-                 currentBus(NULL), busey(false) {
+                                                                 currentBus(NULL), bussy(false) {
     _initCheck = this;
     if (this->stoptime < 1) {
         this->stoptime = 1;
@@ -47,9 +47,9 @@ void BusStop::updateBusStop(double t) {
         return;
     }
     if (firstBus != currentBus){
-        busey = false;
+        bussy = false;
     }
-    if (busey) {
+    if (bussy) {
         timestopped += t;
         if (timestopped > stoptime) {
             currentBus->setAction(fast);
@@ -66,7 +66,7 @@ void BusStop::updateBusStop(double t) {
     }
     currentBus->setAction(stop);
     if (currentBus->getSpeed() < 0.01) {
-        busey = true;
+        bussy = true;
         timestopped = 0;
     }
 }

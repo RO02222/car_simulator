@@ -15,7 +15,7 @@
 #include "../DesignByContract.h"
 #include "../Basic_Values.h"
 
-Road::Road(const std::string &name, double l) : name(name), length(l) {
+Road::Road(const std::string &name, double l, std::ofstream* error) : error(error), name(name), length(l)  {
     _initCheck = this;
     if (l < 1){
         length = 1;
@@ -50,7 +50,7 @@ void Road::updateRoad(double t) {
     for (std::vector<Car *>::iterator itC = carIt.begin(); itC != carIt.end(); itC++) {
         bool update = true;
         for (unsigned int i = 0; i < junctions.size(); i++) {
-            if (std::abs((*itC)->getDistance() - *junctions[i].second) < gStopDistance) {
+            if (std::abs((*itC)->getDistance() - *junctions[i].second) <= gStopDistance) {
                 update = false;
                 break;
             }
@@ -104,16 +104,16 @@ void Road::removeCar(Car* car) {
 void Road::addLight(double position, double cycle) {
     REQUIRE(this->properlyInitialized(), "Road wasn't initialized when calling addLight");
     if (position > getLength() or position < 0) {
-        std::cerr<<"Failed to add light: position is not on the road"<<std::endl;
+        *error<<"Failed to add light: position is not on the road"<<std::endl;
         return;
     }
-    lights.push_back(new Light(position, cycle,this));
+    lights.push_back(new Light(position, cycle,this, error));
 }
 
 void Road::addCar(double distance, CarData* data) {
     REQUIRE(this->properlyInitialized(), "Road wasn't initialized when calling addCar");
     if (distance > getLength() or distance < 0) {
-        std::cerr<<"Failed to add car: position is not on the road"<<std::endl;
+        *error<<"Failed to add car: position is not on the road"<<std::endl;
         return;
     }
     Road::cars.push_back(new Car (distance, data, this));
@@ -148,7 +148,7 @@ void Road::addBusStop(double position, double stoptime) {
         stoptime = 1;
     }
     if (position > getLength() or position < 0) {
-        std::cerr<<"Failed to add BusStop: position is not on the road"<<std::endl;
+        *error<<"Failed to add BusStop: position is not on the road"<<std::endl;
         return;
     }
     busStops.push_back(new BusStop(position, stoptime, this));
@@ -158,7 +158,7 @@ void Road::addBusStop(double position, double stoptime) {
 void Road::addJunction(std::pair<Junction*, double*> junction) {
     REQUIRE(this->properlyInitialized(), "Road wasn't initialized when calling addJuction");
     if (*junction.second > getLength() or *junction.second < 0) {
-        std::cerr<<"Failed to add Junction: position is not on the road"<<std::endl;
+        *error<<"Failed to add Junction: position is not on the road"<<std::endl;
         return;
     }
     junctions.push_back( junction );

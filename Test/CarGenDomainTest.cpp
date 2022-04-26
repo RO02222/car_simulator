@@ -7,7 +7,9 @@
 
 #include <iostream>
 #include "gtest/gtest.h"
-
+#include "../Classes/Car.h"
+#include "../Classes/CarGen.h"
+#include "../Classes/Road.h"
 using namespace std;
 
 class CarGenDomainTest: public ::testing::Test {
@@ -40,21 +42,38 @@ protected:
 
 };
 void test_CarGen(Type type){
+    // normal working
     World* w = new World();
-    w->addRoad("Middelheimlaan", 100);
-    w->getRoads()[0]->addCarGen(3, w->getCarData(type));
+    w->addRoad("Middelheimlaan", 10000);
+    w->getRoads()[0]->addCarGen(8, w->getCarData(type));
     double time = w->getRoads()[0]->getCarGen()[0]->getCycle();
-    w->getRoads()[0]->getCarGen()[0]->updateCarGen(2);
-    EXPECT_EQ(w->getRoads()[0]->getCarGen()[0]->getCycle(),time);
+    double numCars = w->getRoads()[0]->getCars().size();
     EXPECT_EQ(int (w->getRoads()[0]->getCars().size()), 0);
-    w->getRoads()[0]->getCarGen()[0]->updateCarGen(2);
-    time = time + 2;
-    EXPECT_EQ(w->getRoads()[0]->getCarGen()[0]->getCycle(),time);
-    EXPECT_EQ(int(w->getRoads()[0]->getCars().size()), 1);
-    EXPECT_EQ(w->getRoads()[0]->getCars()[0]->getData(), w->getRoads()[0]->getCarGen()[0]->getData());
-    EXPECT_EQ(w->getRoads()[0]->getCarGen()[0]->getFrequency(), 3);
-
+    for (unsigned int _ = 0; _ < 20; _++){
+        w->getRoads()[0]->getCarGen()[0]->updateCarGen(2);
+        for (unsigned int i = 0 ; i<w->getRoads()[0]->getCars().size();i++){
+            w->getRoads()[0]->getCars()[i]->updateCar(2);
+        }
+        time += 2;
+        if (time >= 8){
+            time = time -8;
+            numCars += 1;
+            EXPECT_EQ(w->getRoads()[0]->getCars()[w->getRoads()[0]->getCars().size()-1]->getData()->getType(), type);
+        }
+        EXPECT_EQ(w->getRoads()[0]->getCars().size(), numCars);
+        EXPECT_EQ(double (w->getRoads()[0]->getCarGen()[0]->getCycle()), time);
+    }
     delete w;
+    //road opstructed
+    World* u = new World();
+    u->addRoad("Middelheimlaan", 100);
+    u->getRoads()[0]->addCarGen(1, u->getCarData(type));
+    EXPECT_EQ(int(u->getRoads()[0]->getCars().size()), 0);
+    u->getRoads()[0]->getCarGen()[0]->updateCarGen(2);
+    EXPECT_EQ(int(u->getRoads()[0]->getCars().size()), 1);
+    u->getRoads()[0]->getCarGen()[0]->updateCarGen(2);
+    EXPECT_EQ(int(u->getRoads()[0]->getCars().size()), 1);
+    delete u;
 }
 
 /**
@@ -72,20 +91,36 @@ TEST_F(CarGenDomainTest, Initialiser) {
 }
 
 TEST_F(CarGenDomainTest, Initialiser2) {
-    World *w = new World();
-    w->addRoad("Middelheimlaan", 100);
-    w->getRoads()[0]->addCarGen(3, w->getAllData());
+    // normal working
+    World* w = new World();
+    w->addRoad("Middelheimlaan", 10000);
+    w->getRoads()[0]->addCarGen(8, w->getAllData());
     double time = w->getRoads()[0]->getCarGen()[0]->getCycle();
-    w->getRoads()[0]->getCarGen()[0]->updateCarGen(2);
-    time = time + 2;
-    EXPECT_EQ(w->getRoads()[0]->getCarGen()[0]->getCycle(), time);
-    EXPECT_EQ(int(w->getRoads()[0]->getCars().size()), 0);
-    w->getRoads()[0]->getCarGen()[0]->updateCarGen(2);
-    time = time + 2;
-    EXPECT_EQ(w->getRoads()[0]->getCarGen()[0]->getCycle(), time);
-    EXPECT_EQ(int(w->getRoads()[0]->getCars().size()), 1);
-    EXPECT_EQ(w->getRoads()[0]->getCars()[0]->getData(), w->getRoads()[0]->getCarGen()[0]->getData());
-    EXPECT_EQ(w->getRoads()[0]->getCarGen()[0]->getFrequency(), 3);
-
+    double numCars = w->getRoads()[0]->getCars().size();
+    EXPECT_EQ(int (w->getRoads()[0]->getCars().size()), 0);
+    for (unsigned int _ = 0; _ < 20; _++){
+        w->getRoads()[0]->getCarGen()[0]->updateCarGen(2);
+        for (unsigned int i = 0 ; i<w->getRoads()[0]->getCars().size();i++){
+            w->getRoads()[0]->getCars()[i]->updateCar(2);
+        }
+        time += 2;
+        if (time >= 8){
+            time = time -8;
+            numCars += 1;
+            EXPECT_EQ(w->getRoads()[0]->getCars()[w->getRoads()[0]->getCars().size()-1]->getData(), w->getRoads()[0]->getCarGen()[0]->getData());
+        }
+        EXPECT_EQ(w->getRoads()[0]->getCars().size(), numCars);
+        EXPECT_EQ(double (w->getRoads()[0]->getCarGen()[0]->getCycle()), time);
+    }
     delete w;
+    //road opstructed
+    World* u = new World();
+    u->addRoad("Middelheimlaan", 100);
+    u->getRoads()[0]->addCarGen(1, u->getAllData());
+    EXPECT_EQ(int(u->getRoads()[0]->getCars().size()), 0);
+    u->getRoads()[0]->getCarGen()[0]->updateCarGen(2);
+    EXPECT_EQ(int(u->getRoads()[0]->getCars().size()), 1);
+    u->getRoads()[0]->getCarGen()[0]->updateCarGen(2);
+    EXPECT_EQ(int(u->getRoads()[0]->getCars().size()), 1);
+    delete u;
 }

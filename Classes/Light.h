@@ -8,11 +8,14 @@
 
 #ifndef CAR_SIMULATOR_LIGHT_H
 #define CAR_SIMULATOR_LIGHT_H
+#include <iostream>
 
 enum color {green,red};
 class Road;
 
 class Light{
+public:
+    std::ofstream* error;
 private:
     Light* _initCheck;
     Road* road;
@@ -26,10 +29,11 @@ public:
  * create a traffic light
  * @param position: position of the traffic light
  * @param road: the road where the traffic light is placed on
+ * @param error: errorfile
  * @return: None
 \n ENSURE(properlyInitialized(), "constructor must end in properlyInitialized state");
 */
-    Light(double position, double cycle, Road* road);
+    Light(double position, double cycle, Road* road, std::ofstream* error);
 
 
 /**

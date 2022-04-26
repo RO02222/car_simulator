@@ -45,7 +45,8 @@ protected:
 Tests Initialiser: test if every object is initialised right.
 */
 TEST_F(LightDomainTest, Initialiser) {
-    Road r1 = Road("Middelheimlaan", 100);
+    std::ofstream error;
+    Road r1 = Road("Middelheimlaan", 100, &error);
     r1.addLight(50,3);
 
     EXPECT_EQ(r1.getLights()[0]->getPosition(), 50);
@@ -57,7 +58,8 @@ TEST_F(LightDomainTest, Initialiser) {
 Tests InitialiserEdge: test if every object is initialised right when edge case.
 */
 TEST_F(LightDomainTest, InitialiserEdge) {
-    Road r1 = Road("Middelheimlaan", 100);
+    std::ofstream error;
+    Road r1 = Road("Middelheimlaan", 100, &error);
     r1.addLight(50, 1.0000001);
     r1.addLight(70,0);
     r1.addLight(90,-16);

@@ -273,7 +273,7 @@ void World::addRoad(std::string name, double length) {
             return;
         }
     }
-    roads.push_back(new Road(name,length));
+    roads.push_back(new Road(name,length, &error));
 }
 
 
