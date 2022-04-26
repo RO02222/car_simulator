@@ -1,14 +1,30 @@
 <World>
+    <BAAN>
+        <naam>Molenstraat</naam>
+        <lengte>700</lengte>
+    </BAAN>
+
     <VOERTUIGGENERATOR>
         <baan>Middelheimlaan</baan>
         <frequentie>5</frequentie>
     </VOERTUIGGENERATOR>
+
+    <KRUISPUNT>
+        <baan positie="500">Molenstraat</baan>
+        <baan positie="200">Middelheimlaan</baan>
+    </KRUISPUNT>
 
     <VERKEERSLICHT>
         <baan>Middelheimlaan</baan>
         <positie>400</positie>
         <cyclus>20</cyclus>
     </VERKEERSLICHT>
+
+    <BUSHALTE>
+        <baan>Middelheimlaan</baan>
+        <positie>35</positie>
+        <wachttijd>4</wachttijd>
+    </BUSHALTE>
 
     <VOERTUIG>
         <baan>Middelheimlaan</baan>
@@ -21,7 +37,7 @@
     </BAAN>
 
     <VOERTUIG>
-        <baan>Middelheimlaan</baan>
+        <baan>Molenstraat</baan>
         <positie>20</positie>
     </VOERTUIG>
 

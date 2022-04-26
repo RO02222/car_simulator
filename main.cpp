@@ -14,10 +14,10 @@
 
 
 int main() {
-    World* w = input::loadWorldXML("../XML/case1.xml");
+    World* w = input::loadWorldXML("../XML/case2.xml");
 
     //World* w = input::loadWorldXML("../XML/case1.xml");
-    //World* w = input::loadWorldXML("../testInput/testFail1.xml");
+    //World* w = input::loadWorldXML("../testInput/testFail6.xml");
     //World* w = input::loadWorldXML("../testInput/testFail2.xml");
     //World* w = input::loadWorldXML("../testInput/test1.xml");
     std::ofstream myFile;

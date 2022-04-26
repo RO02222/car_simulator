@@ -47,7 +47,7 @@ protected:
 /**
 Tests if every object is initialised right.
 */
-TEST_F(Car_SimDomainTest, Initialiser) {
+TEST_F(Car_SimDomainTest, Initialiserbasic) {
     World* w = new World();
     Road r1 = Road("Middelheimlaan", 100, &w->error);
     Road r2 = Road("Groenenborgerlaan", 100, &w->error);
@@ -61,6 +61,45 @@ TEST_F(Car_SimDomainTest, Initialiser) {
     r2.addLight(60,5);
     r1.addCarGen(5, w->getCarData(car));
     r2.addCarGen(5, w->getCarData(bus));
+
+    EXPECT_EQ(r1.getName(), "Middelheimlaan");
+    EXPECT_EQ(r1.getLength(), 100);
+    EXPECT_EQ(r2.getName(), "Groenenborgerlaan");
+    EXPECT_EQ(r2.getLength(), 100);
+
+    EXPECT_EQ(r1.getCars()[0]->getDistance(),25);
+    EXPECT_EQ(r1.getCars()[1]->getDistance(),60);
+    EXPECT_EQ(r1.getCars()[2]->getDistance(), 90);
+    EXPECT_EQ(r2.getCars()[0]->getDistance(),90);
+
+    EXPECT_EQ(r1.getLights()[0]->getPosition(), 80);
+    EXPECT_EQ(r1.getLights()[1]->getPosition(), 20);
+    EXPECT_EQ(r1.getLights()[2]->getPosition(), 50);
+    EXPECT_EQ(r2.getLights()[0]->getPosition(), 60);
+    EXPECT_EQ(r1.getLights()[0]->getCycle(), 5);
+    EXPECT_EQ(r1.getLights()[1]->getCycle(), 5);
+    EXPECT_EQ(r1.getLights()[2]->getCycle(), 5);
+    EXPECT_EQ(r2.getLights()[0]->getCycle(), 5);
+
+    EXPECT_EQ(r1.getCarGen()[0]->getFrequency(), 5);
+    EXPECT_EQ(r2.getCarGen()[0]->getFrequency(), 5);
+}
+
+TEST_F(Car_SimDomainTest, Initialiserall) {
+    World* w = new World();
+    Road r1 = Road("Middelheimlaan", 100, &w->error);
+    Road r2 = Road("Groenenborgerlaan", 100, &w->error);
+    r1.addCar(25, w->getCarData(car));
+    r1.addCar(60, w->getCarData(bus));
+    r1.addCar(90,w->getCarData(ambulance));
+    r2.addCar(90, w->getCarData(fire));
+    r1.addLight(80, 5);
+    r1.addLight( 20, 5);
+    r1.addLight(50, 5);
+    r2.addLight(60,5);
+    r1.addCarGen(5, w->getCarData(car));
+    r2.addCarGen(5, w->getCarData(bus));
+    //r1.addJunction(50,)
 
     EXPECT_EQ(r1.getName(), "Middelheimlaan");
     EXPECT_EQ(r1.getLength(), 100);

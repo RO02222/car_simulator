@@ -377,7 +377,7 @@ namespace input {
                 return;
             }
             if (positions.empty()) {
-                world->error << "Failed to load file: invalid <KRUISPUNT> : 'missing argument' <baan>" << std::endl;
+                world->error << "Failed to load file: invalid <KRUISPUNT> : 'missing argument' <positie>" << std::endl;
                 return;
             }
             std::vector<std::pair<Road*, double> >roads;

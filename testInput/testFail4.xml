@@ -6,18 +6,20 @@
 
     <VERKEERSLICHT>
         <baan>Middelheimlaan</baan>
-        <positie>400</positie>
+        <positie>401</positie>
         <cyclus>20</cyclus>
     </VERKEERSLICHT>
 
     <VOERTUIG>
         <baan>Middelheimlaan</baan>
         <positie>500</positie>
+        <type>auto</type>
     </VOERTUIG>
 
     <VOERTUIG>
         <baan>Middelheimlaan</baan>
         <positie>20</positie>
+        <type>auto</type>
     </VOERTUIG>
 
     <VOERTUIGGENERATOR>

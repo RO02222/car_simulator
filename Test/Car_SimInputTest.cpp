@@ -11,6 +11,8 @@
 #include "gtest/gtest.h"
 #include "../Classes/World.h"
 #include "../Car_SimUtils.h"
+#include "../Classes/Light.h"
+#include "../Classes/Junction.h"
 
 
 
@@ -55,8 +57,8 @@ void Test_error(const char* inputfile, std::string compareFile){
 /**
 Tests InputHappyDay
 */
-TEST_F(Car_SimInputTest, InputHappyDay) {
-    World* w = input::loadWorldXML("../testInput/tetsCase1.xml");
+TEST_F(Car_SimInputTest, InputHappyDayAll) {
+    World* w = input::loadWorldXML("../testInput/testCase1.xml");
 
     EXPECT_EQ(w->getRoads()[0]->getName(), "Middelheimlaan");
     EXPECT_EQ(w->getRoads()[0]->getLength(), 400);
@@ -72,6 +74,40 @@ TEST_F(Car_SimInputTest, InputHappyDay) {
 
     EXPECT_EQ(w->getRoads()[0]->getCarGen()[0]->getRoad()->getName(), "Middelheimlaan");
     EXPECT_EQ(w->getRoads()[0]->getCarGen()[0]->getFrequency(), 5);
+
+    EXPECT_EQ(w->getJunctions()[0]->getRoad(0)->getName(), "Middelheimlaan");
+    EXPECT_EQ(w->getJunctions()[0]->getPosition("Middelheimlaan"), 300);
+    EXPECT_EQ(w->getJunctions()[0]->getRoad(1)->getName(), "Groenenborgerlaan");
+    EXPECT_EQ(w->getJunctions()[0]->getPosition("Groenenborgerlaan"), 100);
+
+    EXPECT_EQ(w->getRoads()[0]->getBusStops()[0]->getRoad()->getName(), "Middelheimlaan");
+    EXPECT_EQ(w->getRoads()[0]->getBusStops()[0]->getPosition(), 35);
+    EXPECT_EQ(w->getRoads()[0]->getBusStops()[0]->getStopTime(), 4);
+    delete w;
+}
+
+TEST_F(Car_SimInputTest, InputHappyDayBasic) {
+    World *w = input::loadWorldXML("../testInput/testCase4.xml");
+
+    EXPECT_EQ(w->getRoads()[0]->getName(), "Kerkstraat");
+    EXPECT_EQ(w->getRoads()[0]->getLength(), 500);
+
+    EXPECT_EQ(w->getRoads()[0]->getLights()[0]->getRoad()->getName(), "Kerkstraat");
+    EXPECT_EQ(w->getRoads()[0]->getLights()[0]->getPosition(), 250);
+    EXPECT_EQ(w->getRoads()[0]->getLights()[0]->getCycle(), 9);
+    EXPECT_EQ(w->getRoads()[0]->getLights()[1]->getRoad()->getName(), "Kerkstraat");
+    EXPECT_EQ(w->getRoads()[0]->getLights()[1]->getPosition(), 100);
+    EXPECT_EQ(w->getRoads()[0]->getLights()[1]->getCycle(), 4);
+
+    EXPECT_EQ(w->getRoads()[0]->getCars()[0]->getRoad()->getName(), "Kerkstraat");
+    EXPECT_EQ(w->getRoads()[0]->getCars()[0]->getDistance(), 100);
+    EXPECT_EQ(w->getRoads()[0]->getCars()[0]->getData()->getType(), car);
+    EXPECT_EQ(w->getRoads()[0]->getCars()[1]->getRoad()->getName(), "Kerkstraat");
+    EXPECT_EQ(w->getRoads()[0]->getCars()[1]->getDistance(), 20);
+    EXPECT_EQ(w->getRoads()[0]->getCars()[0]->getData()->getType(), ambulance);
+
+    EXPECT_EQ(w->getRoads()[0]->getCarGen()[0]->getRoad()->getName(), "Kerkstraat");
+    EXPECT_EQ(w->getRoads()[0]->getCarGen()[0]->getFrequency(), 3);
     delete w;
 }
 
@@ -81,47 +117,33 @@ Tests InputMixed: test if xml read in different order of Classes also works.
 TEST_F(Car_SimInputTest, InputMixed) {
     World* w = input::loadWorldXML("../testInput/testCase2.xml");
 
-    EXPECT_EQ(w->getRoads()[0]->getName(), "Middelheimlaan");
+    EXPECT_EQ(w->getRoads()[0]->getName(), "Molenstraat");
     EXPECT_EQ(w->getRoads()[0]->getLength(), 400);
+    EXPECT_EQ(w->getRoads()[1]->getName(), "Middelheimlaan");
+    EXPECT_EQ(w->getRoads()[1]->getLength(), 700);
 
-    EXPECT_EQ(w->getRoads()[0]->getLights()[0]->getRoad()->getName(), "Middelheimlaan");
-    EXPECT_EQ(w->getRoads()[0]->getLights()[0]->getPosition(), 400);
-    EXPECT_EQ(w->getRoads()[0]->getLights()[0]->getCycle(), 20);
+    EXPECT_EQ(w->getRoads()[1]->getLights()[0]->getRoad()->getName(), "Middelheimlaan");
+    EXPECT_EQ(w->getRoads()[1]->getLights()[0]->getPosition(), 400);
+    EXPECT_EQ(w->getRoads()[1]->getLights()[0]->getCycle(), 20);
 
-    EXPECT_EQ(w->getRoads()[0]->getCars()[0]->getRoad()->getName(), "Middelheimlaan");
-    EXPECT_EQ(w->getRoads()[0]->getCars()[0]->getDistance(), 40);
-    EXPECT_EQ(w->getRoads()[0]->getCars()[1]->getRoad()->getName(), "Middelheimlaan");
-    EXPECT_EQ(w->getRoads()[0]->getCars()[1]->getDistance(), 20);
+    EXPECT_EQ(w->getRoads()[0]->getCars()[0]->getRoad()->getName(), "Molenstraat");
+    EXPECT_EQ(w->getRoads()[0]->getCars()[0]->getDistance(), 20);
+    EXPECT_EQ(w->getRoads()[1]->getCars()[0]->getRoad()->getName(), "Middelheimlaan");
+    EXPECT_EQ(w->getRoads()[1]->getCars()[0]->getDistance(), 40);
 
     EXPECT_EQ(w->getRoads()[0]->getCarGen()[0]->getRoad()->getName(), "Middelheimlaan");
     EXPECT_EQ(w->getRoads()[0]->getCarGen()[0]->getFrequency(), 5);
+
+    EXPECT_EQ(w->getJunctions()[0]->getRoad(0)->getName(), "Molenstraat");
+    EXPECT_EQ(w->getJunctions()[0]->getPosition("Molenstraat"), 500);
+    EXPECT_EQ(w->getJunctions()[0]->getRoad(1)->getName(), "Middelhaimlaan");
+    EXPECT_EQ(w->getJunctions()[0]->getPosition("Middelheimlaan"), 200);
+
+    EXPECT_EQ(w->getRoads()[0]->getBusStops()[0]->getRoad()->getName(), "Middelheimlaan");
+    EXPECT_EQ(w->getRoads()[0]->getBusStops()[0]->getPosition(), 35);
+    EXPECT_EQ(w->getRoads()[0]->getBusStops()[0]->getStopTime(), 4);
     delete w;
 }
-
-/**
-Tests InputMixed2: test if xml read in different order of variables also works.
-*/
-TEST_F(Car_SimInputTest, InputMixed2) {
-    World* w = input::loadWorldXML("../testInput/testCase3.xml");
-
-
-    EXPECT_EQ(w->getRoads()[0]->getName(), "Middelheimlaan");
-    EXPECT_EQ(w->getRoads()[0]->getLength(), 400);
-
-    EXPECT_EQ(w->getRoads()[0]->getLights()[0]->getRoad()->getName(), "Middelheimlaan");
-    EXPECT_EQ(w->getRoads()[0]->getLights()[0]->getPosition(), 400);
-    EXPECT_EQ(w->getRoads()[0]->getLights()[0]->getCycle(), 20);
-
-    EXPECT_EQ(w->getRoads()[0]->getCars()[0]->getRoad()->getName(), "Middelheimlaan");
-    EXPECT_EQ(w->getRoads()[0]->getCars()[0]->getDistance(), 40);
-    EXPECT_EQ(w->getRoads()[0]->getCars()[1]->getRoad()->getName(), "Middelheimlaan");
-    EXPECT_EQ(w->getRoads()[0]->getCars()[1]->getDistance(), 20);
-
-    EXPECT_EQ(w->getRoads()[0]->getCarGen()[0]->getRoad()->getName(), "Middelheimlaan");
-    EXPECT_EQ(w->getRoads()[0]->getCarGen()[0]->getFrequency(), 5);
-}
-
-
 
 /**
 Tests InputNoWorld
@@ -143,4 +165,15 @@ TEST_F(Car_SimInputTest, InputFail) {
     Test_error("../testInput/testFail7.xml","../testOutput/testFail7.txt");
     //InputCarToFar: test if xml read works when the position of the car is not on the road.
     Test_error("../testInput/testFail8.xml","../testOutput/testFail8.txt");
+    //InputNotExType: test if xml read works for a non-coded type of vehicle.
+    Test_error("../testInput/testFail9.xml","../testOutput/testFail9.txt");
+    //InputNotExRoad: test if xml read works when put cargen on not-defined road.
+    Test_error("../testInput/testFail10.xml","../testOutput/testFail10.txt");
+    //InputNothingExonRoad: test if xml read works when put cargen on not-defined road.
+    Test_error("../testInput/testFail11.xml","../testOutput/testFail11.txt");
+    //InputNoRoadBus: test if xml read works when busstop without road.
+    Test_error("../testInput/testFail12.xml","../testOutput/testFail12.txt");
+    //InputJunction1road: test if xml read works when junction has only 1 road.
+    Test_error("../testInput/testFail13.xml","../testOutput/testFail13.txt");
+
 }

@@ -13,11 +13,13 @@
     <VOERTUIG>
         <baan>Middelheimlaan</baan>
         <positie>40</positie>
+        <type>auto</type>
     </VOERTUIG>
 
     <VOERTUIG>
         <baan>Middelheimlaan</baan>
         <positie>20</positie>
+        <type>ziekenwagen</type>
     </VOERTUIG>
 
     <VOERTUIGGENERATOR>

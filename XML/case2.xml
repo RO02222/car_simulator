@@ -31,16 +31,19 @@
     <VOERTUIG>
         <baan>Middelheimlaan</baan>
         <positie>25</positie>
+        <type>auto</type>
     </VOERTUIG>
 
     <VOERTUIG>
         <baan>Middelheimlaan</baan>
         <positie>60</positie>
+        <type>ziekenwagen</type>
     </VOERTUIG>
 
     <VOERTUIG>
         <baan>Middelheimlaan</baan>
         <positie>90</positie>
+        <type>bus</type>
     </VOERTUIG>
 
     <VOERTUIGGENERATOR>
