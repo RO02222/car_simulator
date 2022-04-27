@@ -201,10 +201,10 @@ namespace input {
                 Type = bus;
             }else if (type == "brandweerwagen") {
                 Type = fire;
-            }else if (type == "ziekenwagen") {
-                Type = police;
-            }else if (type == "politiecombi") {
+            }else if (type == "ziekenwagen" or type == "ambulance") {
                 Type = ambulance;
+            }else if (type == "politiecombi") {
+                Type = police;
             }else{
                 world->error << "Failed to load file: invalid <VOERTUIG> : 'invalid argument' <type>" << std::endl;
                 return;

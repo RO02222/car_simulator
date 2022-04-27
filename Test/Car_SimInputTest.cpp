@@ -104,7 +104,7 @@ TEST_F(Car_SimInputTest, InputHappyDayBasic) {
     EXPECT_EQ(w->getRoads()[0]->getCars()[0]->getData()->getType(), car);
     EXPECT_EQ(w->getRoads()[0]->getCars()[1]->getRoad()->getName(), "Kerkstraat");
     EXPECT_EQ(w->getRoads()[0]->getCars()[1]->getDistance(), 20);
-    EXPECT_EQ(w->getRoads()[0]->getCars()[0]->getData()->getType(), ambulance);
+    EXPECT_EQ(w->getRoads()[0]->getCars()[1]->getData()->getType(), ambulance);
 
     EXPECT_EQ(w->getRoads()[0]->getCarGen()[0]->getRoad()->getName(), "Kerkstraat");
     EXPECT_EQ(w->getRoads()[0]->getCarGen()[0]->getFrequency(), 3);
@@ -118,9 +118,9 @@ TEST_F(Car_SimInputTest, InputMixed) {
     World* w = input::loadWorldXML("../testInput/testCase2.xml");
 
     EXPECT_EQ(w->getRoads()[0]->getName(), "Molenstraat");
-    EXPECT_EQ(w->getRoads()[0]->getLength(), 400);
+    EXPECT_EQ(w->getRoads()[0]->getLength(), 700);
     EXPECT_EQ(w->getRoads()[1]->getName(), "Middelheimlaan");
-    EXPECT_EQ(w->getRoads()[1]->getLength(), 700);
+    EXPECT_EQ(w->getRoads()[1]->getLength(), 400);
 
     EXPECT_EQ(w->getRoads()[1]->getLights()[0]->getRoad()->getName(), "Middelheimlaan");
     EXPECT_EQ(w->getRoads()[1]->getLights()[0]->getPosition(), 400);
@@ -131,17 +131,17 @@ TEST_F(Car_SimInputTest, InputMixed) {
     EXPECT_EQ(w->getRoads()[1]->getCars()[0]->getRoad()->getName(), "Middelheimlaan");
     EXPECT_EQ(w->getRoads()[1]->getCars()[0]->getDistance(), 40);
 
-    EXPECT_EQ(w->getRoads()[0]->getCarGen()[0]->getRoad()->getName(), "Middelheimlaan");
-    EXPECT_EQ(w->getRoads()[0]->getCarGen()[0]->getFrequency(), 5);
+    EXPECT_EQ(w->getRoads()[1]->getCarGen()[0]->getRoad()->getName(), "Middelheimlaan");
+    EXPECT_EQ(w->getRoads()[1]->getCarGen()[0]->getFrequency(), 5);
 
     EXPECT_EQ(w->getJunctions()[0]->getRoad(0)->getName(), "Molenstraat");
     EXPECT_EQ(w->getJunctions()[0]->getPosition("Molenstraat"), 500);
     EXPECT_EQ(w->getJunctions()[0]->getRoad(1)->getName(), "Middelhaimlaan");
     EXPECT_EQ(w->getJunctions()[0]->getPosition("Middelheimlaan"), 200);
 
-    EXPECT_EQ(w->getRoads()[0]->getBusStops()[0]->getRoad()->getName(), "Middelheimlaan");
-    EXPECT_EQ(w->getRoads()[0]->getBusStops()[0]->getPosition(), 35);
-    EXPECT_EQ(w->getRoads()[0]->getBusStops()[0]->getStopTime(), 4);
+    EXPECT_EQ(w->getRoads()[1]->getBusStops()[0]->getRoad()->getName(), "Middelheimlaan");
+    EXPECT_EQ(w->getRoads()[1]->getBusStops()[0]->getPosition(), 35);
+    EXPECT_EQ(w->getRoads()[1]->getBusStops()[0]->getStopTime(), 4);
     delete w;
 }
 
