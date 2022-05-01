@@ -136,7 +136,7 @@ TEST_F(Car_SimInputTest, InputMixed) {
 
     EXPECT_EQ(w->getJunctions()[0]->getRoad(0)->getName(), "Molenstraat");
     EXPECT_EQ(w->getJunctions()[0]->getPosition("Molenstraat"), 500);
-    EXPECT_EQ(w->getJunctions()[0]->getRoad(1)->getName(), "Middelhaimlaan");
+    EXPECT_EQ(w->getJunctions()[0]->getRoad(1)->getName(), "Middelheimlaan");
     EXPECT_EQ(w->getJunctions()[0]->getPosition("Middelheimlaan"), 200);
 
     EXPECT_EQ(w->getRoads()[1]->getBusStops()[0]->getRoad()->getName(), "Middelheimlaan");
@@ -169,11 +169,10 @@ TEST_F(Car_SimInputTest, InputFail) {
     Test_error("../testInput/testFail9.xml","../testOutput/testFail9.txt");
     //InputNotExRoad: test if xml read works when put cargen on not-defined road.
     Test_error("../testInput/testFail10.xml","../testOutput/testFail10.txt");
-    //InputNothingExonRoad: test if xml read works when put cargen on not-defined road.
+    //InputNothingExonRoad: test if xml read works when not-defined road.
     Test_error("../testInput/testFail11.xml","../testOutput/testFail11.txt");
     //InputNoRoadBus: test if xml read works when busstop without road.
     Test_error("../testInput/testFail12.xml","../testOutput/testFail12.txt");
     //InputJunction1road: test if xml read works when junction has only 1 road.
     Test_error("../testInput/testFail13.xml","../testOutput/testFail13.txt");
-
 }

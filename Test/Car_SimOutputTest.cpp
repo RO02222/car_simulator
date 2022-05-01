@@ -140,16 +140,18 @@ TEST_F(Car_SimOutputTest, FileCompare) {
 Tests FileOutputHappyDay: test if the output is right for a simple impression.
 */
 TEST_F(Car_SimOutputTest, SimpleFileOutput) {
-    Test_Simulation("../XML/case1.xml",  "../testOutput/testOutput1.txt", false);
-    Test_Simulation("../XML/case2.xml",  "../testOutput/testOutput2.txt", false);
+    Test_Simulation("../testInput/testCase1.xml",  "../testOutput/testOutput1.txt", false);
+    Test_Simulation("../testInput/testCase2.xml",  "../testOutput/testOutput2.txt", false);
 }
 
 /**
 Tests GraphicFileOutputHappyDay: test if the output is right for the graphical impression.
 */
 TEST_F(Car_SimOutputTest, GraphicFileOutput) {
-    Test_Simulation("../XML/case1.xml",  "../testOutput/testOutput1.0.txt", true);
-    Test_Simulation("../XML/case2.xml",  "../testOutput/testOutput2.0.txt", true);
+    Test_Simulation("../testInput/testCase1.xml",  "../testOutput/testOutput1.0.txt", true);
+    Test_Simulation("../testInput/testCase2.xml",  "../testOutput/testOutput2.0.txt", true);
 }
+
+
 
 

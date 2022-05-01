@@ -18,7 +18,9 @@ int main() {
     //World* w = input::loadWorldXML("../XML/case1.xml");
 
     //World* w = input::loadWorldXML("../XML/case1.xml");
-    //World* w = input::loadWorldXML("../testInput/testFail6.xml");
+    srand(974120);
+    World* w = input::loadWorldXML("../testInput/testCase5.xml");
+    w->isvalid();
     //World* w = input::loadWorldXML("../testInput/testFail2.xml");
     //World* w = input::loadWorldXML("../testInput/test1.xml");
     std::ofstream myFile;

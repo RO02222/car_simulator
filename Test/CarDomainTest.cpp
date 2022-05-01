@@ -67,6 +67,19 @@ TEST_F(CarDomainTest, Initialiser) {
     r1.addCar(60, w->getCarData(bus));
     EXPECT_EQ(r1.getCars()[3]->getDistance(), 60);
     EXPECT_EQ(r1.getCars()[3]->getData(), w->getCarData(bus));
+
+    r1.addCar(70, w->getCarData(police));
+    EXPECT_EQ(r1.getCars()[3]->getDistance(), 70);
+    EXPECT_EQ(r1.getCars()[3]->getData(), w->getCarData(police));
+
+    r1.addCar(70, w->getCarData(police));
+    EXPECT_EQ(r1.getCars()[3]->getDistance(), 70);
+    EXPECT_EQ(r1.getCars()[3]->getData(), w->getCarData(police));
+
+    r1.addCar(90, w->getCarData(bugatti));
+    EXPECT_EQ(r1.getCars()[3]->getDistance(), 90);
+    EXPECT_EQ(r1.getCars()[3]->getData(), w->getCarData(bugatti));
+
 }
 
 
@@ -92,11 +105,12 @@ TEST_F(CarDomainTest, InitialiserEdge) {
     r1.addCar(101, w->getCarData(bus));
     EXPECT_EQ(r1.getCars()[3]->getDistance(), 100);
     EXPECT_EQ(r1.getCars()[3]->getData(), w->getCarData(bus));
+
 }
 
 TEST_F(CarDomainTest, updatetest) {
     World* w = new World();
-    Road r1 = Road("Middelheimlaan", 100, &w->error);
+    Road r1 = Road("Middelheimlaan", 200, &w->error);
     vector<double> speed;
     vector<double> accelaration;
     vector<double> distance;
@@ -129,6 +143,20 @@ TEST_F(CarDomainTest, updatetest) {
     accelaration.push_back(r1.getCars()[3]->getAcceleration());
     distance.push_back(r1.getCars()[3]->getDistance());
 
+    r1.addCar(70, w->getCarData(police));
+    EXPECT_EQ(r1.getCars()[4]->getDistance(), 70);
+    EXPECT_EQ(r1.getCars()[4]->getData(), w->getCarData(police));
+    speed.push_back(r1.getCars()[4]->getSpeed());
+    accelaration.push_back(r1.getCars()[4]->getAcceleration());
+    distance.push_back(r1.getCars()[4]->getDistance());
+
+    r1.addCar(80, w->getCarData(bugatti));
+    EXPECT_EQ(r1.getCars()[5]->getDistance(), 80);
+    EXPECT_EQ(r1.getCars()[5]->getData(), w->getCarData(bugatti));
+    speed.push_back(r1.getCars()[5]->getSpeed());
+    accelaration.push_back(r1.getCars()[5]->getAcceleration());
+    distance.push_back(r1.getCars()[5]->getDistance());
+
     r1.updateRoad(2);
     if(r1.getCars()[0]->getSpeed()!= 0){
         EXPECT_NE(r1.getCars()[0]->getAcceleration(), accelaration[0]);
@@ -151,8 +179,54 @@ TEST_F(CarDomainTest, updatetest) {
         EXPECT_NE(r1.getCars()[3]->getSpeed(), speed[3]);
     }
 
-    speed = {r1.getCars()[0]->getSpeed(), r1.getCars()[1]->getSpeed(), r1.getCars()[2]->getSpeed(), r1.getCars()[3]->getSpeed()};
-    distance = {r1.getCars()[0]->getDistance(), r1.getCars()[1]->getDistance(), r1.getCars()[2]->getDistance(), r1.getCars()[3]->getDistance()};
-    accelaration = {r1.getCars()[0]->getAcceleration(), r1.getCars()[1]->getAcceleration(), r1.getCars()[2]->getAcceleration(), r1.getCars()[3]->getAcceleration()};
+    if(r1.getCars()[4]->getSpeed()!= 0){
+        EXPECT_NE(r1.getCars()[4]->getAcceleration(), accelaration[4]);
+        EXPECT_NE(r1.getCars()[4]->getDistance(), distance[4]);
+        EXPECT_NE(r1.getCars()[4]->getSpeed(), speed[4]);
+    }
+
+    if(r1.getCars()[5]->getSpeed()!= 0){
+        EXPECT_NE(r1.getCars()[5]->getAcceleration(), accelaration[5]);
+        EXPECT_NE(r1.getCars()[5]->getDistance(), distance[5]);
+        EXPECT_NE(r1.getCars()[5]->getSpeed(), speed[5]);
+    }
+
+    speed = {r1.getCars()[0]->getSpeed(), r1.getCars()[1]->getSpeed(), r1.getCars()[2]->getSpeed(), r1.getCars()[3]->getSpeed(), r1.getCars()[4]->getSpeed(), r1.getCars()[5]->getSpeed()};
+    distance = {r1.getCars()[0]->getDistance(), r1.getCars()[1]->getDistance(), r1.getCars()[2]->getDistance(), r1.getCars()[3]->getDistance(), r1.getCars()[4]->getDistance(), r1.getCars()[5]->getDistance()};
+    accelaration = {r1.getCars()[0]->getAcceleration(), r1.getCars()[1]->getAcceleration(), r1.getCars()[2]->getAcceleration(), r1.getCars()[3]->getAcceleration(), r1.getCars()[4]->getAcceleration(), r1.getCars()[5]->getAcceleration()};
+
+    r1.updateRoad(20);
+    if(r1.getCars()[0]->getSpeed()!= 0){
+        EXPECT_NE(r1.getCars()[0]->getAcceleration(), accelaration[0]);
+        EXPECT_NE(r1.getCars()[0]->getDistance(), distance[0]);
+        EXPECT_NE(r1.getCars()[0]->getSpeed(), speed[0]);
+    }
+    if(r1.getCars()[1]->getSpeed()!= 0){
+        EXPECT_NE(r1.getCars()[1]->getAcceleration(), accelaration[1]);
+        EXPECT_NE(r1.getCars()[1]->getDistance(), distance[1]);
+        EXPECT_NE(r1.getCars()[1]->getSpeed(), speed[1]);
+    }
+    if(r1.getCars()[2]->getSpeed()!= 0){
+        EXPECT_NE(r1.getCars()[2]->getAcceleration(), accelaration[2]);
+        EXPECT_NE(r1.getCars()[2]->getDistance(), distance[2]);
+        EXPECT_NE(r1.getCars()[2]->getSpeed(), speed[2]);
+    }
+    if(r1.getCars()[3]->getSpeed()!= 0){
+        EXPECT_NE(r1.getCars()[3]->getAcceleration(), accelaration[3]);
+        EXPECT_NE(r1.getCars()[3]->getDistance(), distance[3]);
+        EXPECT_NE(r1.getCars()[3]->getSpeed(), speed[3]);
+    }
+
+    if(r1.getCars()[4]->getSpeed()!= 0){
+        EXPECT_NE(r1.getCars()[4]->getAcceleration(), accelaration[4]);
+        EXPECT_NE(r1.getCars()[4]->getDistance(), distance[4]);
+        EXPECT_NE(r1.getCars()[4]->getSpeed(), speed[4]);
+    }
+
+    if(r1.getCars()[5]->getSpeed()!= 0){
+        EXPECT_NE(r1.getCars()[5]->getAcceleration(), accelaration[5]);
+        EXPECT_NE(r1.getCars()[5]->getDistance(), distance[5]);
+        EXPECT_NE(r1.getCars()[5]->getSpeed(), speed[5]);
+    }
 }
 
