@@ -1,54 +1,18 @@
 <World>
     <BAAN>
         <naam>Middelheimlaan</naam>
-        <lengte>100</lengte>
+        <lengte>500</lengte>
     </BAAN>
 
     <VERKEERSLICHT>
         <baan>Middelheimlaan</baan>
-        <positie>80</positie>
-        <cyclus>5</cyclus>
+        <positie>500</positie>
+        <cyclus>40</cyclus>
     </VERKEERSLICHT>
-
-    <VERKEERSLICHT>
-        <baan>Middelheimlaan</baan>
-        <positie>20</positie>
-        <cyclus>5</cyclus>
-    </VERKEERSLICHT>
-
-    <VERKEERSLICHT>
-        <baan>Middelheimlaan</baan>
-        <positie>50</positie>
-        <cyclus>5</cyclus>
-    </VERKEERSLICHT>
-
-    <VERKEERSLICHT>
-        <baan>Middelheimlaan</baan>
-        <positie>60</positie>
-        <cyclus>5</cyclus>
-    </VERKEERSLICHT>
-
-    <VOERTUIG>
-        <baan>Middelheimlaan</baan>
-        <positie>25</positie>
-        <type>auto</type>
-    </VOERTUIG>
-
-    <VOERTUIG>
-        <baan>Middelheimlaan</baan>
-        <positie>60</positie>
-        <type>ziekenwagen</type>
-    </VOERTUIG>
-
-    <VOERTUIG>
-        <baan>Middelheimlaan</baan>
-        <positie>90</positie>
-        <type>bus</type>
-    </VOERTUIG>
 
     <VOERTUIGGENERATOR>
         <baan>Middelheimlaan</baan>
-        <frequentie>5</frequentie>
+        <frequentie>0</frequentie>
     </VOERTUIGGENERATOR>
 
 </World>

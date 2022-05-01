@@ -71,7 +71,14 @@ void BusStop::updateBusStop(double t) {
     }
 }
 
-
+void BusStop::isvalid(Road* r) {
+    ENSURE(properlyInitialized(), "BusStop not initialized");
+    ENSURE(road == r, "BusStop is on a wrong Road");
+    ENSURE(position >= gStopDistance, "Position is at least the stopdistance");
+    ENSURE(position <= road->getLength(), "Position is of the road");
+    ENSURE(stoptime >= 1, "stoptime can not be less than 1");
+    ENSURE(timestopped >= 0, "timestoped can not be negative");
+}
 
 
 

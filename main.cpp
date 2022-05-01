@@ -14,7 +14,8 @@
 
 
 int main() {
-    World* w = input::loadWorldXML("../XML/case2.xml");
+    //World* w = input::loadWorldXML("../XML/bugattiVScar.xml");
+    //World* w = input::loadWorldXML("../XML/case1.xml");
 
     //World* w = input::loadWorldXML("../XML/case1.xml");
     //World* w = input::loadWorldXML("../testInput/testFail6.xml");
@@ -27,14 +28,14 @@ int main() {
 #if VERSION == 14
     std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 #endif
-    for (unsigned int i =0; i < 1000; i++) {
+    for (unsigned int i =0; i < 10; i++) {
         w->simpleSimulateWorld(myFile);
         w->graficImpSimulateWorld(myFile2);
 #if VERSION == 14
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        //std::this_thread::sleep_for(std::chrono::milliseconds(20));
 #endif
-        for (unsigned int _ = 0; _ < 5; _ += 1) {
-            w->updateWorld(0.05);
+        for (unsigned int _ = 0; _ < 10; _ += 1) {
+            w->updateWorld(0.01);
         }
     }
     myFile.close();

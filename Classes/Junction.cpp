@@ -6,13 +6,14 @@
 //============================================================================
 
 #include <cmath>
+#include <fstream>
 #include "Junction.h"
 #include "Car.h"
 #include "Road.h"
 #include "../Basic_Values.h"
 #include "../DesignByContract.h"
 
-Junction::Junction(std::vector<std::pair<Road*, double> > roads) : roads(roads){
+Junction::Junction(std::vector<std::pair<Road*, double> > roads, std::ofstream* error) : error(error), roads(roads){
     _initCheck = this;
     for (unsigned int i = 0; i < roads.size(); i++){
         roads[i].first->addJunction(std::pair<Junction*,double*> (this,&this->roads[i].second));
@@ -23,45 +24,37 @@ Junction::Junction(std::vector<std::pair<Road*, double> > roads) : roads(roads){
 
 void Junction::updateJunction(double t) {
     REQUIRE(this->properlyInitialized(), "Junction wasn't initialized when calling updateJunction");
-    std::vector<std::pair<Car*, bool> > newCars;
     for (unsigned int i = 0; i< cars.size();i++) {
-        if (cars[i].second) {
-            cars[i].second = false;
-            newCars.push_back(cars[i]);
-            break;
-        }
-        double oldPos = cars[i].first->getDistance();
-        cars[i].first->updateCar(t, true);
+        double oldPos = cars[i]->getDistance();
+        cars[i]->updateCar(t, true);
         for (unsigned int j = 0; j < roads.size(); j++) {
-            if (roads[j].first == cars[i].first->getRoad()) {
+            if (roads[j].first == cars[i]->getRoad()) {
                 //move car
-                if (oldPos < roads[j].second and cars[i].first->getDistance() > roads[j].second) {
+                if (oldPos < roads[j].second and cars[i]->getDistance() >= roads[j].second) {
                     unsigned int x = rand() % roads.size();
                     while (roads[x].first->getLength() == roads[x].second){
                         x = rand() % roads.size();
                     }
                     if (x != j) {
-                        double newPos = cars[i].first->getDistance() - roads[j].second + roads[x].second;
-                        cars[i].first->moveCar(roads[x].first, newPos);
-                        newCars.push_back(cars[i]);
+                        double newPos = cars[i]->getDistance() - roads[j].second + roads[x].second;
+                        cars[i]->moveCar(roads[x].first, newPos);
                         break;
                     }
                 }
                 //check if car is still near
-                if (std::abs(cars[i].first->getDistance() - roads[j].second) <= gStopDistance) {
-                    newCars.push_back(cars[i]);
+                if (std::abs(cars[i]->getDistance() - roads[j].second) <= gStopDistance) {
                     break;
                 }
             }
         }
     }
-    cars = newCars;
+    cars = {};
 }
 
 
-void Junction::addCar(Car *car, bool updated) {
+void Junction::addCar(Car *car) {
     REQUIRE(this->properlyInitialized(), "Junction wasn't initialized when calling addCar");
-    cars.push_back(std::pair<Car*,bool>(car,updated));
+    cars.push_back(car);
 }
 
 

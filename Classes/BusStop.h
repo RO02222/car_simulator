@@ -40,6 +40,15 @@ public:
 */
     void updateBusStop(double t);
 
+
+/**
+ * check if the busstop is valid
+ * @param road: the road of the busstop
+ * @return: none
+\n REQUIRE(properlyInitialized(), "World wasn't initialized when calling updateWorld);
+*/
+    void isvalid(Road* road);
+
 /////////////
 /**
  * get the road where the BusStop is positioned

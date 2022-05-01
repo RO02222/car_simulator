@@ -67,14 +67,15 @@ void Light::updateLight(double t) {
 }
 
 
-
-
-
-
-
-
-
-
+void Light::isvalid(Road* r) {
+    ENSURE(properlyInitialized(), "Light not initialized");
+    ENSURE(road == r, "Light is on a wrong Road");
+    ENSURE(position >= gStopDistance, "Position is at least the stopdistance");
+    ENSURE(position <= road->getLength(), "Position is of the road");
+    ENSURE(cycle >= 1, "cycle can not be less than 1");
+    ENSURE(lastCycle <= cycle, "time sinds last cycle can not be grather than the cycle");
+    ENSURE(lastCycle >= 0, "time sinds last cycle can not be negative");
+}
 
 
 

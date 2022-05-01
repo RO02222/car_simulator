@@ -36,6 +36,7 @@ World::World() {
     carData.push_back(new CarData(fire));
     carData.push_back(new CarData(ambulance));
     carData.push_back(new CarData(police));
+    carData.push_back(new CarData(bugatti));
     ENSURE(properlyInitialized(),"constructor must end in properlyInitialized state");
 }
 
@@ -88,7 +89,7 @@ void World::graficImpSimulateWorld(std::ostream &onStream) {
     }
     nameWidth += 3;
     unsigned int roadlength = 110 - nameWidth;
-    std::cout << "Tijd: " <<time<<std::endl;
+    //std::cout << "Tijd: " <<time<<std::endl;
     unsigned  int i = 0;
     for (std::vector<Road*>::iterator itR = roadIt.begin(); itR != roadIt.end(); itR++) {
         i++;
@@ -154,6 +155,9 @@ void World::graficImpSimulateWorld(std::ostream &onStream) {
                     continue;
                 case ambulance:
                     road[x] = 'A';
+                    continue;
+                case bugatti:
+                    road[x] = 'b';
                     continue;
                 case none:
                     continue;
@@ -221,7 +225,7 @@ void World::graficImpSimulateWorld(std::ostream &onStream) {
 
     }
     onStream << std::endl;
-    std::cout << std::endl;
+    //std::cout << std::endl;
 
 
 
@@ -244,6 +248,16 @@ void World::updateWorld(double t) {
 }
 
 
+void World::isvalid() {
+    std::vector<Road *> roadIt = getRoads();
+    for (std::vector<Road *>::iterator itR = roadIt.begin(); itR != roadIt.end(); itR++) {
+        (*itR)->isvalid();
+    }/*
+    std::vector<Junction *> junctionIt = getJunctions();
+    for (std::vector<Junction *>::iterator itJ = junctionIt.begin(); itJ != junctionIt.end(); itJ++) {
+        (*itJ)->isvalid();
+    }*/
+}
 
 
 
@@ -264,12 +278,12 @@ void World::setRoad(const std::vector<Road *> &banen) {
 
 void World::addRoad(std::string name, double length) {
     if (length < 0){
-        std::cerr<<"Failed to add road: length can't be negative"<<std::endl;
+        error<<"Failed to add road: length can't be negative"<<std::endl;
         return;
     }
     for (std::vector<Road *>::iterator it = roads.begin(); it != roads.end(); it++) {
         if ((*it)->getName() == name) {
-            std::cerr<<"Failed to add road: road already exist"<<std::endl;
+            error<<"Failed to add road: road already exist"<<std::endl;
             return;
         }
     }
@@ -291,7 +305,7 @@ void World::setJunctions(const std::vector<Junction *> & junction) {
 
 void World::addJunction(std::vector<std::pair<Road* , double> > road) {
     REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling addJuction");
-    junctions.push_back( new Junction(road) );
+    junctions.push_back( new Junction(road, &error) );
 }
 
 

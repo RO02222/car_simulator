@@ -21,6 +21,7 @@ private:
     double lastCycle;
 
     bool random;
+    unsigned long seed;
     CarData* data;
     std::vector<CarData*>* AllData;
 
@@ -54,6 +55,17 @@ public:
 \n REQUIRE(properlyInitialized(), "CarGen wasn't initialized when calling updateCarGen");
 */
     void updateCarGen(double t);
+
+
+/**
+ * check if the cargen is valid
+ * @param road: the road of the cargen
+ * @return: none
+\n REQUIRE(properlyInitialized(), "World wasn't initialized when calling updateWorld);
+*/
+    void isvalid(Road* road);
+
+
 
 /////////////
 public:

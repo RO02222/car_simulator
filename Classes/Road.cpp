@@ -24,7 +24,7 @@ Road::Road(const std::string &name, double l, std::ofstream* error) : error(erro
 }
 
 Road::~Road() {
-    REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling ~Road");
+    REQUIRE(this->properlyInitialized(), "Road wasn't initialized when calling ~Road");
     std::vector<Car *> carIt = getCars();
     for (std::vector<Car *>::iterator itC = carIt.begin(); itC != carIt.end(); itC++) {
         delete(*itC);
@@ -52,6 +52,7 @@ void Road::updateRoad(double t) {
         for (unsigned int i = 0; i < junctions.size(); i++) {
             if (std::abs((*itC)->getDistance() - *junctions[i].second) <= gStopDistance) {
                 update = false;
+                junctions[i].first->addCar(*itC);
                 break;
             }
         }
@@ -97,6 +98,32 @@ void Road::removeCar(Car* car) {
     }
 }
 
+void Road::isvalid() {
+    REQUIRE(this->properlyInitialized(), "Road wasn't initialized when calling ~Road");
+    ENSURE(properlyInitialized(), "Road not initialized");
+    ENSURE(length >= gStopDistance, "Road to short");
+    std::vector<Car *> carIt = getCars();
+    for (std::vector<Car *>::iterator itC = carIt.begin(); itC != carIt.end(); itC++) {
+        (*itC)->isvalid(this);
+    }
+    std::vector<Light *> lightIt = getLights();
+    for (std::vector<Light *>::iterator itL = lightIt.begin(); itL != lightIt.end(); itL++) {
+        (*itL)->isvalid(this);
+    }
+    std::vector<CarGen *> carGenIt = getCarGen();
+    for (std::vector<CarGen *>::iterator itG = carGenIt.begin(); itG != carGenIt.end(); itG++) {
+        (*itG)->isvalid(this);
+        for (std::vector<CarGen *>::iterator itG2 = carGenIt.begin(); itG2 != carGenIt.end(); itG2++){
+            if (itG == itG2){
+                continue;
+            }
+        }
+    }
+    std::vector<BusStop *> busStopIt = getBusStops();
+    for (std::vector<BusStop *>::iterator itB = busStopIt.begin(); itB != busStopIt.end(); itB++) {
+        (*itB)->isvalid(this);
+    }
+}
 
 
 /////////////

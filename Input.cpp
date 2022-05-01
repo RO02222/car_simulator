@@ -195,16 +195,18 @@ namespace input {
                 world->error << "Failed to load file: invalid <VOERTUIG> : 'missing argument' <type>" << std::endl;
                 return;
             }
-            if (type == "auto") {
+            if (type == "auto" or type == "car") {
                 Type = car;
             }else if (type == "bus") {
                 Type = bus;
-            }else if (type == "brandweerwagen") {
+            }else if (type == "brandweerwagen" or type == "firetruck") {
                 Type = fire;
             }else if (type == "ziekenwagen" or type == "ambulance") {
                 Type = ambulance;
-            }else if (type == "politiecombi") {
+            }else if (type == "politiecombi" or type == "politiewagen" or type == "cop") {
                 Type = police;
+            }else if (type == "bugatti") {
+                Type = bugatti;
             }else{
                 world->error << "Failed to load file: invalid <VOERTUIG> : 'invalid argument' <type>" << std::endl;
                 return;
@@ -264,18 +266,20 @@ namespace input {
                           << std::endl;
                 return;
             }
-            if (type.empty() or type == "none" or type == "None") {
+            if (type.empty() or type == "none" or type == "None" or type == "random") {
                 Type = none;
-            } else if (type == "auto") {
+            } else if (type == "auto" or type == "car") {
                 Type = car;
             }else if (type == "bus") {
                 Type = bus;
-            }else if (type == "brandweerwagen") {
+            }else if (type == "brandweerwagen" or type == "firetruck") {
                 Type = fire;
-            }else if (type == "ziekenwagen") {
-                Type = police;
-            }else if (type == "politiecombi") {
+            }else if (type == "ziekenwagen" or type == "ambulance") {
                 Type = ambulance;
+            }else if (type == "politiecombi" or type == "politiewagen" or type == "cop") {
+                Type = police;
+            }else if (type == "bugatti") {
+                Type = bugatti;
             }else{
                 world->error << "Failed to load file: invalid <VOERTUIGGENERATOR> : 'invalid argument' <type>" << std::endl;
                 return;
@@ -362,7 +366,7 @@ namespace input {
             for (TiXmlElement *elem2 = elem1->FirstChildElement(); elem2 != 0; elem2 = elem2->NextSiblingElement()) {
                 if (elem2->GetText() == NULL) {
                     world->error << "Failed to load file: <" + (std::string) elem2->Value() + "> has no value"
-                              << std::endl;
+                                 << std::endl;
                     continue;
                 }
                 if ((std::string) elem2->Value() == "baan") { ;
@@ -380,20 +384,20 @@ namespace input {
                 world->error << "Failed to load file: invalid <KRUISPUNT> : 'missing argument' <positie>" << std::endl;
                 return;
             }
-            std::vector<std::pair<Road*, double> >roads;
+            std::vector<std::pair<Road *, double> > roads;
             std::vector<Road *> roadIt = world->getRoads();
-            unsigned int n = 0;
-            for (std::vector<Road *>::iterator it = roadIt.begin(); it != roadIt.end(); it++,n++) {
+            for (unsigned int i = 0; i < roadNames.size(); i++) {
                 bool found = false;
-                for (unsigned int i = 0; i < roadNames.size(); i++){
-                    if ((*it)->getName() == roadNames[i]){
-                        roads.push_back(std::pair<Road*, double> (*it,std::stoi(positions[n])));
+                for (std::vector<Road *>::iterator it = roadIt.begin(); it != roadIt.end(); it++) {
+                    if ((*it)->getName() == roadNames[i]) {
+                        roads.push_back(std::pair<Road *, double>(*it, std::stoi(positions[i])));
                         found = true;
                         break;
                     }
                 }
-                if (!found){
-                        world->error << "Failed to load file: invalid <KRUISPUNT> : '<baan>' does not exist" << std::endl;
+                if (!found) {
+                    world->error << "Failed to load file: invalid <KRUISPUNT> : '<baan>' does not exist"
+                                 << std::endl;
                 }
             }
             if (roads.size() < 2){

@@ -15,15 +15,17 @@
 
 CarGen::CarGen(double frequency, Road *road, CarData *data) : road(road), frequency(frequency), random(false), data(data), AllData(NULL) {
     _initCheck = this;
+    seed = 6198265;
     if (frequency < 1){
         frequency = 1;
     }
-    lastCycle = rand() % lround(frequency) - 1;
+    lastCycle = rand() % lround(frequency);
     ENSURE(properlyInitialized(),"constructor must end in properlyInitialized state");
 }
 
 CarGen::CarGen(double frequency, Road *road, std::vector<CarData *>* allData)  : road(road), frequency(frequency), random(true), data(NULL), AllData(allData)  {
     _initCheck = this;
+    seed = 6198265;
     if (frequency < 1){
         frequency = 1;
     }
@@ -41,7 +43,7 @@ void CarGen::updateCarGen(double t) {
     lastCycle -= frequency;
     if (random){
         unsigned int v1 = rand() % 10;
-        if (v1 < 4){
+        if (v1 < 6){
             data = (*AllData)[v1];
         } else {
             for (std::vector<CarData *>::iterator alldata = (*AllData).begin();
@@ -58,7 +60,7 @@ void CarGen::updateCarGen(double t) {
     }
     std::vector<Car *> carsOnRoad = getRoad()->getCars();
     for (std::vector<Car *>::iterator itC = carsOnRoad.begin(); itC != carsOnRoad.end(); itC++) {
-        if ((*itC)->getDistance() <= 2*data->getlength()) {
+        if ((*itC)->getDistance() <= 2*(*itC)->getData()->getlength()) {
             return;
         }
     }
@@ -67,7 +69,13 @@ void CarGen::updateCarGen(double t) {
 
 
 
-
+void CarGen::isvalid(Road* r) {
+    ENSURE(properlyInitialized(), "Cargen not initialized");
+    ENSURE(road == r, "CarGen is on a wrong Road");
+    ENSURE(frequency >= 1, "frequency can not be less than 1");
+    ENSURE(lastCycle <= frequency, "time sinds last cycle can not be grather than the frequency");
+    ENSURE(lastCycle >= 0, "time sinds last cycle can not be negative");
+}
 
 
 

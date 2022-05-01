@@ -76,6 +76,12 @@ function:
     void updateWorld(double t);
 
 
+/**
+ * check the simulation if valid
+ * @return: none
+\n REQUIRE(properlyInitialized(), "World wasn't initialized when calling updateWorld);
+*/
+    void isvalid();
 
 
 /////////////

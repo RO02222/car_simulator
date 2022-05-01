@@ -50,7 +50,7 @@ void Car::updateCar(double t, bool onJunction) {
         if (nextCar == NULL) {
             delta = 0.0;
         } else {
-            double dx = nextCar->getDistance() - getDistance() - data->getlength();
+            double dx = nextCar->getDistance() - getDistance() - nextCar->data->getlength();
             double dv = getSpeed() - nextCar->getSpeed();
             delta = (data->getfMin() + std::max(0.0, v0 + ((v0 * dv) / (2 * sqrt(data->getaMax() * data->getbMax()))))) / dx;
         }
@@ -72,7 +72,7 @@ void Car::updateCar(double t, bool onJunction) {
         std::vector<std::pair<Junction *, double *> > junctions = road->getJunctions();
         for (unsigned int i = 0; i < junctions.size(); i++) {
             if (std::abs(distance - *junctions[i].second) <= gStopDistance) {
-                junctions[i].first->addCar(this, true);
+                junctions[i].first->addCar(this);
                 return;
             }
         }
@@ -90,6 +90,18 @@ void Car::moveCar(Road *r, double position) {
     distance = position;
     road->addCar(this);
 }
+
+
+void Car::isvalid(Road* r) {
+    ENSURE(properlyInitialized(), "Road not initialized");
+    ENSURE(road == r, "Car is on a wrong Road");
+    ENSURE(distance >=0, "Distance can not be negative");
+    ENSURE(distance <= road->getLength(), "Car is of the road");
+    ENSURE(speed >=0, "Speed can not be negative");
+}
+
+
+
 
 
 //////////////

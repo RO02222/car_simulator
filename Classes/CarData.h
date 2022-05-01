@@ -5,7 +5,7 @@
 #ifndef CAR_SIMULATION_CARDATA_H
 #define CAR_SIMULATION_CARDATA_H
 
-enum Type{car,bus,fire,police,ambulance,none};
+enum Type{car,bus,fire,police,ambulance,bugatti,none};
 class CarData {
 private:
     CarData* _initCheck;

@@ -46,6 +46,15 @@ CarData::CarData(Type type) {
             bMax = 4.92;
             fMin = 6;
             return;
+        case bugatti:
+            this->type = bugatti;
+            priority = false;
+            l = 4.5;
+            vMax = 100.0;
+            aMax = 4;
+            bMax = 10;
+            fMin = 1;
+            return;
         default:
             this->type = car;
             priority = false;

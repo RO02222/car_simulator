@@ -12,6 +12,7 @@
 
 enum color {green,red};
 class Road;
+class Junction;
 
 class Light{
 public:
@@ -37,6 +38,16 @@ public:
 
 
 /**
+ * create a traffic controller for a junction
+ * @param junction: junction with lights
+ * @param error: errorfile
+ * @return: None
+\n ENSURE(properlyInitialized(), "constructor must end in properlyInitialized state");
+*/
+    Light(Junction junction, std::ofstream* error);
+
+
+/**
  * Update the traffic light, changes the first (not priority) car his behavior depending on the lights state
  * @param t: time since last update
  * @return: None
@@ -44,7 +55,13 @@ public:
 */
     void updateLight(double t);
 
-
+/**
+ * check if the light is valid
+ * @param road: the road of the light
+ * @return: none
+\n REQUIRE(properlyInitialized(), "World wasn't initialized when calling updateWorld);
+*/
+    void isvalid(Road* road);
 
 
 

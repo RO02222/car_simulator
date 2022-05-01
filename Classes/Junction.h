@@ -15,10 +15,14 @@
 class Road;
 class Car;
 class Junction {
+public:
+    std::ofstream* error;
 private:
     Junction* _initCheck;
     std::vector<std::pair<Road* , double> > roads;
-    std::vector<std::pair<Car*,bool> > cars;
+    std::vector<Car*> cars;
+
+
 public:
 /**
  * create a Junction
@@ -26,7 +30,7 @@ public:
  * @return: None
 \n ENSURE(properlyInitialized(), "constructor must end in properlyInitialized state");
 */
-    Junction(std::vector<std::pair<Road* , double> > roads);
+    Junction(std::vector<std::pair<Road* , double> > roads, std::ofstream* error);
 
 
 /**
@@ -44,9 +48,14 @@ public:
  * @return: None
 \n REQUIRE(properlyInitialized(), "Junction wasn't initialized when calling addCar");
 */
-    void addCar(Car* car, bool updated);
+    void addCar(Car* car);
 
-
+/**
+ * check if the junction is valid
+ * @return: none
+\n REQUIRE(properlyInitialized(), "World wasn't initialized when calling updateWorld);
+*/
+    void isvalid();
 
 
 /////////////
