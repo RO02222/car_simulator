@@ -53,3 +53,27 @@ TEST_F(WorldDomainTest, Initialiser) {
     EXPECT_EQ(w->getTime(), 0);
     delete w;
 }
+
+TEST_F(WorldDomainTest, EverythingInWorld) {
+    ofstream error;
+    World* w = new World();
+    Road* r1 = new Road("Middelheimlaan", 100, &error);
+    Road* r2 = new Road("Groenenborgerlaan", 101, &error);
+    w->addRoad(r1);
+    w->addRoad(r2);
+    EXPECT_EQ(w->getRoads()[0]->getName(), "Middelheimlaan");
+    EXPECT_EQ(w->getRoads()[0]->getLength(), 100);
+    EXPECT_EQ(w->getRoads()[1]->getName(), "Groenenborgerlaan");
+    EXPECT_EQ(w->getRoads()[1]->getLength(), 101);
+    std::vector<std::pair<Road *, double> > roads;
+    roads.push_back(std::pair<Road*,double>(r1,50));
+    roads.push_back(std::pair<Road*,double>(r2,51));
+    w->addJunction(roads);
+    EXPECT_EQ(w->getJunctions()[0]->getRoad(0)->getName(), "Middelheimlaan");
+    EXPECT_EQ(w->getJunctions()[0]->getRoad(1)->getName(), "Groenenborgerlaan");
+    EXPECT_EQ(w->getJunctions()[0]->getPosition(0), 50);
+    EXPECT_EQ(w->getJunctions()[0]->getPosition(1), 51);
+
+    EXPECT_EQ(w->getTime(), 0);
+    delete w;
+}

@@ -106,9 +106,6 @@ public:
 */
     double getCycle();
 
-    CarData* getData();
-
-protected:
 /**
  * change the time since last cycle of the CarGen
  * @param cycle: the time since last cycle of the CarGen

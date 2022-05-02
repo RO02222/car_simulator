@@ -9,7 +9,6 @@
 #include <iostream>
 #include <fstream>
 #include "gtest/gtest.h"
-#include "../Car_SimUtils.h"
 
 
 class Car_SimOutputTest: public ::testing::Test {
@@ -46,7 +45,12 @@ void Test_Simulation(const char* inputfile, std::string compareFile, bool graphi
     srand(123);
     World *w = input::loadWorldXML(inputfile);
     std::ofstream myFile;
-    myFile.open("../Car_sim.txt");
+    if(!graphic){
+        myFile.open("../outputFile/Car_sim.txt");
+    }
+    else{
+        myFile.open("../outputFile/Car_sim2.txt");
+    }
     if (graphic){
         w->graficImpSimulateWorld(myFile);
     }
@@ -66,13 +70,13 @@ void Test_Simulation(const char* inputfile, std::string compareFile, bool graphi
     }
     myFile.close();
     delete w;
-    if(graphic){
-        EXPECT_TRUE(FileCompare("../Car_sim.txt", compareFile));
+    if(!graphic){
+        EXPECT_TRUE(FileCompare("../outputFile/Car_sim.txt", compareFile));
     }
     else{
-        EXPECT_TRUE(FileCompare("../Car_sim2.txt", compareFile));
+        EXPECT_TRUE(FileCompare("../outputFile/Car_sim2.txt", compareFile));
     }
-    EXPECT_TRUE(FileCompare("../error.txt", errorFile));
+    EXPECT_TRUE(FileCompare("../outputFile/error.txt", errorFile));
 }
 
 

@@ -14,12 +14,13 @@
 
 
 int main() {
+    /*
     //World* w = input::loadWorldXML("../XML/bugattiVScar.xml");
     //World* w = input::loadWorldXML("../XML/case1.xml");
 
     //World* w = input::loadWorldXML("../XML/case1.xml");
     srand(974120);
-    World* w = input::loadWorldXML("../testInput/testCase5.xml");
+    World* w = input::loadWorldXML("../testInput/testFail13.xml");
     w->isvalid();
     //World* w = input::loadWorldXML("../testInput/testFail2.xml");
     //World* w = input::loadWorldXML("../testInput/test1.xml");
@@ -45,4 +46,35 @@ int main() {
 
     delete w;
     return 0;
+}
+*/
+    srand(123);
+    bool graphic = true;
+    World *w = input::loadWorldXML("../testInput/testCase1.xml");
+    std::ofstream myFile;
+    if(!graphic){
+        myFile.open("../outputFile/Car_sim.txt");
+    }
+    else{
+        myFile.open("../outputFile/Car_sim2.txt");
+    }
+    if (graphic){
+        w->graficImpSimulateWorld(myFile);
+    }
+    else{
+        w->simpleSimulateWorld(myFile);
+    }
+    for (unsigned int i =0; i < 200; i++) {
+        for (unsigned int _ = 0; _ < 50; _++) {
+            w->updateWorld(0.01);
+        }
+        if(graphic){
+            w->graficImpSimulateWorld(myFile);
+        }
+        else{
+            w->simpleSimulateWorld(myFile);
+        }
+    }
+    myFile.close();
+    delete w;
 }

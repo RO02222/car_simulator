@@ -7,6 +7,9 @@
 
 #include <iostream>
 #include "gtest/gtest.h"
+#include <bits/stdc++.h>
+#include <vector>
+#include "../Classes/Junction.h"
 
 using namespace std;
 
@@ -73,41 +76,64 @@ TEST_F(RoadDomainTest, InitialiserEdge) {
 /**
 Tests addLight: test if function addLight works properly.
 */
-TEST_F(RoadDomainTest, addLight){
-    std::ofstream error;
-    Road r1 = Road("Middelheimlaan", 100, &error);
+TEST_F(RoadDomainTest, addEverythingPossible){
+    ofstream error;
+    srand(123);
+    World* w = new World();
+    Road* r1 = new Road("Middelheimlaan", 100, &error);
+    Road* r2 = new Road("Groenenborgerlaan", 100, &error);
+    w->addRoad(r1);
+    w->addRoad(r2);
+    w->getRoads()[0]->addLight(50,2);
+    EXPECT_EQ(w->getRoads()[0]->getLights()[0]->getPosition(), 50);
+    EXPECT_EQ(w->getRoads()[0]->getLights()[0]->getCycle(), 2);
+    w->getRoads()[0]->addCar(5, w->getCarData(car));
+    EXPECT_EQ(w->getRoads()[0]->getCars()[0]->getDistance(), 5);
+    EXPECT_EQ(w->getRoads()[0]->getCars()[0]->getData()->getType(), car);
+    w->getRoads()[0]->addCarGen(3, w->getCarData(police));
+    EXPECT_EQ(w->getRoads()[0]->getCarGen()[0]->getFrequency(), 3);
+    EXPECT_EQ(w->getRoads()[0]->getCarGen()[0]->getData()->getType(), police);
+    std::vector<std::pair<Road *, double> > roads;
+    roads.push_back(std::pair<Road*,double>(r1,50));
+    roads.push_back(std::pair<Road*,double>(r2,51));
+    w->addJunction(roads);
+    EXPECT_EQ(w->getJunctions()[0]->getRoad(0)->getName(), "Middelheimlaan");
+    EXPECT_EQ(w->getJunctions()[0]->getRoad(1)->getName(), "Groenenborgerlaan");
+    EXPECT_EQ(w->getJunctions()[0]->getPosition(0), 50);
+    EXPECT_EQ(w->getJunctions()[0]->getPosition(1), 51);
+    w->getRoads()[0]->addBusStop(90, 5);
+    EXPECT_EQ(w->getRoads()[0]->getBusStops()[0]->getPosition(), 90);
+    EXPECT_EQ(w->getRoads()[0]->getBusStops()[0]->getStopTime(), 5);
 
-    r1.addLight(10,3);
-    EXPECT_EQ(r1.getLights()[0]->getPosition(), 10);
-    EXPECT_EQ(r1.getLights()[0]->getCycle(), 3);
-
-    r1.addLight(50,2);
-    EXPECT_EQ(r1.getLights()[1]->getPosition(), 50);
-    EXPECT_EQ(r1.getLights()[1]->getCycle(), 2);
+    delete w;
 }
 
-/**
-Tests addCar: test if function addCar works properly.
-*/
-TEST_F(RoadDomainTest, addCar){
-    std::ofstream error;
-    Road r1 = Road("Middelheimlaan", 100, &error);
+TEST_F(RoadDomainTest, roadUpdate){
+    ofstream error;
+    srand(123);
     World* w = new World();
-    r1.addCar(10,w->getCarData(car));
-    EXPECT_EQ(r1.getCars()[0]->getDistance(), 10);
+    Road* r1 = new Road("Middelheimlaan", 100, &error);
+    Road* r2 = new Road("Groenenborgerlaan", 100, &error);
+    w->addRoad(r1);
+    w->addRoad(r2);
+    w->getRoads()[0]->addLight(50,2);
+    //int lastCycleL = int(w->getRoads()[0]->getLights()[0]->getLastCycle());
+    w->getRoads()[0]->addCar(5, w->getCarData(car));
+    double distance = w->getRoads()[0]->getCars()[0]->getDistance();
+    w->getRoads()[0]->addCarGen(3, w->getCarData(police));
+    int lastCycleC = int(w->getRoads()[0]->getCarGen()[0]->getCycle());
 
-    r1.addCar(50, w->getCarData(car));
-    EXPECT_EQ(r1.getCars()[1]->getDistance(), 50);
-}
+    std::vector<std::pair<Road *, double> > roads;
+    roads.push_back(std::pair<Road*,double>(r1,50));
+    roads.push_back(std::pair<Road*,double>(r2,51));
+    w->addJunction(roads);
+    w->getRoads()[0]->addBusStop(90, 5);
 
-/**
-Tests addCarGen: test if function addCarGen works properly.
-*/
-TEST_F(RoadDomainTest, addCarGen){
-    World* w = new World();
-    Road r1 = Road("Middelheimlaan", 100, &w->error);
+    w->getRoads()[0]->updateRoad(1);
+    EXPECT_EQ(w->getRoads()[0]->getLights()[0]->getLastCycle(), 0);
+    EXPECT_TRUE(w->getRoads()[0]->getCars()[0]->getDistance() > distance);
+    EXPECT_EQ(w->getRoads()[0]->getCarGen()[0]->getCycle(), (lastCycleC+1)%3);
 
-    r1.addCarGen(5, w->getCarData(car));
-    EXPECT_EQ(r1.getCarGen()[0]->getFrequency(), 5);
+    delete w;
 }
 

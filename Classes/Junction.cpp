@@ -80,7 +80,7 @@ double Junction::getPosition(int n) {
 
 double Junction::getPosition(std::string roadname) {
     REQUIRE(this->properlyInitialized(), "Junction wasn't initialized when calling getPosition");
-    for (std::vector<std::pair<Road*,double>>::iterator x = roads.begin(); x != roads.end(); x++){
+    for (std::vector<std::pair<Road*,double> >::iterator x = roads.begin(); x != roads.end(); x++){
         if (x->first->getName() == roadname){
             return x->second;
         }

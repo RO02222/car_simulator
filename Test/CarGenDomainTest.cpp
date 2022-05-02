@@ -46,6 +46,7 @@ protected:
 };
 void test_CarGen(Type type){
     // normal working
+    srand(123);
     World* w = new World();
     w->addRoad("Middelheimlaan", 10000);
     w->getRoads()[0]->addCarGen(8, w->getCarData(type));
@@ -99,6 +100,7 @@ TEST_F(CarGenDomainTest, Initialiser) {
 
 TEST_F(CarGenDomainTest, Initialiser2) {
     // normal working
+    srand(123);
     World* w = new World();
     w->addRoad("Middelheimlaan", 10000);
     w->getRoads()[0]->addCarGen(8, w->getAllData());
@@ -130,4 +132,36 @@ TEST_F(CarGenDomainTest, Initialiser2) {
     u->getRoads()[0]->getCarGen()[0]->updateCarGen(2);
     EXPECT_EQ(int(u->getRoads()[0]->getCars().size()), 1);
     delete u;
+}
+TEST_F(CarGenDomainTest, WeWantMore) {
+    srand(123);
+    World *w = new World();
+    w->addRoad("Middelheimlaan", 10000);
+    w->getRoads()[0]->addCarGen(8, w->getCarData(car));
+    w->getRoads()[0]->addCarGen(3, w->getCarData(police));
+    w->getRoads()[0]->addCarGen(10, w->getCarData(bus));
+    w->getRoads()[0]->addCarGen(3, w->getCarData(police));
+    w->getRoads()[0]->getCarGen()[0]->setCycle(0);
+    w->getRoads()[0]->getCarGen()[1]->setCycle(0);
+    w->getRoads()[0]->getCarGen()[2]->setCycle(0);
+    for(unsigned int _=0; _<3; _++){
+        w->updateWorld(1);
+    }
+    EXPECT_EQ(w->getRoads()[0]->getCars()[0]->getData()->getType(), police);
+    EXPECT_EQ(w->getRoads()[0]->getCars().size(), (unsigned int) 1);
+    for(unsigned int _=0; _<3; _++){
+        w->updateWorld(1);
+    }
+    EXPECT_EQ(w->getRoads()[0]->getCars()[1]->getData()->getType(), police);
+    EXPECT_EQ(w->getRoads()[0]->getCars().size(), (unsigned int) 2);
+    for(unsigned int _=0; _<2; _++){
+        w->updateWorld(1);
+    }
+    EXPECT_EQ(w->getRoads()[0]->getCars()[2]->getData()->getType(), car);
+    for(unsigned int _=0; _<2; _++){
+        w->updateWorld(1);
+    }
+    EXPECT_EQ(w->getRoads()[0]->getCars()[3]->getData()->getType(), police);
+    EXPECT_EQ(w->getRoads()[0]->getCars()[4]->getData()->getType(), bus);
+    delete w;
 }

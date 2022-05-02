@@ -194,9 +194,25 @@ TEST_F(CarDomainTest, updatetest) {
         EXPECT_NE(r1.getCars()[5]->getSpeed(), speed[5]);
     }
 
-    speed = {r1.getCars()[0]->getSpeed(), r1.getCars()[1]->getSpeed(), r1.getCars()[2]->getSpeed(), r1.getCars()[3]->getSpeed(), r1.getCars()[4]->getSpeed(), r1.getCars()[5]->getSpeed()};
-    distance = {r1.getCars()[0]->getDistance(), r1.getCars()[1]->getDistance(), r1.getCars()[2]->getDistance(), r1.getCars()[3]->getDistance(), r1.getCars()[4]->getDistance(), r1.getCars()[5]->getDistance()};
-    accelaration = {r1.getCars()[0]->getAcceleration(), r1.getCars()[1]->getAcceleration(), r1.getCars()[2]->getAcceleration(), r1.getCars()[3]->getAcceleration(), r1.getCars()[4]->getAcceleration(), r1.getCars()[5]->getAcceleration()};
+    speed.clear();
+    speed.push_back(r1.getCars()[0]->getSpeed());
+    speed.push_back(r1.getCars()[1]->getSpeed());
+    speed.push_back(r1.getCars()[2]->getSpeed());
+    speed.push_back(r1.getCars()[3]->getSpeed());
+    speed.push_back(r1.getCars()[4]->getSpeed());
+    speed.push_back(r1.getCars()[5]->getSpeed());
+    distance.push_back(r1.getCars()[0]->getDistance());
+    distance.push_back(r1.getCars()[1]->getDistance());
+    distance.push_back(r1.getCars()[2]->getDistance());
+    distance.push_back(r1.getCars()[3]->getDistance());
+    distance.push_back(r1.getCars()[4]->getDistance());
+    distance.push_back(r1.getCars()[5]->getDistance());
+    accelaration.push_back(r1.getCars()[0]->getAcceleration());
+    accelaration.push_back(r1.getCars()[1]->getAcceleration());
+    accelaration.push_back(r1.getCars()[2]->getAcceleration());
+    accelaration.push_back(r1.getCars()[3]->getAcceleration());
+    accelaration.push_back(r1.getCars()[4]->getAcceleration());
+    accelaration.push_back(r1.getCars()[5]->getAcceleration());
 
     r1.updateRoad(20);
     if(r1.getCars()[0]->getSpeed()!= 0){
