@@ -185,40 +185,24 @@ void World::graficImpSimulateWorld(std::ostream &onStream) {
         //////////////////
         std::cout << std::endl;
         //////////////////
-#else
-        //////////////////
-        std::cout << i << " " << std::left << std::setw(nameWidth - 1 - ceil(log10(i + 1))) << std::setfill(separator) << (*itR)->getName();
-        std::cout << std::left << std::setw(4) << std::setfill(separator) << "|";
-        std::cout << std::left << std::setw(4) << std::setfill(separator) << road << std::endl;
-        //////////////////
-        std::cout << std::left << std::setw(nameWidth) << std::setfill(separator) <<  "> verkeerslichten";
-        std::cout << std::left << std::setw(4) << std::setfill(separator) << "|";
-        std::cout << std::left << std::setw(4) << std::setfill(separator) << light << std::endl;
-        //////////////////
-        std::cout << std::left << std::setw(nameWidth) << std::setfill(separator) <<  "> bushaltes";
-        std::cout << std::left << std::setw(4) << std::setfill(separator) << "|";
-        std::cout << std::left << std::setw(4) << std::setfill(separator) << bus << std::endl;
-        //////////////////
-        std::cout << std::left << std::setw(nameWidth) << std::setfill(separator) <<  "> kruispunten";
-        std::cout << std::left << std::setw(4) << std::setfill(separator) << "|";
-        std::cout << std::left << std::setw(4) << std::setfill(separator) << junction << std::endl;
-        //////////////////
-        std::cout << std::endl;
-        //////////////////
 #endif
+
 
         //////////////////
         onStream << std::left << std::setw(nameWidth) << std::setfill(separator) << (*itR)->getName();
         onStream << std::left << std::setw(4) << std::setfill(separator) << "|";
-        onStream << std::left << std::setw(4) << std::setfill(separator) << road << std::endl;
+        onStream << std::left << std::setw(4) << std::setfill(separator) << road;
+        onStream << std::left << std::setw(4) << std::setfill(separator) << "   |" << std::endl;
         //////////////////
         onStream << std::left << std::setw(nameWidth) << std::setfill(separator) <<  "> verkeerslichten";
         onStream << std::left << std::setw(4) << std::setfill(separator) << "|";
-        onStream << std::left << std::setw(4) << std::setfill(separator) << light << std::endl;
+        onStream << std::left << std::setw(4) << std::setfill(separator) << light;
+        onStream << std::left << std::setw(4) << std::setfill(separator) << "   |" << std::endl;
         //////////////////
         onStream << std::left << std::setw(nameWidth) << std::setfill(separator) <<  "> bushaltes";
         onStream << std::left << std::setw(4) << std::setfill(separator) << "|";
-        onStream << std::left << std::setw(4) << std::setfill(separator) << bus << std::endl;
+        onStream << std::left << std::setw(4) << std::setfill(separator) << bus;
+        onStream << std::left << std::setw(4) << std::setfill(separator) << "   |" << std::endl;
         //////////////////
         onStream << std::endl;
         //////////////////
@@ -290,6 +274,19 @@ void World::addRoad(std::string name, double length) {
     roads.push_back(new Road(name,length, &error));
 }
 
+void World::addRoad(Road* r) {
+    if (r->getLength() < 0){
+        error<<"Failed to add road: length can't be negative"<<std::endl;
+        return;
+    }
+    for (std::vector<Road *>::iterator it = roads.begin(); it != roads.end(); it++) {
+        if ((*it)->getName() == r->getName()) {
+            error<<"Failed to add road: road already exist"<<std::endl;
+            return;
+        }
+    }
+    roads.push_back(r);
+}
 
 const std::vector<Junction *> &World::getJunctions() {
     REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling getJunctions");

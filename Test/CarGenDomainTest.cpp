@@ -31,11 +31,14 @@ protected:
     }
 
     // Declares the variables your tests want to use.
-    friend class Car;
     friend class World;
+    friend class Road;
+    friend class Car;
     friend class CarGen;
     friend class Light;
-    friend class Road;
+    friend class BusStop;
+    friend class Junction;
+    friend class CarData;
     // You should make the members protected s.t. they can be
     // accessed from sub-classes.
 
@@ -88,6 +91,10 @@ TEST_F(CarGenDomainTest, Initialiser) {
     test_CarGen(fire);
 //CargenCar: test if CarGen works for busses.
     test_CarGen(bus);
+//CargenCar: test if CarGen works for bugatti's.
+    test_CarGen(bugatti);
+//CargenCar: test if CarGen works for policecars.
+    test_CarGen(police);
 }
 
 TEST_F(CarGenDomainTest, Initialiser2) {

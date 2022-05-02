@@ -110,6 +110,14 @@ public:
 */
     void addRoad(std::string name, double length);
 
+/**
+ * add a road to the simulationWorld
+ * @param road: the new road
+ * @return: None
+\n REQUIRE(properlyInitialized(), "World wasn't initialized when calling addRoad);
+*/
+    void addRoad(Road* road);
+
 
 /**
  * get all the Junctions of the simulationWorld

@@ -29,11 +29,14 @@ protected:
     }
 
     // Declares the variables your tests want to use.
-    friend class Car;
     friend class World;
+    friend class Road;
+    friend class Car;
     friend class CarGen;
     friend class Light;
-    friend class Road;
+    friend class BusStop;
+    friend class Junction;
+    friend class CarData;
     // You should make the members protected s.t. they can be
     // accessed from sub-classes.
 

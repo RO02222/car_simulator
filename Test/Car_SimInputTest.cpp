@@ -44,6 +44,7 @@ protected:
     friend class Light;
     friend class BusStop;
     friend class Junction;
+    friend class CarData;
     // You should make the members protected s.t. they can be
     // accessed from sub-classes.
 };

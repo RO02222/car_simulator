@@ -15,7 +15,6 @@
 
 CarGen::CarGen(double frequency, Road *road, CarData *data) : road(road), frequency(frequency), random(false), data(data), AllData(NULL) {
     _initCheck = this;
-    seed = 6198265;
     if (frequency < 1){
         frequency = 1;
     }
@@ -25,7 +24,6 @@ CarGen::CarGen(double frequency, Road *road, CarData *data) : road(road), freque
 
 CarGen::CarGen(double frequency, Road *road, std::vector<CarData *>* allData)  : road(road), frequency(frequency), random(true), data(NULL), AllData(allData)  {
     _initCheck = this;
-    seed = 6198265;
     if (frequency < 1){
         frequency = 1;
     }

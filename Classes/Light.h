@@ -114,6 +114,19 @@ public:
 */
     void setCycle(double cycle);
 /**
+ * get the time since the last cycle the traffic light
+ * @return: (double), the cycleTime the traffic light
+\n REQUIRE(properlyInitialized(), "Light wasn't initialized when calling getCycle");
+*/
+    double getLastCycle();
+/**
+ * set the time since the last cycle the traffic light
+ * @param cycle: the new cycle of the traffic light
+ * @return: None
+\n REQUIRE(properlyInitialized(), "Light wasn't initialized when calling setCycle");
+*/
+    void setLastCycle(double cycle);
+/**
  * get the state the traffic light
  * @return: (color), the state the traffic light
 \n REQUIRE(properlyInitialized(), "Light wasn't initialized when calling getState");

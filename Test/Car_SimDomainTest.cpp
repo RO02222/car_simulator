@@ -40,6 +40,7 @@ protected:
     friend class Light;
     friend class BusStop;
     friend class Junction;
+    friend class CarData;
     // You should make the members protected s.t. they can be
     // accessed from sub-classes.
 };
@@ -83,6 +84,8 @@ TEST_F(Car_SimDomainTest, Initialiserbasic) {
 
     EXPECT_EQ(r1.getCarGen()[0]->getFrequency(), 5);
     EXPECT_EQ(r2.getCarGen()[0]->getFrequency(), 5);
+
+    delete w;
 }
 
 TEST_F(Car_SimDomainTest, Initialiserall) {
@@ -122,6 +125,8 @@ TEST_F(Car_SimDomainTest, Initialiserall) {
 
     EXPECT_EQ(r1.getCarGen()[0]->getFrequency(), 5);
     EXPECT_EQ(r2.getCarGen()[0]->getFrequency(), 5);
+
+    delete w;
 }
 
 /**

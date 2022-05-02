@@ -21,7 +21,6 @@ private:
     double lastCycle;
 
     bool random;
-    unsigned long seed;
     CarData* data;
     std::vector<CarData*>* AllData;
 
@@ -118,6 +117,12 @@ protected:
 */
     void setCycle(double cycle);
 
+/**
+ * get the data to generate a car
+ * @return: (Cardata*), the data
+\n REQUIRE(properlyInitialized(), "CarGen wasn't initialized when calling setCycle);
+*/
+    CarData* getData();
 
 /////////////
 

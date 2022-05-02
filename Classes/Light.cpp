@@ -26,7 +26,7 @@ Light::Light(double position, double c, Road* r, std::ofstream* error): error(er
 void Light::updateLight(double t) {
     REQUIRE(this->properlyInitialized(), "Light wasn't initialized when calling updateLight");
     lastCycle += t;
-    if (lastCycle > cycle) {
+    if (lastCycle >= cycle) {
         lastCycle -= cycle;
         if (getState() == green) {
             setState(red);
@@ -115,6 +115,18 @@ double Light::getCycle() {
 void Light::setCycle(double c) {
     REQUIRE(this->properlyInitialized(), "Light wasn't initialized when calling setCycle");
     Light::cycle = c;
+}
+
+
+double Light::getLastCycle() {
+    REQUIRE(this->properlyInitialized(), "Light wasn't initialized when calling getLastCycle");
+    return lastCycle;
+}
+
+
+void Light::setLastCycle(double c) {
+    REQUIRE(this->properlyInitialized(), "Light wasn't initialized when calling setLastCycle");
+    Light::lastCycle = c;
 }
 
 

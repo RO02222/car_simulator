@@ -37,11 +37,13 @@ protected:
     friend class Light;
     friend class BusStop;
     friend class Junction;
+    friend class CarData;
     // You should make the members protected s.t. they can be
     // accessed from sub-classes.
 };
 
 void Test_Simulation(const char* inputfile, std::string compareFile, bool graphic, std::string errorFile = "../testOutput/emptyFile.txt") {
+    srand(123);
     World *w = input::loadWorldXML(inputfile);
     std::ofstream myFile;
     myFile.open("../Car_sim.txt");

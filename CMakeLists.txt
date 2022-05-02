@@ -43,7 +43,7 @@ set(DEBUG_SOURCE_FILES
         Input.cpp Input.h
         Exception/ParserException.h
         Classes/CarGen.cpp Classes/CarGen.h DesignByContract.h Basic_Values.h Functions.cpp Functions.h
-        Car_SimUtils.cpp Car_SimUtils.h)
+        Car_SimUtils.cpp Car_SimUtils.h Test/BusStopDomainTest.cpp Test/JunctionDomainTest.cpp)
 
 # Create RELEASE target
 add_executable(Car_Simulation ${RELEASE_SOURCE_FILES})

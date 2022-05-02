@@ -48,7 +48,7 @@ void Junction::updateJunction(double t) {
             }
         }
     }
-    cars = {};
+    cars.clear();
 }
 
 
