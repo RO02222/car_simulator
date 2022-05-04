@@ -20,6 +20,9 @@ using namespace std;
 #include "Test/WorldDomainTest.cpp"
 #include "Test/Car_SimInputTest.cpp"
 #include "Test/Car_SimOutputTest.cpp"
+#include "Test/BusStopDomainTest.cpp"
+#include "Test/JunctionDomainTest.cpp"
+
 
 
 int main(int argc, char **argv) {

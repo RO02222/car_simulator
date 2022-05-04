@@ -89,6 +89,7 @@ TEST_F(LightDomainTest, LightChange) {
     w->addRoad("Middelheimlaan", 10000);
     w->getRoads()[0]->addLight(50, 20);
     w->getRoads()[0]->addCar(0, w->getCarData(car));
+    w->getRoads()[0]->addCar(20, w->getCarData(fire));
     w->getRoads()[0]->getLights()[0]->setLastCycle(0);
     w->getRoads()[0]->getLights()[0]->setState(red);
     EXPECT_EQ(w->getRoads()[0]->getCars()[0]->getAction(), fast);
@@ -99,6 +100,7 @@ TEST_F(LightDomainTest, LightChange) {
     lastcycle = (lastcycle+4)%20;
     EXPECT_EQ(w->getRoads()[0]->getLights()[0]->getLastCycle(), lastcycle);
     EXPECT_EQ(w->getRoads()[0]->getCars()[0]->getAction(), slow);
+    EXPECT_EQ(w->getRoads()[0]->getCars()[1]->getAction(), fast);
 
     for (unsigned int _ = 0; _<10;_++) {
         w->updateWorld(1);
@@ -106,6 +108,7 @@ TEST_F(LightDomainTest, LightChange) {
     lastcycle = (lastcycle+10)%20;
     EXPECT_EQ(w->getRoads()[0]->getLights()[0]->getLastCycle(), lastcycle);
     EXPECT_EQ(w->getRoads()[0]->getCars()[0]->getAction(), stop);
+    EXPECT_EQ(w->getRoads()[0]->getCars()[1]->getAction(), fast);
 
     for (unsigned int _ = 0; _<10;_++) {
         w->updateWorld(1);
@@ -113,5 +116,6 @@ TEST_F(LightDomainTest, LightChange) {
     lastcycle = (lastcycle+10)%20;
     EXPECT_EQ(w->getRoads()[0]->getLights()[0]->getLastCycle(), lastcycle);
     EXPECT_EQ(w->getRoads()[0]->getCars()[0]->getAction(), fast);
+    EXPECT_EQ(w->getRoads()[0]->getCars()[1]->getAction(), fast);
     delete w;
 }
