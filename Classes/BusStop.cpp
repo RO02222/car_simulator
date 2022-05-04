@@ -44,6 +44,7 @@ void BusStop::updateBusStop(double t) {
         }
     }
     if (firstBus == NULL) {
+        bussy = false;
         return;
     }
     if (firstBus != currentBus){

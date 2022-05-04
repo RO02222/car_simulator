@@ -10,6 +10,7 @@
 #include <bits/stdc++.h>
 #include <vector>
 #include "../Classes/Junction.h"
+#include "../Classes/BusStop.h"
 
 using namespace std;
 

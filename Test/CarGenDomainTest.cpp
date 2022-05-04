@@ -10,6 +10,7 @@
 #include "../Classes/Car.h"
 #include "../Classes/CarGen.h"
 #include "../Classes/Road.h"
+#include "../Classes/World.h"
 using namespace std;
 
 class CarGenDomainTest: public ::testing::Test {

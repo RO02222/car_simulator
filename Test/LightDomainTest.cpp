@@ -9,6 +9,7 @@
 #include "gtest/gtest.h"
 #include "../Car_SimUtils.h"
 #include "../Basic_Values.h"
+#include "../Classes/Light.h"
 
 using namespace std;
 
@@ -92,10 +93,10 @@ TEST_F(LightDomainTest, LightChange) {
     w->getRoads()[0]->getLights()[0]->setState(red);
     EXPECT_EQ(w->getRoads()[0]->getCars()[0]->getAction(), fast);
     int lastcycle = w->getRoads()[0]->getLights()[0]->getLastCycle();
-    for (unsigned int _ = 0; _<5;_++) {
+    for (unsigned int _ = 0; _<4;_++) {
         w->updateWorld(1);
     }//na 1 keer update vertraagt de auto
-    lastcycle = (lastcycle+5)%20;
+    lastcycle = (lastcycle+4)%20;
     EXPECT_EQ(w->getRoads()[0]->getLights()[0]->getLastCycle(), lastcycle);
     EXPECT_EQ(w->getRoads()[0]->getCars()[0]->getAction(), slow);
 

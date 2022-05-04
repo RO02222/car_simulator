@@ -67,6 +67,14 @@ public:
 */
     Road* getRoad(int n);
 
+/**
+ * get the cars near the junction that aren't udated by the road
+ * @param n: the n road of the Junction
+ * @return: (Road*), the n road of the junction
+\n REQUIRE(properlyInitialized(), "Junction wasn't initialized when calling getRoad");
+*/
+    std::vector<Car*> getCars();
+
 
 protected:
 /**

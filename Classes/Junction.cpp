@@ -66,6 +66,12 @@ Road* Junction::getRoad(int n) {
 }
 
 
+std::vector<Car*> Junction::getCars() {
+    REQUIRE(this->properlyInitialized(), "Junction wasn't initialized when calling getCars");
+    return cars;
+}
+
+
 void Junction::setRoad(Road *r, int n) {
     REQUIRE(this->properlyInitialized(), "Junction wasn't initialized when calling setRoad");
     roads[n].first = r;
