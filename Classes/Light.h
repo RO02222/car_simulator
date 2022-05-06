@@ -170,6 +170,9 @@ public:
 
     bool onRoad() const;
 
+    bool onRoad(int d) const;
+
+    bool isvalid(Road* road) const;
 /////////////
 };
 

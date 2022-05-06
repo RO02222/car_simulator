@@ -120,9 +120,10 @@ public:
 
 
 /////////////
-protected:
+public:
     bool properlyInitialized() const;
 
+    bool isvalid(Road* road) const;
 /////////////
 };
 

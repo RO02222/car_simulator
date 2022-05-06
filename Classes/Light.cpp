@@ -101,61 +101,77 @@ void Light::updateLight(double t) {
 
 Road* Light::getRoad() {
     REQUIRE(this->properlyInitialized(), "Light wasn't initialized when calling getRoad");
+    ENSURE(road->properlyInitialized(), "Road is not properly initialised");
     return road;
 }
 
 
 void Light::setRoad(Road *r) {
     REQUIRE(this->properlyInitialized(), "Light wasn't initialized when calling setRoad");
+    REQUIRE(r->properlyInitialized(), "Road is not properly initialised");
+    REQUIRE(r->isvalid(), "Road is not valid");
     Light::road = r;
+    ENSURE(road == r,"Road hasn't changed");
 }
 
 
 double Light::getPosition() {
     REQUIRE(this->properlyInitialized(), "Light wasn't initialized when calling getPosition");
+    ENSURE(onRoad(), "Light is not on road");
     return position;
 }
 
 
 void Light::setPosition(double p) {
     REQUIRE(this->properlyInitialized(), "Light wasn't initialized when calling setPosition");
+    REQUIRE(onRoad(p), "Light not on road");
     Light::position = p;
+    ENSURE(position == p,"Position hasn't changed");
 }
 
 
 double Light::getCycle() {
     REQUIRE(this->properlyInitialized(), "Light wasn't initialized when calling getCycle");
+    ENSURE(cycle>0, "Cycle cannot be negative or zero");
     return cycle;
 }
 
 
 void Light::setCycle(double c) {
     REQUIRE(this->properlyInitialized(), "Light wasn't initialized when calling setCycle");
+    REQUIRE(c>0, "Cycle cannot be negative or zero");
     Light::cycle = c;
+    ENSURE(cycle == c,"Cycle hasn't changed");
 }
 
 
 double Light::getLastCycle() {
     REQUIRE(this->properlyInitialized(), "Light wasn't initialized when calling getLastCycle");
+    ENSURE(lastCycle>=0, "LastCycle cannot be negative");
     return lastCycle;
 }
 
 
 void Light::setLastCycle(double c) {
     REQUIRE(this->properlyInitialized(), "Light wasn't initialized when calling setLastCycle");
+    REQUIRE(c>=0, "LastCycle cannot be negative");
     Light::lastCycle = c;
+    ENSURE(lastCycle == c,"Lastcycle hasn't changed");
 }
 
 
 color Light::getState() {
     REQUIRE(this->properlyInitialized(), "Light wasn't initialized when calling getState");
+    ENSURE(state==green or state==red or state==orange, "Color does not exist ");
     return state;
 }
 
 
 void Light::setState(color s) {
     REQUIRE(this->properlyInitialized(), "Light wasn't initialized when calling setState");
+    REQUIRE(s==green or s==red or s==orange, "Color does not exist ");
     Light::state = s;
+    ENSURE(state == s,"State hasn't changed");
 }
 
 bool Light::getClock() {
@@ -179,5 +195,44 @@ void Light::setClock(bool s) {
 
 bool Light::properlyInitialized () const{
     return _initCheck == this;
+}
+
+bool Light::onRoad() const{
+    if (position<0 or position>road->getLength()){
+        return false;
+    }
+    return true;
+}
+
+bool Light::onRoad(int p) const{
+    if (p<0 or p>road->getLength()){
+        return false;
+    }
+    return true;
+}
+
+bool Light::isvalid(Road* r) const {
+    if(!properlyInitialized()){
+        return false;
+        }
+    if(road == r){
+        return false;
+        }
+    if(!onRoad()){
+        return false;
+    }
+    if(cycle < 1){
+        return false;
+    }
+    if(lastCycle > cycle){
+        return false;
+    }
+    if(lastCycle < 0){
+        return false;
+    }
+    if(state != green and state != red and state != orange){
+        return false;
+    }
+    return true;
 }
 //////////////

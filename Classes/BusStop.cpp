@@ -28,6 +28,7 @@ BusStop::BusStop(double position, double stoptime, Road *road) : road(road), pos
 
 void BusStop::updateBusStop(double t) {
     REQUIRE(this->properlyInitialized(), "Light wasn't initialized when calling updateLight");
+    REQUIRE(t>=0, "Time cannot be negative");
     std::vector<Car *> carsOnRoad = getRoad()->getCars();
     Car *firstBus = NULL;
     for (std::vector<Car *>::iterator itC = carsOnRoad.begin(); itC != carsOnRoad.end(); itC++) {
@@ -81,36 +82,45 @@ void BusStop::updateBusStop(double t) {
 
 Road* BusStop::getRoad() {
     REQUIRE(this->properlyInitialized(), "BusStop wasn't initialized when calling getRoad");
+    ENSURE(road->properlyInitialized(), "Road is not properly initialised");
     return road;
 }
 
 
 void BusStop::setRoad(Road *r) {
     REQUIRE(this->properlyInitialized(), "BusStop wasn't initialized when calling setRoad");
+    REQUIRE(r->properlyInitialized(), "Road is not properly initialised");
+    REQUIRE(r->isvalid(),"Road isn't valid");
     BusStop::road = r;
+    ENSURE(road == r,"Road hasn't changed");
 }
 
 
 double BusStop::getPosition() {
     REQUIRE(this->properlyInitialized(), "BusStop wasn't initialized when calling getPosition");
+    ENSURE(onRoad(), "Busstop is not on road");
     return position;
 }
 
 
 void BusStop::setPosition(double p) {
     REQUIRE(this->properlyInitialized(), "BusStop wasn't initialized when calling setPosition");
+    REQUIRE(onRoad(p), "Busstop is not on road");
     BusStop::position = p;
+    ENSURE(position == p,"Position hasn't changed");
 }
 
 
 double BusStop::getStopTime() {
     REQUIRE(this->properlyInitialized(), "BusStop wasn't initialized when calling getStopTime");
+    ENSURE(stoptime>=0, "stoptime cannot be negative");
     return stoptime;
 }
 
 
 double BusStop::getTimeStopped() {
     REQUIRE(this->properlyInitialized(), "BusStop wasn't initialized when calling getTimeStopped");
+    ENSURE(timestopped>=0, "Timestopped cannot be negative");
     return timestopped;
 }
 
@@ -135,5 +145,46 @@ void BusStop::setbussy(bool b) {
 
 bool BusStop::properlyInitialized () const{
     return _initCheck == this;
+}
+
+bool BusStop::onRoad() const {
+    REQUIRE(road->properlyInitialized(), "Road wasn't initialized when calling onRoad");
+    if (position < 0 or position > road->getLength()) {
+        return false;
+    }
+    return true;
+}
+
+bool BusStop::onRoad(int p) const{
+    if (p<0 or p>road->getLength()){
+        return false;
+    }
+    return true;
+}
+
+
+bool BusStop::isvalid(Road* r) {
+    if(!properlyInitialized()){
+        return false;
+    }
+    if(road != r){
+        return false;
+    }
+    if(position < gStopDistance){
+        return false;
+    }
+    if(!onRoad()){
+        return false;
+    }
+    if(stoptime < 1){
+        return false;
+    }
+    if(timestopped < 0){
+        return false;
+    }
+    if(!currentBus->properlyInitialized()){
+        return false;
+    }
+    return true;
 }
 //////////////

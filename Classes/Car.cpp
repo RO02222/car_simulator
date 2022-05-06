@@ -28,6 +28,7 @@ Car::Car(double distance, CarData* data, Road* road) : road(road), distance(dist
 
 void Car::updateCar(double t, bool onJunction) {
     REQUIRE(this->properlyInitialized(), "Car wasn't initialized when calling updateCar");
+    REQUIRE(t>=0, "Time cannot be negative");
     if (getAction() == fast) {
         maxSpeed = data->getvMax();
     } else if (getAction() == slow) {
@@ -88,6 +89,10 @@ void Car::updateCar(double t, bool onJunction) {
 
 
 void Car::moveCar(Road *r, double position) {
+    REQUIRE(this->properlyInitialized(), "Car is not properly initialised");
+    REQUIRE(r->properlyInitialized(), "Road is not properly initialised");
+    REQUIRE(r->isvalid(), "road isn't valid");
+    REQUIRE(position>=0 and position<=r->getLength(), "Car is not on road");
     road->removeCar(this);
     road = r;
     distance = position;
@@ -105,12 +110,15 @@ void Car::moveCar(Road *r, double position) {
 
 Road *Car::getRoad() const {
     REQUIRE(this->properlyInitialized(), "Car wasn't initialized when calling getRoad");
+    ENSURE(road->properlyInitialized(), "Road is not properly initialised");
     return road;
 }
 
 
 void Car::setRoad(Road *r) {
     REQUIRE(this->properlyInitialized(), "Car wasn't initialized when calling setRoad");
+    REQUIRE(r->properlyInitialized(), "Road is not properly initialised");
+    REQUIRE(r->isvalid(),"Road isn't valid");
     Car::road = r;
     ENSURE(road == r,"Road hasn't changed");
 }
@@ -118,6 +126,7 @@ void Car::setRoad(Road *r) {
 
 double Car::getDistance() {
     REQUIRE(this->properlyInitialized(), "Car wasn't initialized when calling getDistance");
+    ENSURE(onRoad(), "Car is not on road");
     return distance;
 }
 
@@ -130,31 +139,39 @@ double Car::getDistanceNV() {
 
 void Car::setDistance(double d) {
     REQUIRE(this->properlyInitialized(), "Car wasn't initialized when calling setDistance");
+    REQUIRE(onRoad(d), "Car not on road");
     Car::distance = d;
+    ENSURE(distance == d,"Distance hasn't changed");
 }
 
 
 double Car::getSpeed() {
     REQUIRE(this->properlyInitialized(), "Car wasn't initialized when calling getSpeed");
+    ENSURE(speed>=0, "Speed cannot be negative");
     return speed;
 }
 
 
 void Car::setSpeed(double s) {
     REQUIRE(this->properlyInitialized(), "Car wasn't initialized when calling setSpeed");
+    REQUIRE(s>=0, "Speed can not be negative");
     Car::speed = s;
+    ENSURE(speed == s,"Speed hasn't changed");
 }
 
 
 double Car::getMaxSpeed() {
     REQUIRE(this->properlyInitialized(), "Car wasn't initialized when calling getMaxSpeed");
+    ENSURE(maxSpeed>=0, "Maxspeed cannot be negative");
     return maxSpeed;
 }
 
 
 void Car::setMaxSpeed(double s) {
     REQUIRE(this->properlyInitialized(), "Car wasn't initialized when calling setMaxSpeed");
+    REQUIRE(s>=0, "Speed can not be negative");
     Car::maxSpeed = s;
+    ENSURE(maxSpeed == s, "Maxspeed hasn't changed");
 }
 
 
@@ -167,23 +184,28 @@ double Car::getAcceleration() {
 void Car::setAcceleration(double a) {
     REQUIRE(this->properlyInitialized(), "Car wasn't initialized when calling setAcceleration");
     Car::acceleration = a;
+    ENSURE(acceleration == a,"Acceleration hasn't changed");
 }
 
 
 Action Car::getAction() {
     REQUIRE(this->properlyInitialized(), "Car wasn't initialized when calling getAction");
+    ENSURE(action == fast or action == slow or action == stop, "This action does not exist");
     return action;
 }
 
 
 void Car::setAction(Action a) {
     REQUIRE(this->properlyInitialized(), "Car wasn't initialized when calling setAction");
+    REQUIRE(a==fast or a==slow or a==stop, "action does not exist");
     Car::action = a;
+    ENSURE(action == a,"Action hasn't changed");
 }
 
 
 CarData* Car::getData() {
     REQUIRE(this->properlyInitialized(), "Car wasn't initialized when calling getData");
+    ENSURE(data->properlyInitialized(), "The data is not properly initialised");
     return data;
 }
 //////////////

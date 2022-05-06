@@ -103,8 +103,13 @@ public:
     void setbussy(bool bussy);
 
 /////////////
-    protected:
-        bool properlyInitialized() const;
+    bool properlyInitialized() const;
+
+    bool onRoad() const;
+
+    bool onRoad(int p) const;
+
+    bool isvalid(Road *road);
 
 /////////////
 };

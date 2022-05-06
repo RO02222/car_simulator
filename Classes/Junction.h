@@ -124,6 +124,11 @@ public:
 public:
     bool properlyInitialized() const;
 
+    bool onRoad(long unsigned int n) const;
+
+    bool onRoad(std::string roadname);
+
+    bool isvalid() const;
 /////////////
 };
 

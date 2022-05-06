@@ -62,6 +62,7 @@ World::~World() {
 
 void World::simpleSimulateWorld(std::ostream &onStream) {
     REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling simulateWorld");
+    REQUIRE(isvalidSimulation(), "Simulation is not valid");
     onStream << "Tijd: " <<time<<std::endl;
     int numVehicle = 1;
     std::vector<Road*> roadIt = getRoads();
@@ -79,6 +80,7 @@ void World::simpleSimulateWorld(std::ostream &onStream) {
 
 void World::graficImpSimulateWorld(std::ostream &onStream) {
     REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling simulateWorld");
+    REQUIRE(isvalidSimulation(), "Simulation is not valid");
     const char separator = ' ';
     unsigned int nameWidth = 17;
     std::vector<Road*> roadIt = getRoads();
@@ -223,6 +225,7 @@ void World::graficImpSimulateWorld(std::ostream &onStream) {
 
 void World::updateWorld(double t) {
     REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling updateWorld");
+    REQUIRE(isvalidSimulation(), "Simulation is not valid");
     time += t;
     std::vector<Road *> roadIt = getRoads();
     for (std::vector<Road *>::iterator itR = roadIt.begin(); itR != roadIt.end(); itR++) {
@@ -239,13 +242,20 @@ void World::updateWorld(double t) {
 
 const std::vector<Road *> &World::getRoads() {
     REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling getRoads");
+    for(unsigned int i=0; i<roads.size(); i++){
+        ENSURE(roads[0]->properlyInitialized(), "Road is not properly initialised");
+    }
     return roads;
 }
 
 
 void World::setRoad(const std::vector<Road *> &banen) {
     REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling setRoad");
+    for(unsigned int i=0; i<banen.size(); i++){
+        REQUIRE(banen[i]->properlyInitialized(), "Baan not properly initialised");
+    }
     World::roads = banen;
+    ENSURE(World::roads == banen,"Roads hasn't changed");
 }
 
 void World::addRoad(std::string name, double length) {
@@ -259,7 +269,9 @@ void World::addRoad(std::string name, double length) {
             return;
         }
     }
-    roads.push_back(new Road(name,length, &error));
+    Road* r = new Road(name,length, &error);
+    roads.push_back(r);
+    ENSURE(roads[roads.size()-1] == r, "Road is not added");
 }
 
 void World::addRoad(Road* r) {
@@ -274,35 +286,48 @@ void World::addRoad(Road* r) {
         }
     }
     roads.push_back(r);
+    ENSURE(roads[roads.size()-1] == r, "Road is not added");
 }
 
 std::vector<Junction *> &World::getJunctions() {
     REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling getJunctions");
+    for(unsigned int i=0; i<junctions.size(); i++){
+        ENSURE(junctions[i]->properlyInitialized(), "Light is not initialised");
+    }
     return junctions;
 }
 
 
 void World::setJunctions(const std::vector<Junction *> & junction) {
     REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling setJunctions");
+    for(unsigned int i=0; i<junction.size(); i++) {
+        REQUIRE(junction[i]->properlyInitialized(), "Baan not properly initialised");
+    }
     World::junctions = junction;
+    ENSURE(World::junctions == junction,"Junctions hasn't changed");
 }
 
 
 void World::addJunction(std::vector<std::pair<Road* , double> > road) {
     REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling addJuction");
-    junctions.push_back( new Junction(road, &error) );
+    Junction* j = new Junction(road, &error);
+    junctions.push_back(j);
+    ENSURE(junctions[junctions.size()-1] == j, "Junction is not added");
 }
 
 
 double World::getTime() const {
     REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling getTime");
+    ENSURE(time>=0, "Time cannot be negative");
     return time;
 }
 
 
 void World::setTime(double t) {
     REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling setTime");
+    REQUIRE(t>=0, "time cannot be negative");
     World::time = t;
+    ENSURE(World::time == t,"Time hasn't changed");
 }
 
 CarData* World::getCarData(Type type)  {
@@ -313,11 +338,15 @@ CarData* World::getCarData(Type type)  {
             return (*data);
         }
     }
+    ENSURE(carData[0]->properlyInitialized(), "The cardata is not properly initialised");
     return carData[0];
 }
 
 std::vector<CarData*>* World::getAllData() {
     REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling getCarData");
+    for(unsigned int i=0; i<carData.size(); i++){
+        ENSURE(carData[i]->properlyInitialized(), "Cardata is not properly initialised");
+    }
     return &carData;
 }
 //////////////

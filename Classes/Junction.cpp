@@ -70,7 +70,9 @@ void Junction::updateJunction(double t) {
 
 void Junction::addCar(Car *car) {
     REQUIRE(this->properlyInitialized(), "Junction wasn't initialized when calling addCar");
+    REQUIRE(car->properlyInitialized(), "Car is not properly initialised");
     cars.push_back(car);
+    ENSURE(cars[cars.size()-1] == car, "Car is not added");
 }
 
 void Junction::checkJunctionLights() {
@@ -115,30 +117,41 @@ void Junction::checkJunctionLights() {
 
 Road* Junction::getRoad(int n) {
     REQUIRE(this->properlyInitialized(), "Junction wasn't initialized when calling getRoad");
+    ENSURE(roads[n].first->properlyInitialized(), "Road is not properly initialised");
     return roads[n].first;
 }
 
 
 std::vector<Car*> Junction::getCars() {
     REQUIRE(this->properlyInitialized(), "Junction wasn't initialized when calling getCars");
+    for(unsigned int i=0; i<cars.size(); i++){
+        ENSURE(cars[i]->properlyInitialized(), "The car is not properly initialised");
+    }
     return cars;
 }
 
 
 void Junction::setRoad(Road *r,unsigned int n) {
     REQUIRE(this->properlyInitialized(), "Junction wasn't initialized when calling setRoad");
+    REQUIRE(r->properlyInitialized(), "Road is not properly initialised");
+    REQUIRE(r->isvalid(), "Road isn't valid");
+    REQUIRE(n>=0, "The number of the road cannot be negative");
+    REQUIRE(n<=roads.size(), "there aren't that many roads");
     roads[n].first = r;
+    ENSURE(roads[n].first == r, "Road hasn't changed");
 }
 
 
 double Junction::getPosition(int n) {
     REQUIRE(this->properlyInitialized(), "Junction wasn't initialized when calling getPosition");
+    ENSURE(onRoad(n), "Busstop is not on road");
     return roads[n].second;
 }
 
 
 double Junction::getPosition(std::string roadname) {
     REQUIRE(this->properlyInitialized(), "Junction wasn't initialized when calling getPosition");
+    ENSURE(onRoad(roadname), "Junction not on road");
     for (std::vector<std::pair<Road*,double> >::iterator x = roads.begin(); x != roads.end(); x++){
         if (x->first->getName() == roadname){
             return x->second;
@@ -150,7 +163,10 @@ double Junction::getPosition(std::string roadname) {
 
 void Junction::setPosition(double p,unsigned int n) {
     REQUIRE(this->properlyInitialized(), "Junction wasn't initialized when calling setPosition");
+    REQUIRE(n<roads.size(), "There aren't that many roads");
+    REQUIRE(p>=0 and p<roads[n].first->getLength(), "junction is not on the road");
     roads[n].second = p;
+    ENSURE(roads[n].second == p, "Position hasn't changed");
 }
 /////////////
 
@@ -159,5 +175,48 @@ void Junction::setPosition(double p,unsigned int n) {
 //////////////
 bool Junction::properlyInitialized() const{
     return _initCheck == this;
+}
+
+bool Junction::onRoad(long unsigned int n) const{
+    REQUIRE(this->properlyInitialized(),"Road wasn't initialized when calling onRoad");
+    REQUIRE(n>=0 and n<roads.size(), "There aren't that many roads");
+    if (roads[n].second<0 or roads[n].second>roads[n].first->getLength()){
+        return false;
+    }
+    return true;
+}
+
+bool Junction::onRoad(std::string roadname){
+    REQUIRE(this->properlyInitialized(),"Road wasn't initialized when calling onRoad");
+    for (std::vector<std::pair<Road*,double> >::iterator x = roads.begin(); x != roads.end(); x++){
+        if (x->first->getName() == roadname){
+            if(x->second<0 or x->second>x->first->getLength()){
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+bool Junction::isvalid() const {
+    if (!properlyInitialized()){
+        return false;
+    }
+    std::vector<std::pair<Road *, double> > RoadIt = roads;
+    for (std::vector<std::pair<Road*, double> >::iterator itR = RoadIt.begin(); itR != RoadIt.end(); itR++) {
+        if (!itR->first->properlyInitialized()) {
+            return false;
+        }
+        if(itR->second < 0 or itR->second > itR->first->getLength()){
+            return false;
+        }
+    }
+    std::vector<Car*> CarIt = cars;
+    for (std::vector<Car*>::iterator itC = CarIt.begin(); itC != CarIt.end(); itC++) {
+        if(!(*itC)->properlyInitialized()) {
+            return false;
+        }
+    }
+    return true;
 }
 //////////////

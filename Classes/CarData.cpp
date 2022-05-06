@@ -71,11 +71,13 @@ CarData::CarData(Type type) {
 
 Type CarData::getType() const {
     REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling getType");
+    ENSURE(type == bus or type == bugatti or type == police or type == fire or type == ambulance or type == car, "This type does not exist");
     return type;
 }
 
 double CarData::getlength() const {
     REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling getlength");
+    ENSURE(l>0, "Length cannot be negative or zero");
     return l;
 }
 
@@ -86,21 +88,25 @@ bool CarData::getpriority() const {
 
 double CarData::getvMax() const {
     REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling getvMax");
+    ENSURE(vMax>=0, "vMax cannot be negative");
     return vMax;
 }
 
 double CarData::getaMax() const {
     REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling getaMax");
+    ENSURE(aMax>=0, "aMax cannot be negative");
     return aMax;
 }
 
 double CarData::getbMax() const {
     REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling getbMax");
+    ENSURE(bMax>=0, "bMax cannot be negative");
     return bMax;
 }
 
 double CarData::getfMin() const {
     REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling getfMin");
+    ENSURE(fMin>=0, "fMin cannot be negative");
     return fMin;
 }
 

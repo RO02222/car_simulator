@@ -53,13 +53,8 @@ public:
 */
     void moveCar(Road* road, double position);
 
-/**
- * check if the car is valid
- * @param road: the road of the car
- * @return: none
-\n REQUIRE(properlyInitialized(), "World wasn't initialized when calling updateWorld);
-*/
-    void isvalid(Road* road);
+
+
 
 
 
