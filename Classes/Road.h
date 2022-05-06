@@ -79,14 +79,6 @@ public:
     void updateRoad(double t);
 
 
-/**
- * check if the road is valid
- * @return: none
-\n REQUIRE(properlyInitialized(), "World wasn't initialized when calling updateWorld);
-*/
-    void isvalid();
-
-
 /////////////
 public:
 /**
@@ -249,9 +241,13 @@ public:
 
 
 /////////////
-protected:
+public:
     bool properlyInitialized() const;
 
+    bool isvalid() const;
+
+    bool isvalidSimulation();
+protected:
 /////////////
 };
 

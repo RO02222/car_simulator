@@ -56,13 +56,7 @@ public:
     void updateCarGen(double t);
 
 
-/**
- * check if the cargen is valid
- * @param road: the road of the cargen
- * @return: none
-\n REQUIRE(properlyInitialized(), "World wasn't initialized when calling updateWorld);
-*/
-    void isvalid(Road* road);
+
 
 
 

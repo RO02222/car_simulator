@@ -81,7 +81,7 @@ function:
  * @return: none
 \n REQUIRE(properlyInitialized(), "World wasn't initialized when calling updateWorld);
 */
-    void isvalid();
+
 
 
 /////////////
@@ -124,7 +124,7 @@ public:
  * @return: (std::vector<Junction*>), the Junctions in the simulationWorld
 \n REQUIRE(properlyInitialized(), "World wasn't initialized when calling getJunctions);
 */
-    const std::vector<Junction *> &getJunctions();
+    std::vector<Junction *> &getJunctions();
 
 /**
  * change the Junctions of the simulationWorld
@@ -178,6 +178,10 @@ public:
 //////////////
 public:
     bool properlyInitialized() const;
+
+    bool isvalid() const;
+
+    bool isvalidSimulation() const;
 //////////////
 };
 

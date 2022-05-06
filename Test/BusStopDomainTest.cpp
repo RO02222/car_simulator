@@ -77,13 +77,13 @@ TEST_F(BusStopDomainTest, readySetGo) {
         w->updateWorld(1);
     }
     EXPECT_EQ(w->getRoads()[0]->getCars()[0]->getAction(), slow);
-    EXPECT_EQ(w->getRoads()[0]->getBusStops()[0]->bussy, false);
+    EXPECT_EQ(w->getRoads()[0]->getBusStops()[0]->getbussy(), false);
     for(unsigned int _=0; _<120; _++){
         w->updateWorld(0.1);
     }
     EXPECT_EQ(w->getRoads()[0]->getCars()[0]->getAction(), stop);
     EXPECT_LT(w->getRoads()[0]->getCars()[0]->getSpeed(), 0.01);
-    EXPECT_EQ(w->getRoads()[0]->getBusStops()[0]->bussy, true);
+    EXPECT_EQ(w->getRoads()[0]->getBusStops()[0]->getbussy(), true);
     for(unsigned int _=0; _<5; _++){
         w->updateWorld(1);
     }
@@ -92,6 +92,6 @@ TEST_F(BusStopDomainTest, readySetGo) {
     for(unsigned int _=0; _<5; _++){
         w->updateWorld(1);
     }
-    EXPECT_EQ(w->getRoads()[0]->getBusStops()[0]->bussy, false);
+    EXPECT_EQ(w->getRoads()[0]->getBusStops()[0]->getbussy(), false);
     delete w;
 }

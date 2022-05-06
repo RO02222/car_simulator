@@ -6,6 +6,7 @@
 #include "Classes/Light.h"
 #include "Classes/Car.h"
 #include "Classes/CarGen.h"
+#include "Classes/Junction.h"
 #include "DesignByContract.h"
 #include "Exception/ParserException.h"
 
@@ -60,6 +61,9 @@ namespace input {
                 continue;
             }
             world->error << "Failed to load file: <" + (std::string) elem1->Value() + "> is not valid" << std::endl;
+        }
+        for (std::vector<Junction*>::iterator itJ = world->getJunctions().begin(); itJ != world->getJunctions().end();itJ++){
+            (*itJ)->checkJunctionLights();
         }
         return world;
     }

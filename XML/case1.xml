@@ -1,48 +1,64 @@
 <World>
     <BAAN>
         <naam>Middelheimlaan</naam>
-        <lengte>400</lengte>
+        <lengte>200</lengte>
     </BAAN>
 
     <BAAN>
         <naam>Floralienlaan</naam>
-        <lengte>400</lengte>
+        <lengte>200</lengte>
     </BAAN>
 
     <BAAN>
         <naam>Middelheim</naam>
-        <lengte>400</lengte>
+        <lengte>200</lengte>
+    </BAAN>
+
+    <BAAN>
+        <naam>Middelheim2</naam>
+        <lengte>200</lengte>
     </BAAN>
 
     <VERKEERSLICHT>
-        <baan>Middelheimlaan</baan>
-        <positie>400</positie>
-        <cyclus>20</cyclus>
+        <baan>Floralienlaan</baan>
+        <positie>100</positie>
+        <cyclus>10</cyclus>
+    </VERKEERSLICHT>
+
+    <VERKEERSLICHT>
+        <baan>Middelheim</baan>
+        <positie>100</positie>
+        <cyclus>100</cyclus>
+    </VERKEERSLICHT>
+
+    <VERKEERSLICHT>
+        <baan>Middelheim2</baan>
+        <positie>100</positie>
+        <cyclus>100</cyclus>
     </VERKEERSLICHT>
 
     <VOERTUIGGENERATOR>
-        <baan>Middelheimlaan</baan>
+        <baan>Floralienlaan</baan>
         <frequentie>4</frequentie>
         <type>None</type>
     </VOERTUIGGENERATOR>
 
-    <KRUISPUNT>
-        <baan positie="100">Middelheimlaan</baan>
-        <baan positie="200">Floralienlaan</baan>
-        <baan positie="300">Middelheim</baan>
-    </KRUISPUNT>
+    <VOERTUIGGENERATOR>
+        <baan>Middelheim</baan>
+        <frequentie>4</frequentie>
+        <type>none</type>
+    </VOERTUIGGENERATOR>
+
+    <VOERTUIGGENERATOR>
+        <baan>Middelheim2</baan>
+        <frequentie>5</frequentie>
+        <type>bugatti</type>
+    </VOERTUIGGENERATOR>
 
     <KRUISPUNT>
-        <baan positie="200">Middelheimlaan</baan>
-        <baan positie="300">Floralienlaan</baan>
-        <baan positie="100">Middelheim</baan>
-    </KRUISPUNT>
-
-    <KRUISPUNT>
-        <baan positie="300">Middelheimlaan</baan>
+        <baan positie="0">Middelheimlaan</baan>
         <baan positie="100">Floralienlaan</baan>
-        <baan positie="200">Middelheim</baan>
+        <baan positie="100">Middelheim</baan>
+        <baan positie="100">Middelheim2</baan>
     </KRUISPUNT>
-
-
 </World>

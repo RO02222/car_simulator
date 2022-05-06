@@ -20,62 +20,79 @@ Light::Light(double position, double c, Road* r, std::ofstream* error): error(er
     }
     lastCycle = rand() % lround(cycle);
     state = color(rand() % 2);
+    clock = true;
+    update = true;
+    ENSURE(this->properlyInitialized(), "constructor must end in properlyInitialized state");
+}
+
+Light::Light(double c, std::ofstream* error): error(error), road(NULL), position(0), cycle(c) {
+    _initCheck = this;
+    if (c < 1){
+        cycle = 1;
+    }
+    lastCycle = rand() % lround(cycle);
+    state = color(rand() % 2);
+    clock = true;
+    update = false;
     ENSURE(this->properlyInitialized(), "constructor must end in properlyInitialized state");
 }
 
 void Light::updateLight(double t) {
     REQUIRE(this->properlyInitialized(), "Light wasn't initialized when calling updateLight");
-    lastCycle += t;
-    if (lastCycle >= cycle) {
-        lastCycle -= cycle;
-        if (getState() == green) {
+    REQUIRE(t>=0, "Time cannot be negative");
+    if (clock) {
+        lastCycle += t;
+        if (state == green and lastCycle >= cycle){
+            lastCycle -= cycle;
+            setState(orange);
+        }
+        if (state == orange and lastCycle >= cycle/10.0){
+            lastCycle -= cycle/10.0;
             setState(red);
-        } else {
+        }
+        if (state == red and lastCycle >= cycle){
+            lastCycle -= cycle;
             setState(green);
         }
     }
-    std::vector<Car *> carsOnRoad = getRoad()->getCars();
-    Car *firstCar = NULL;
-    for (std::vector<Car *>::iterator itC = carsOnRoad.begin(); itC != carsOnRoad.end(); itC++) {
-        if (!(*itC)->getData()->getpriority()) {
-            if ((*itC)->getDistance() < getPosition()) {
-                if ((*itC)->getDistance() + gStopDistance < getPosition() or (*itC)->getAction() == slow or
-                    (*itC)->getAction() == stop) {
-                    if (firstCar == NULL or (*itC)->getDistance() > firstCar->getDistance()) {
-                        firstCar = (*itC);
+    if (update) {
+        std::vector<Car *> carsOnRoad = getRoad()->getCars();
+        Car *firstCar = NULL;
+        for (std::vector<Car *>::iterator itC = carsOnRoad.begin(); itC != carsOnRoad.end(); itC++) {
+            if (!(*itC)->getData()->getpriority()) {//geen prioriteitsvoertuigen
+                if ((*itC)->getDistance() < getPosition()) {//VOOR het licht
+                    if (((*itC)->getDistance() + gStopDistance < getPosition() and getState() != orange) or (*itC)->getAction() == slow or
+                        (*itC)->getAction() == stop) {
+                        if (firstCar == NULL or (*itC)->getDistance() > firstCar->getDistance()) {
+                            firstCar = (*itC);
+                        }
                     }
                 }
             }
         }
-    }
-    if (firstCar == NULL) {
-        return;
-    }
-    if (getState() == green) {
-        firstCar->setAction(fast);
-        return;
-    }
-    if (getState() == red) {
-        if ((firstCar->getDistance() + gStopDistance) > getPosition()) {
-            firstCar->setAction(stop);
+        if (firstCar == NULL) {
             return;
-        } else if ((firstCar->getDistance() + gBreakDistance) > getPosition()) {
-            firstCar->setAction(slow);
+        }
+        if (getState() == green) {
+            firstCar->setAction(fast);
+            return;
+        }
+        if (getState() == red or getState() == orange) {
+            if ((firstCar->getDistance() + gStopDistance) > getPosition()) {
+                if (getState() == red) {
+                    firstCar->setAction(stop);
+                }
+                return;
+            } else if ((firstCar->getDistance() + gBreakDistance) > getPosition()) {
+                firstCar->setAction(slow);
+            }
         }
     }
     return;
 }
 
 
-void Light::isvalid(Road* r) {
-    ENSURE(properlyInitialized(), "Light not initialized");
-    ENSURE(road == r, "Light is on a wrong Road");
-    ENSURE(position >= gStopDistance, "Position is at least the stopdistance");
-    ENSURE(position <= road->getLength(), "Position is of the road");
-    ENSURE(cycle >= 1, "cycle can not be less than 1");
-    ENSURE(lastCycle <= cycle, "time sinds last cycle can not be grather than the cycle");
-    ENSURE(lastCycle >= 0, "time sinds last cycle can not be negative");
-}
+
 
 
 
@@ -139,6 +156,20 @@ color Light::getState() {
 void Light::setState(color s) {
     REQUIRE(this->properlyInitialized(), "Light wasn't initialized when calling setState");
     Light::state = s;
+}
+
+bool Light::getClock() {
+    REQUIRE(this->properlyInitialized(), "Light wasn't initialized when calling getClock");
+    ENSURE(clock >= 0.0, "Clock cannot be negative");
+    return clock;
+}
+
+
+void Light::setClock(bool s) {
+    REQUIRE(this->properlyInitialized(), "Light wasn't initialized when calling setState");
+    REQUIRE(s >= 0.0, "Clock cannot be negative");
+    clock = s;
+    ENSURE(clock == s,"clock hasn't changed");
 }
 /////////////
 

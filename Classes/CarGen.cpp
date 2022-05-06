@@ -67,16 +67,6 @@ void CarGen::updateCarGen(double t) {
 
 
 
-void CarGen::isvalid(Road* r) {
-    ENSURE(properlyInitialized(), "Cargen not initialized");
-    ENSURE(road == r, "CarGen is on a wrong Road");
-    ENSURE(frequency >= 1, "frequency can not be less than 1");
-    ENSURE(lastCycle <= frequency, "time sinds last cycle can not be grather than the frequency");
-    ENSURE(lastCycle >= 0, "time sinds last cycle can not be negative");
-}
-
-
-
 
 
 /////////////

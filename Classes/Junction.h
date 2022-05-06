@@ -11,9 +11,11 @@
 
 #include <iostream>
 #include <vector>
+#include "Light.h"
 
 class Road;
 class Car;
+class Light;
 class Junction {
 public:
     std::ofstream* error;
@@ -21,6 +23,11 @@ private:
     Junction* _initCheck;
     std::vector<std::pair<Road* , double> > roads;
     std::vector<Car*> cars;
+
+private:
+    Light* clock;
+    std::vector<Light*> lights;
+    unsigned int numLight;
 
 
 public:
@@ -51,11 +58,11 @@ public:
     void addCar(Car* car);
 
 /**
- * check if the junction is valid
- * @return: none
-\n REQUIRE(properlyInitialized(), "World wasn't initialized when calling updateWorld);
+ * check the Junction for lights and change on all road  of the Junction
+ * @return: None
+\n REQUIRE(properlyInitialized(), "Junction wasn't initialized when calling setPosition");
 */
-    void isvalid();
+    void checkJunctionLights();
 
 
 /////////////
@@ -75,8 +82,6 @@ public:
 */
     std::vector<Car*> getCars();
 
-
-protected:
 /**
  * change the n'th road of the Junction (starting from 0)
  * @param road: the new road of the Junction
@@ -84,9 +89,8 @@ protected:
  * @return: None
 \n REQUIRE(properlyInitialized(), "Light wasn't initialized when calling setRoad");
 */
-    void setRoad(Road* road, int n);
+    void setRoad(Road* road,unsigned int n);
 
-public:
 /**
  * get the position of the Junction on the road
  * @param n: the n road of the Junction
@@ -110,15 +114,14 @@ public:
  * @return: None
 \n REQUIRE(properlyInitialized(), "Light wasn't initialized when calling setPosition");
 */
-    void setPosition(double position, int n);
+    void setPosition(double position,unsigned int n);
+
+/////////////
+
 
 
 /////////////
-
-
-
-/////////////
-protected:
+public:
     bool properlyInitialized() const;
 
 /////////////

@@ -10,7 +10,7 @@
 #define CAR_SIMULATOR_LIGHT_H
 #include <iostream>
 
-enum color {green,red};
+enum color {green,red,orange};
 class Road;
 class Junction;
 
@@ -25,16 +25,30 @@ private:
     double cycle;
     double lastCycle;
     color state;
+
+private:
+    bool clock;
+    bool update;
 public:
 /**
  * create a traffic light
  * @param position: position of the traffic light
+ * @param cycle: the time a cycle takes for a traffic light
  * @param road: the road where the traffic light is placed on
  * @param error: errorfile
  * @return: None
 \n ENSURE(properlyInitialized(), "constructor must end in properlyInitialized state");
 */
     Light(double position, double cycle, Road* road, std::ofstream* error);
+
+/**
+ * create a traffic light for a junction as a clock
+ * @param cycle: the time a cycle takes for a traffic light
+ * @param error: errorfile
+ * @return: None
+\n ENSURE(properlyInitialized(), "constructor must end in properlyInitialized state");
+*/
+    Light(double cycle, std::ofstream* error);
 
 
 /**
@@ -55,13 +69,7 @@ public:
 */
     void updateLight(double t);
 
-/**
- * check if the light is valid
- * @param road: the road of the light
- * @return: none
-\n REQUIRE(properlyInitialized(), "World wasn't initialized when calling updateWorld);
-*/
-    void isvalid(Road* road);
+
 
 
 
@@ -139,13 +147,28 @@ public:
 \n REQUIRE(properlyInitialized(), "Light wasn't initialized when calling setState");
 */
     void setState(color state);
+/**
+ * get the state the traffic light
+ * @return: (color), the state the traffic light
+\n REQUIRE(properlyInitialized(), "Light wasn't initialized when calling getClock");
+*/
+    bool getClock();
+/**
+ * enable/disable the clock of the traffic light
+ * @param state: the new state of the traffic light
+ * @return: None
+\n REQUIRE(properlyInitialized(), "Light wasn't initialized when calling setClock");
+*/
+    void setClock(bool state);
 /////////////
 
 
 
 /////////////
-protected:
+public:
     bool properlyInitialized() const;
+
+    bool onRoad() const;
 
 /////////////
 };

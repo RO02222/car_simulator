@@ -30,7 +30,7 @@ CarData::CarData(Type type) {
             return;
         case ambulance:
             this->type = type;
-            priority = false;
+            priority = true;
             l = 8;
             vMax = 15.5;
             aMax = 1.44;
@@ -52,7 +52,7 @@ CarData::CarData(Type type) {
             l = 4.5;
             vMax = 100.0;
             aMax = 4;
-            bMax = 10;
+            bMax = 40;
             fMin = 1;
             return;
         default:

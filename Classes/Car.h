@@ -90,6 +90,13 @@ public:
 \n REQUIRE(properlyInitialized(), "Car wasn't initialized when calling getDistance");
 */
     double getDistance();
+
+/**
+ * get the distance of the car that is not always on a road
+ * @return: (double), the distance of the car
+\n REQUIRE(properlyInitialized(), "Car wasn't initialized when calling getDistance");
+*/
+    double getDistanceNV();
 /**
  * change the distance of the car
  * @param distance: the new distance of the car
@@ -161,9 +168,14 @@ public:
 
 
 /////////////
-protected:
+public:
     bool properlyInitialized() const;
 
+    bool onRoad() const;
+
+    bool onRoad(int d) const;
+
+    bool isvalid(Road* road) const;
 /////////////
 };
 

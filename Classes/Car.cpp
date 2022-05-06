@@ -32,6 +32,9 @@ void Car::updateCar(double t, bool onJunction) {
         maxSpeed = data->getvMax();
     } else if (getAction() == slow) {
         maxSpeed = gSlowFactor * data->getvMax();
+        if (maxSpeed > 20){
+            maxSpeed = 20;
+        }
     }
     double v0 = getSpeed();
 
@@ -61,11 +64,11 @@ void Car::updateCar(double t, bool onJunction) {
     setAcceleration(a);
     double v1 = v0 + a * t;
     if (v1 < 0) {
-        setDistance(distance - pow(v0, 2) / (2 * a));
+        distance = distance - pow(v0, 2) / (2 * a);
         setSpeed(0);
     } else {
         setSpeed(v1);
-        setDistance(distance + v0 * t + a * (pow(t, 2) / 2.0));
+        distance = distance + v0 * t + a * (pow(t, 2) / 2.0);
     }
     //near Junction
     if (!onJunction) {
@@ -77,7 +80,7 @@ void Car::updateCar(double t, bool onJunction) {
             }
         }
         //car off the road
-        if (getDistance() > road->getLength()) {
+        if (!onRoad()) {
             road->deleteCar(this);
         }
     }
@@ -92,13 +95,7 @@ void Car::moveCar(Road *r, double position) {
 }
 
 
-void Car::isvalid(Road* r) {
-    ENSURE(properlyInitialized(), "Road not initialized");
-    ENSURE(road == r, "Car is on a wrong Road");
-    ENSURE(distance >=0, "Distance can not be negative");
-    ENSURE(distance <= road->getLength(), "Car is of the road");
-    ENSURE(speed >=0, "Speed can not be negative");
-}
+
 
 
 
@@ -115,11 +112,18 @@ Road *Car::getRoad() const {
 void Car::setRoad(Road *r) {
     REQUIRE(this->properlyInitialized(), "Car wasn't initialized when calling setRoad");
     Car::road = r;
+    ENSURE(road == r,"Road hasn't changed");
 }
 
 
 double Car::getDistance() {
     REQUIRE(this->properlyInitialized(), "Car wasn't initialized when calling getDistance");
+    return distance;
+}
+
+double Car::getDistanceNV() {
+    REQUIRE(this->properlyInitialized(), "Car wasn't initialized when calling getDistance");
+    ENSURE(distance>=0, "Distance cannot be negative");
     return distance;
 }
 
@@ -191,4 +195,42 @@ CarData* Car::getData() {
 bool Car::properlyInitialized() const{
     return _initCheck == this;
 }
+bool Car::onRoad() const{
+    REQUIRE(road->properlyInitialized(),"Road wasn't initialized when calling onRoad");
+    if (distance<0 or distance>road->getLength()){
+        return false;
+    }
+    return true;
+}
+
+bool Car::onRoad(int d) const{
+    if (d<0 or d>road->getLength()){
+        return false;
+    }
+    return true;
+}
+
+bool Car::isvalid(Road* r) const {
+    if (!properlyInitialized()){
+        return false;
+        }
+    if(!(road == r)){
+        return false;
+        };
+    if (!(onRoad())){
+        return false;
+    }
+    if(speed <0){
+        return false;
+    }
+    if (action != slow and action != fast and action != stop){
+        return false;
+    }
+    if(data->properlyInitialized()){
+        return false;
+    }
+    return true;
+}
+
+
 //////////////

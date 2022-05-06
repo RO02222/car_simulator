@@ -122,13 +122,16 @@ void World::graficImpSimulateWorld(std::ostream &onStream) {
             light[x] = '|';
         }
         for (std::vector<Light*>::iterator itL = lightIt.begin(); itL != lightIt.end(); itL++) {
-            unsigned int x = floor((*itL)->getPosition()/numWidth);
-            if (x >= roadlength){
-                x = roadlength -1;
+            unsigned int x = floor((*itL)->getPosition() / numWidth);
+            if (x >= roadlength) {
+                x = roadlength - 1;
             }
             switch ((*itL)->getState()) {
                 case red:
                     light[x] = 'R';
+                    continue;
+                case orange:
+                    light[x] = 'O';
                     continue;
                 case green:
                     light[x] = 'G';
@@ -232,21 +235,6 @@ void World::updateWorld(double t) {
 }
 
 
-void World::isvalid() {
-    std::vector<Road *> roadIt = getRoads();
-    for (std::vector<Road *>::iterator itR = roadIt.begin(); itR != roadIt.end(); itR++) {
-        (*itR)->isvalid();
-    }/*
-    std::vector<Junction *> junctionIt = getJunctions();
-    for (std::vector<Junction *>::iterator itJ = junctionIt.begin(); itJ != junctionIt.end(); itJ++) {
-        (*itJ)->isvalid();
-    }*/
-}
-
-
-
-
-
 //////////////
 
 const std::vector<Road *> &World::getRoads() {
@@ -288,7 +276,7 @@ void World::addRoad(Road* r) {
     roads.push_back(r);
 }
 
-const std::vector<Junction *> &World::getJunctions() {
+std::vector<Junction *> &World::getJunctions() {
     REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling getJunctions");
     return junctions;
 }
@@ -321,6 +309,7 @@ CarData* World::getCarData(Type type)  {
     REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling getCarData");
     for (std::vector<CarData*>::iterator data = carData.begin(); data != carData.end(); data++){
         if ((*data)->getType() == type){
+            ENSURE((*data)->properlyInitialized(), "Data is not properly initialised");
             return (*data);
         }
     }
@@ -340,8 +329,36 @@ std::vector<CarData*>* World::getAllData() {
 bool World::properlyInitialized () const{
     return _initCheck == this;
 }
-//////////////
 
+bool World::isvalid() const{
+    if (!properlyInitialized()){
+        return false;
+    }
+    if (time < 0){
+        return false;
+    }
+    return true;
+}
+
+bool World::isvalidSimulation() const {
+    if (!isvalid()) {
+        return false;
+    }
+    std::vector<Road *> RoadIt = roads;
+    for (std::vector<Road *>::iterator itR = RoadIt.begin(); itR != RoadIt.end(); itR++) {
+        if (!(*itR)->isvalid()) {
+            return false;
+        }
+    }
+    std::vector<Junction *> junctionIt = junctions;
+    for (std::vector<Junction *>::iterator itJ = junctionIt.begin(); itJ != junctionIt.end(); itJ++) {
+        if (!(*itJ)->isvalid()) {
+            return false;
+        }
+    }
+    return true;
+}
+//////////////
 
 
 
