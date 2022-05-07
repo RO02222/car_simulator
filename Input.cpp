@@ -15,7 +15,6 @@
 namespace input {
     World *loadWorldXML(const char *worldName) {
         World *world = new World();
-        REQUIRE(world->properlyInitialized(), "World wasn't initialized when calling loadWorldXML");
         TiXmlDocument doc;
         if (!doc.LoadFile(worldName)) {
             world->error << doc.ErrorDesc() << std::endl;

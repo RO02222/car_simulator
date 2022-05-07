@@ -168,6 +168,21 @@ void Junction::setPosition(double p,unsigned int n) {
     roads[n].second = p;
     ENSURE(roads[n].second == p, "Position hasn't changed");
 }
+
+
+Light* Junction::getClock() {
+    REQUIRE(this->properlyInitialized(), "Junction wasn't initialized when calling getPosition");
+    ENSURE(clock->properlyInitialized(), "clock is not initialized");
+    return clock;
+}
+
+
+void Junction::setClock(Light *light) {
+    REQUIRE(this->properlyInitialized(), "Junction wasn't initialized when calling setPosition");
+    REQUIRE(light->properlyInitialized(), "clock is not initialized");
+    clock = light;
+    ENSURE(clock == light, "clock hasn't changed");
+}
 /////////////
 
 

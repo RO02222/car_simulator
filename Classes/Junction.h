@@ -116,6 +116,23 @@ public:
 */
     void setPosition(double position,unsigned int n);
 
+/**
+ * get the position of the Junction on the road
+ * @param roadname: the name of the road from the Junction
+ * @return: (double), the position of the Junction on the road
+\n REQUIRE(properlyInitialized(), "Light wasn't initialized when calling getPosition");
+*/
+    Light* getClock();
+
+/**
+ * change the position of the Junction
+ * @param n: the n road of the Junction
+ * @param position: the new position of the Junction
+ * @return: None
+\n REQUIRE(properlyInitialized(), "Light wasn't initialized when calling setPosition");
+*/
+    void setClock(Light* light);
+
 /////////////
 
 

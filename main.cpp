@@ -58,7 +58,6 @@ int main() {
     }
     myFile.close();
     myFile2.close();
-    std::cout<<x;
     delete w;
     return 0;
 }/*

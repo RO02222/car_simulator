@@ -27,7 +27,9 @@ set(RELEASE_SOURCE_FILES
         Classes/CarGen.cpp Classes/CarGen.h
         DesignByContract.h Basic_Values.h
         Functions.cpp Functions.h
-        Car_SimUtils.cpp Car_SimUtils.h)
+        Car_SimUtils.cpp Car_SimUtils.h
+        #Simulation/GenerateIni.cpp Simulation/GenerateIni.h
+        )
 
 # Set source files for DEBUG target
 set(DEBUG_SOURCE_FILES
@@ -43,7 +45,9 @@ set(DEBUG_SOURCE_FILES
         Input.cpp Input.h
         Exception/ParserException.h
         Classes/CarGen.cpp Classes/CarGen.h DesignByContract.h Basic_Values.h Functions.cpp Functions.h
-        Car_SimUtils.cpp Car_SimUtils.h)
+        Car_SimUtils.cpp Car_SimUtils.h
+        #Simulation/GenerateIni.cpp Simulation/GenerateIni.h
+        )
 
 # Create RELEASE target
 add_executable(Car_Simulation ${RELEASE_SOURCE_FILES})
