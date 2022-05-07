@@ -47,6 +47,13 @@ protected:
     // accessed from sub-classes.
 };
 
+//source: https://www.codegrepper.com/code-examples/cpp/c%2B%2B+round+number+to+2+decimal+places
+float roundoff(float value, unsigned char prec)
+{
+    float pow_10 = pow(10.0f, (float)prec);
+    return round(value * pow_10) / pow_10;
+}
+
 /**
 Tests if every object is initialised right.
 */
@@ -130,7 +137,7 @@ TEST_F(Car_SimDomainTest, UpdateWorld) {
     w->getRoads()[0]->getLights()[0]->setLastCycle(0);
     w->getRoads()[0]->getLights()[1]->setLastCycle(0);
     w->getRoads()[1]->getLights()[0]->setLastCycle(0);
-    w->getRoads()[0]->getLights()[0]->setState(red);
+    w->getRoads()[0]->getLights()[0]->setState(green);
     w->getRoads()[0]->getLights()[1]->setState(red);
     w->getRoads()[1]->getLights()[0]->setState(red);
     r1->addCarGen(5, w->getCarData(car));
@@ -146,19 +153,20 @@ TEST_F(Car_SimDomainTest, UpdateWorld) {
     double distance2 = w->getRoads()[0]->getCars()[1]->getDistance();
     double distance3 = w->getRoads()[0]->getCars()[2]->getDistance();
     double distance4 = w->getRoads()[1]->getCars()[0]->getDistance();
-
     for(unsigned int i=0; i<20; i++){
         w->updateWorld(0.1);
     }
-    EXPECT_EQ(w->getRoads()[0]->getCars()[0]->getAction(), slow);
+
+    double lastcycle = std::fmod(2.0,5.0);
+    EXPECT_EQ(w->getRoads()[0]->getCars()[0]->getAction(), fast);
     EXPECT_NE(w->getRoads()[0]->getCars()[0]->getDistance(), distance1);
     distance1 = w->getRoads()[0]->getCars()[0]->getDistance();
 
-    EXPECT_EQ(w->getRoads()[0]->getCars()[1]->getAction(), fast);
+    EXPECT_EQ(w->getRoads()[0]->getCars()[1]->getAction(), slow);
     EXPECT_NE(w->getRoads()[0]->getCars()[1]->getDistance(), distance2);
     distance2 = w->getRoads()[0]->getCars()[1]->getDistance();
 
-    EXPECT_EQ(w->getRoads()[0]->getCars()[2]->getAction(), slow);
+    EXPECT_EQ(w->getRoads()[0]->getCars()[2]->getAction(), fast);
     EXPECT_NE(w->getRoads()[0]->getCars()[2]->getDistance(), distance3);
     distance3 = w->getRoads()[0]->getCars()[2]->getDistance();
 
@@ -166,17 +174,17 @@ TEST_F(Car_SimDomainTest, UpdateWorld) {
     EXPECT_NE(w->getRoads()[1]->getCars()[0]->getDistance(), distance4);
     distance4 = w->getRoads()[1]->getCars()[0]->getDistance();
 
-    EXPECT_EQ(w->getRoads()[0]->getLights()[0]->getState(), red);
-    EXPECT_TRUE(abs(w->getRoads()[0]->getLights()[0]->getLastCycle() - 2.0)<0.0001);
+    EXPECT_EQ(w->getRoads()[0]->getLights()[0]->getState(), green);
+    EXPECT_TRUE(abs(fmod(roundoff(w->getRoads()[0]->getLights()[0]->getLastCycle(),10),5) - lastcycle)<0.0001);
 
     EXPECT_EQ(w->getRoads()[0]->getLights()[1]->getState(), red);
-    EXPECT_TRUE(abs(w->getRoads()[0]->getLights()[1]->getLastCycle() - 2.0)<0.0001);
+    EXPECT_TRUE(abs(fmod(roundoff(w->getRoads()[0]->getLights()[1]->getLastCycle(),10),5) - lastcycle)<0.0001);
 
     EXPECT_EQ(w->getRoads()[1]->getLights()[0]->getState(), red);
-    EXPECT_TRUE(abs(w->getRoads()[1]->getLights()[0]->getLastCycle() - 2.0)<0.0001);
+    EXPECT_TRUE(abs(fmod(roundoff(w->getRoads()[1]->getLights()[0]->getLastCycle(),10),5) - lastcycle)<0.0001);
 
-    EXPECT_TRUE(abs(w->getRoads()[0]->getCarGen()[0]->getCycle() - 2.0)<0.0001);
-    EXPECT_TRUE(abs(w->getRoads()[1]->getCarGen()[0]->getCycle() - 2.0)<0.0001);
+    EXPECT_TRUE(abs(fmod(roundoff(w->getRoads()[0]->getCarGen()[0]->getCycle(),10),5) - lastcycle)<0.0001);
+    EXPECT_TRUE(abs(fmod(roundoff(w->getRoads()[1]->getCarGen()[0]->getCycle(),10),5) - lastcycle)<0.0001);
 
     EXPECT_EQ(w->getRoads()[0]->getBusStops()[0]->getTimeStopped(), 0);
     EXPECT_EQ(w->getRoads()[0]->getBusStops()[0]->getbussy(), false);
@@ -184,16 +192,16 @@ TEST_F(Car_SimDomainTest, UpdateWorld) {
     for(unsigned int i=0; i<30; i++){
         w->updateWorld(0.1);
     }
-
-    EXPECT_EQ(w->getRoads()[0]->getCars()[0]->getAction(), stop);
+    lastcycle = std::fmod(lastcycle+3.0,5.0);
+    EXPECT_EQ(w->getRoads()[0]->getCars()[0]->getAction(), fast);
     EXPECT_NE(w->getRoads()[0]->getCars()[0]->getDistance(), distance1);
     distance1 = w->getRoads()[0]->getCars()[0]->getDistance();
 
-    EXPECT_EQ(w->getRoads()[0]->getCars()[1]->getAction(), fast);
+    EXPECT_EQ(w->getRoads()[0]->getCars()[1]->getAction(), slow);
     EXPECT_NE(w->getRoads()[0]->getCars()[1]->getDistance(), distance2);
     distance2 = w->getRoads()[0]->getCars()[1]->getDistance();
 
-    EXPECT_EQ(w->getRoads()[0]->getCars()[2]->getAction(), stop);
+    EXPECT_EQ(w->getRoads()[0]->getCars()[2]->getAction(), fast);
     EXPECT_NE(w->getRoads()[0]->getCars()[2]->getDistance(), distance3);
     distance3 = w->getRoads()[0]->getCars()[2]->getDistance();
 
@@ -201,24 +209,25 @@ TEST_F(Car_SimDomainTest, UpdateWorld) {
     EXPECT_NE(w->getRoads()[1]->getCars()[0]->getDistance(), distance4);
     distance4 = w->getRoads()[1]->getCars()[0]->getDistance();
 
-    EXPECT_EQ(w->getRoads()[0]->getLights()[0]->getState(), red);
-    EXPECT_TRUE(abs(w->getRoads()[0]->getLights()[0]->getLastCycle()-5)<0.0001);
+    EXPECT_EQ(w->getRoads()[0]->getLights()[0]->getState(), green);
+    EXPECT_TRUE(abs(fmod(roundoff(w->getRoads()[0]->getLights()[0]->getLastCycle(),10), 5)-lastcycle)<0.0001);
 
     EXPECT_EQ(w->getRoads()[0]->getLights()[1]->getState(), red);
-    EXPECT_TRUE(abs(w->getRoads()[0]->getLights()[1]->getLastCycle())-5<0.0001);
+    EXPECT_TRUE(abs(fmod(roundoff(w->getRoads()[0]->getLights()[1]->getLastCycle(),10), 5))-lastcycle<0.0001);
 
     EXPECT_EQ(w->getRoads()[1]->getLights()[0]->getState(), red);
-    EXPECT_TRUE(abs(w->getRoads()[1]->getLights()[0]->getLastCycle()-5)<0.0001);
+    EXPECT_TRUE(abs(fmod(roundoff(w->getRoads()[1]->getLights()[0]->getLastCycle(),10),5)-lastcycle)<0.0001);
 
-    EXPECT_TRUE(abs(w->getRoads()[0]->getCarGen()[0]->getCycle()-5)<0.0001);
-    EXPECT_TRUE(abs(w->getRoads()[1]->getCarGen()[0]->getCycle()-5)<0.0001);
+    EXPECT_TRUE(abs(fmod(roundoff(w->getRoads()[0]->getCarGen()[0]->getCycle(),10), 5)-lastcycle)<0.0001);
+    EXPECT_TRUE(abs(fmod(roundoff(w->getRoads()[1]->getCarGen()[0]->getCycle(),10),5)-lastcycle)<0.0001);
 
     EXPECT_EQ(w->getRoads()[0]->getBusStops()[0]->getTimeStopped(), 0);
     EXPECT_EQ(w->getRoads()[0]->getBusStops()[0]->getbussy(), false);
 
-    for(unsigned int i=0; i<10; i++){
+    for(unsigned int i=0; i<2; i++){
         w->updateWorld(0.1);
     }
+    lastcycle = std::fmod(lastcycle+0.2,5);
     EXPECT_EQ(w->getRoads()[0]->getCars()[0]->getAction(), fast);
     EXPECT_NE(w->getRoads()[0]->getCars()[0]->getDistance(), distance1);
     distance1 = w->getRoads()[0]->getCars()[0]->getDistance();
@@ -235,63 +244,96 @@ TEST_F(Car_SimDomainTest, UpdateWorld) {
     EXPECT_NE(w->getRoads()[1]->getCars()[0]->getDistance(), distance4);
     distance4 = w->getRoads()[1]->getCars()[0]->getDistance();
 
-    EXPECT_EQ(w->getRoads()[0]->getLights()[0]->getState(), green);
-    EXPECT_TRUE(abs(w->getRoads()[0]->getLights()[0]->getLastCycle()-1)<0.0001);
+    EXPECT_EQ(w->getRoads()[0]->getLights()[0]->getState(), orange);
+    EXPECT_TRUE(abs(fmod(roundoff(w->getRoads()[0]->getLights()[0]->getLastCycle(),10),5)-lastcycle)<0.0001);
 
     EXPECT_EQ(w->getRoads()[0]->getLights()[1]->getState(), green);
-    EXPECT_TRUE(abs(w->getRoads()[0]->getLights()[1]->getLastCycle()-1)<0.0001);
-    EXPECT_TRUE(abs(w->getRoads()[1]->getLights()[0]->getLastCycle()-1)<00000.1);
+    EXPECT_TRUE(abs(fmod(roundoff(w->getRoads()[0]->getLights()[1]->getLastCycle(),10),5)-lastcycle)<0.0001);
+
+    EXPECT_EQ(w->getRoads()[1]->getLights()[0]->getState(), green);
+    EXPECT_TRUE(abs(fmod(roundoff(w->getRoads()[1]->getLights()[0]->getLastCycle(),10),5)-lastcycle)<0.0001);
+
+    EXPECT_TRUE(abs(fmod(roundoff(w->getRoads()[0]->getCarGen()[0]->getCycle(),10),5)-lastcycle)<0.0001);
+    EXPECT_TRUE(abs(fmod(roundoff(w->getRoads()[1]->getCarGen()[0]->getCycle(),10),5)-lastcycle)<0.0001);
+
+    EXPECT_EQ(w->getRoads()[0]->getBusStops()[0]->getTimeStopped(), 0);
+    EXPECT_EQ(w->getRoads()[0]->getBusStops()[0]->getbussy(), false);
+
+
+    for(unsigned int i=0; i<10; i++){
+        w->updateWorld(0.1);
+    }
+    double lastcycle2 = w->getRoads()[0]->getLights()[0]->getLastCycle();
+
+    lastcycle = std::fmod(lastcycle+1,5);
+    EXPECT_EQ(w->getRoads()[0]->getCars()[0]->getAction(), fast);
+    EXPECT_NE(w->getRoads()[0]->getCars()[0]->getDistance(), distance1);
+    distance1 = w->getRoads()[0]->getCars()[0]->getDistance();
+
+    EXPECT_EQ(w->getRoads()[0]->getCars()[1]->getAction(), fast);
+    EXPECT_NE(w->getRoads()[0]->getCars()[1]->getDistance(), distance2);
+    distance2 = w->getRoads()[0]->getCars()[1]->getDistance();
+
+    EXPECT_EQ(w->getRoads()[0]->getCars()[2]->getAction(), fast);
+    EXPECT_NE(w->getRoads()[0]->getCars()[2]->getDistance(), distance3);
+    distance3 = w->getRoads()[0]->getCars()[2]->getDistance();
+
+    EXPECT_EQ(w->getRoads()[1]->getCars()[0]->getAction(), fast);
+    EXPECT_NE(w->getRoads()[1]->getCars()[0]->getDistance(), distance4);
+    distance4 = w->getRoads()[1]->getCars()[0]->getDistance();
+
+    EXPECT_EQ(w->getRoads()[0]->getLights()[0]->getState(), red);
+    EXPECT_TRUE(abs(fmod(roundoff(w->getRoads()[0]->getLights()[0]->getLastCycle(),10),5)-lastcycle2)<0.0001);
+
+    EXPECT_EQ(w->getRoads()[0]->getLights()[1]->getState(), green);
+    EXPECT_TRUE(abs(fmod(roundoff(w->getRoads()[0]->getLights()[1]->getLastCycle(),10),5)-lastcycle)<0.0001);
+    EXPECT_TRUE(abs(fmod(roundoff(w->getRoads()[0]->getLights()[1]->getLastCycle(),10),5)-lastcycle)<0.00001);
+
+    EXPECT_EQ(w->getRoads()[1]->getLights()[0]->getState(), green);
+    EXPECT_TRUE(abs(fmod(roundoff(w->getRoads()[1]->getLights()[0]->getLastCycle(),10),5)-lastcycle)<0.0001);
+    EXPECT_TRUE(abs(fmod(roundoff(w->getRoads()[1]->getLights()[0]->getLastCycle(),10),5)-lastcycle)<0.00001);
+
+    for (unsigned int i=0; i<60; i++){
+        w->updateWorld(0.1);
+    }
+    EXPECT_EQ(w->getRoads()[0]->getCars()[0]->getAction(), slow);
+    EXPECT_EQ(w->getRoads()[0]->getCars()[0]->getData()->getType(), bus);
+    EXPECT_NE(w->getRoads()[0]->getCars()[0]->getDistance(), distance2);
+    distance1 = w->getRoads()[0]->getCars()[0]->getDistance();
+
+    EXPECT_EQ(w->getRoads()[0]->getBusStops()[0]->getTimeStopped(), 0);
+    EXPECT_EQ(w->getRoads()[0]->getBusStops()[0]->getbussy(), false);
 
     for (unsigned int i=0; i<90; i++){
         w->updateWorld(0.1);
     }
-    EXPECT_EQ(w->getRoads()[0]->getCars()[1]->getAction(), fast);
-    EXPECT_NE(w->getRoads()[0]->getCars()[1]->getDistance(), distance2);
-    distance2 = w->getRoads()[0]->getCars()[1]->getDistance();
+    EXPECT_EQ(w->getRoads()[0]->getCars()[0]->getAction(), stop);
+    EXPECT_NE(w->getRoads()[0]->getCars()[0]->getDistance(), distance1);
+    distance1 = w->getRoads()[0]->getCars()[0]->getDistance();
 
     EXPECT_EQ(w->getRoads()[0]->getBusStops()[0]->getTimeStopped(), 0);
     EXPECT_EQ(w->getRoads()[0]->getBusStops()[0]->getbussy(), false);
-
-    for (unsigned int i=0; i<20; i++){
+    for (unsigned int i=0; i<50; i++){
         w->updateWorld(0.1);
     }
-    EXPECT_EQ(w->getRoads()[0]->getCars()[1]->getAction(), slow);
-    EXPECT_NE(w->getRoads()[0]->getCars()[1]->getDistance(), distance2);
-    distance2 = w->getRoads()[0]->getCars()[1]->getDistance();
+    EXPECT_EQ(w->getRoads()[0]->getCars()[0]->getAction(), stop);
+    EXPECT_NE(w->getRoads()[0]->getCars()[0]->getDistance(), distance1);
+    distance1 = w->getRoads()[0]->getCars()[0]->getDistance();
 
-    EXPECT_EQ(w->getRoads()[0]->getBusStops()[0]->getTimeStopped(), 0);
-    EXPECT_EQ(w->getRoads()[0]->getBusStops()[0]->getbussy(), false);
-    for (unsigned int i=0; i<70; i++){
-        w->updateWorld(0.1);
-    }
-    EXPECT_EQ(w->getRoads()[0]->getCars()[1]->getAction(), stop);
-    EXPECT_NE(w->getRoads()[0]->getCars()[1]->getDistance(), distance2);
-    distance2 = w->getRoads()[0]->getCars()[1]->getDistance();
-
-    EXPECT_EQ(w->getRoads()[0]->getBusStops()[0]->getTimeStopped(), 0);
-    EXPECT_EQ(w->getRoads()[0]->getBusStops()[0]->getbussy(), false);
-
-    for (unsigned int i=0; i<70; i++){
-        w->updateWorld(0.1);
-    }
-    EXPECT_EQ(w->getRoads()[0]->getCars()[1]->getAction(), stop);
-    EXPECT_NE(w->getRoads()[0]->getCars()[1]->getDistance(), distance2);
-    distance2 = w->getRoads()[0]->getCars()[1]->getDistance();
-
-    EXPECT_NE(w->getRoads()[0]->getBusStops()[0]->getTimeStopped(), 0);
+    EXPECT_TRUE(w->getRoads()[0]->getBusStops()[0]->getTimeStopped()> 0);
     EXPECT_EQ(w->getRoads()[0]->getBusStops()[0]->getbussy(), true);
 
     for (unsigned int i=0; i<70; i++){
         w->updateWorld(0.1);
     }
-    EXPECT_EQ(w->getRoads()[0]->getCars()[1]->getAction(), fast);
-    EXPECT_NE(w->getRoads()[0]->getCars()[1]->getDistance(), distance2);
-    distance2 = w->getRoads()[0]->getCars()[1]->getDistance();
+    EXPECT_EQ(w->getRoads()[0]->getCars()[0]->getAction(), fast);
+    EXPECT_NE(w->getRoads()[0]->getCars()[0]->getDistance(), distance1);
+    distance1 = w->getRoads()[0]->getCars()[0]->getDistance();
 
     EXPECT_TRUE(w->getRoads()[0]->getBusStops()[0]->getTimeStopped()> w->getRoads()[0]->getBusStops()[0]->getStopTime());
     EXPECT_EQ(w->getRoads()[0]->getBusStops()[0]->getbussy(), true);
 
-    for (unsigned int i=0; i<30; i++){
+    for (unsigned int i=0; i<50; i++){
         w->updateWorld(0.1);
     }
     EXPECT_EQ(w->getRoads()[0]->getBusStops()[0]->getbussy(), false);

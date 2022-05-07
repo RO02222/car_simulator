@@ -79,11 +79,13 @@ void Road::updateRoad(double t) {
 void Road::deleteCar(Car* car) {
     REQUIRE(this->properlyInitialized(), "Road wasn't initialized when calling removeCars");
     REQUIRE(car->properlyInitialized(), "Car wasn't properly initialised");
+    unsigned int size = cars.size();
     std::vector<Car *> carIt = getCars();
     for (unsigned int i = 0; i<cars.size();i++) {
         if (cars[i] == car){
             cars.erase(cars.begin()+i);
             delete car;
+            ENSURE(cars.size() == size-1, "Car is not deleted");
             return;
         }
     }
@@ -92,10 +94,12 @@ void Road::deleteCar(Car* car) {
 void Road::removeCar(Car* car) {
     REQUIRE(this->properlyInitialized(), "Road wasn't initialized when calling removeCars");
     REQUIRE(car->properlyInitialized(), "car wasn't properly initialised");
+    unsigned int size = cars.size();
     std::vector<Car *> carIt = getCars();
     for (unsigned int i = 0; i<cars.size();i++) {
         if (cars[i] == car){
             cars.erase(cars.begin()+i);
+            ENSURE(cars.size() == size-1, "Car is not removed");
             return;
         }
     }

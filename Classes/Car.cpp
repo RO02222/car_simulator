@@ -97,6 +97,9 @@ void Car::moveCar(Road *r, double position) {
     road = r;
     distance = position;
     road->addCar(this);
+    ENSURE(this->getDistance() == position, "position hasn't changed");
+    ENSURE(road==r, "Road hasn't changed");
+    ENSURE(road->getCars()[road->getCars().size()-1] == this, "Car is not added to the new road");
 }
 
 
@@ -235,10 +238,10 @@ bool Car::onRoad(int d) const{
 bool Car::isvalid(Road* r) const {
     if (!properlyInitialized()){
         return false;
-        }
+    }
     if(!(road == r)){
         return false;
-        };
+    };
     if (!(onRoad())){
         return false;
     }

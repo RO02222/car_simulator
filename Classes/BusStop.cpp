@@ -126,13 +126,13 @@ double BusStop::getTimeStopped() {
 
 
 bool BusStop::getbussy() {
-    REQUIRE(this->properlyInitialized(), "BusStop wasn't initialized when calling getStopTime");
+    REQUIRE(this->properlyInitialized(), "BusStop wasn't initialized when calling getbussy");
     return bussy;
 }
 
 
 void BusStop::setbussy(bool b) {
-    REQUIRE(this->properlyInitialized(), "BusStop wasn't initialized when calling getTimeStopped");
+    REQUIRE(this->properlyInitialized(), "BusStop wasn't initialized when calling setbussy");
     bussy = b;
     ENSURE(bussy==b, "Bussy hasn't changed");
 }

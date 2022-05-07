@@ -39,7 +39,8 @@ public:
  * @param t: time since last update
  * @param onJunction: if car is near Junction
  * @return: None
-\n REQUIRE(properlyInitialized(), "Car wasn't initialized when calling setAcceleration");
+\n REQUIRE(this->properlyInitialized(), "Car wasn't initialized when calling updateCar");
+    REQUIRE(t>=0, "Time cannot be negative");
 */
     void updateCar(double t, bool onJunction = false);
 

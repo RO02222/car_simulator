@@ -36,6 +36,7 @@ public:
  * @param t: time since last update
  * @return: None
 \n REQUIRE(properlyInitialized(), "BusStop wasn't initialized when calling updateBusStop");
+   REQUIRE(t>=0, "Time cannot be negative");
 */
     void updateBusStop(double t);
 
@@ -44,7 +45,9 @@ public:
 /**
  * get the road where the BusStop is positioned
  * @return: (Road*), the road where the BusStop is positioned
-\n REQUIRE(properlyInitialized(), "BusStop wasn't initialized when calling getRoad");
+\n REQUIRE(this->properlyInitialized(), "BusStop wasn't initialized when calling getRoad");
+    ENSURE(road->properlyInitialized(), "Road is not properly initialised");
+
 */
     Road *getRoad();
 
@@ -53,7 +56,10 @@ protected:
  * change the road of the BusStop
  * @param road: the new road of the BusStop
  * @return: None
-\n REQUIRE(properlyInitialized(), "BusStop wasn't initialized when calling setRoad");
+\n REQUIRE(this->properlyInitialized(), "BusStop wasn't initialized when calling setRoad");
+    REQUIRE(r->properlyInitialized(), "Road is not properly initialised");
+    REQUIRE(r->isvalid(),"Road isn't valid");
+    ENSURE(road == r,"Road hasn't changed");
 */
     void setRoad(Road *road);
 
@@ -61,7 +67,8 @@ public:
 /**
  * get the position of the BusStop on the road
  * @return: (double), the position of the BusStop on the road
-\n REQUIRE(properlyInitialized(), "BusStop wasn't initialized when calling getPosition");
+\n REQUIRE(this->properlyInitialized(), "BusStop wasn't initialized when calling getPosition");
+    ENSURE(onRoad(), "Busstop is not on road");
 */
     double getPosition();
 
@@ -69,21 +76,25 @@ public:
  * change the position of the BusStop
  * @param position: the new position of the BusStop
  * @return: None
-\n REQUIRE(properlyInitialized(), "BusStop wasn't initialized when calling setPosition");
+\n REQUIRE(this->properlyInitialized(), "BusStop wasn't initialized when calling setPosition");
+    REQUIRE(onRoad(p), "Busstop is not on road");
+    ENSURE(position == p,"Position hasn't changed");
 */
     void setPosition(double position);
 
 /**
  * get the stoptime of the Busstop
  * @return: (double), the stoptime of the Busstop
-\n REQUIRE(properlyInitialized(), "Busstop wasn't initialized when calling getStopTime");
+\n REQUIRE(this->properlyInitialized(), "BusStop wasn't initialized when calling getStopTime");
+    ENSURE(stoptime>=0, "stoptime cannot be negative");
 */
     double getStopTime();
 
 /**
 * get the waittime of the getWaitTime
 * @return: (double), the waittime the getWaitTime
-\n REQUIRE(properlyInitialized(), "Busstop wasn't initialized when calling getTimeStopped");
+\n REQUIRE(this->properlyInitialized(), "BusStop wasn't initialized when calling getTimeStopped");
+    ENSURE(timestopped>=0, "Timestopped cannot be negative");
 */
     double getTimeStopped();
 
@@ -99,16 +110,37 @@ public:
  * @param bussey: the new state of the BusStop
  * @return: none
 \n REQUIRE(properlyInitialized(), "Busstop wasn't initialized when calling setbussy");
+   ENSURE(bussy==b, "Bussy hasn't changed");
 */
     void setbussy(bool bussy);
 
 /////////////
+/**
+ * set the state of the Busstop
+ * @param bussey: the new state of the BusStop
+ * @return: none
+*/
     bool properlyInitialized() const;
 
+/**
+ * set the state of the Busstop
+ * @param bussey: the new state of the BusStop
+ * @return: none
+*/
     bool onRoad() const;
 
+/**
+ * set the state of the Busstop
+ * @param bussey: the new state of the BusStop
+ * @return: none
+*/
     bool onRoad(int p) const;
 
+/**
+ * set the state of the Busstop
+ * @param bussey: the new state of the BusStop
+ * @return: none
+*/
     bool isvalid(Road *road);
 
 /////////////

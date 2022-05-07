@@ -146,6 +146,45 @@ TEST_F(Car_SimInputTest, InputMixed) {
     delete w;
 }
 
+TEST_F(Car_SimInputTest, LightsOnJunction) {
+    World* w = input::loadWorldXML("../testInput/testCase6.xml");
+
+    EXPECT_EQ(w->getRoads()[0]->getName(), "Middelheimlaan");
+    EXPECT_EQ(w->getRoads()[0]->getLength(), 400);
+    EXPECT_EQ(w->getRoads()[1]->getName(), "Groenenborgerlaan");
+    EXPECT_EQ(w->getRoads()[1]->getLength(), 400);
+    EXPECT_EQ(w->getRoads()[2]->getName(), "Kerkstraat");
+    EXPECT_EQ(w->getRoads()[2]->getLength(), 500);
+    EXPECT_EQ(w->getRoads()[3]->getName(), "Molendreef");
+    EXPECT_EQ(w->getRoads()[3]->getLength(), 600);
+
+    EXPECT_EQ(w->getRoads()[0]->getLights()[0]->getRoad()->getName(), "Middelheimlaan");
+    EXPECT_EQ(w->getRoads()[0]->getLights()[0]->getPosition(), 300);
+    EXPECT_EQ(w->getRoads()[0]->getLights()[0]->getCycle(), 5);
+
+    EXPECT_EQ(w->getRoads()[1]->getLights()[0]->getRoad()->getName(), "Groenenborgerlaan");
+    EXPECT_EQ(w->getRoads()[1]->getLights()[0]->getPosition(), 100);
+    EXPECT_EQ(w->getRoads()[1]->getLights()[0]->getCycle(), 8);
+
+    EXPECT_EQ(w->getRoads()[2]->getLights()[0]->getRoad()->getName(), "Kerkstraat");
+    EXPECT_EQ(w->getRoads()[2]->getLights()[0]->getPosition(), 250);
+    EXPECT_EQ(w->getRoads()[2]->getLights()[0]->getCycle(), 6);
+
+    EXPECT_EQ(w->getRoads()[3]->getLights()[0]->getRoad()->getName(), "Molendreef");
+    EXPECT_EQ(w->getRoads()[3]->getLights()[0]->getPosition(), 130);
+    EXPECT_EQ(w->getRoads()[3]->getLights()[0]->getCycle(), 6);
+
+    EXPECT_EQ(w->getJunctions()[0]->getRoad(0)->getName(), "Middelheimlaan");
+    EXPECT_EQ(w->getJunctions()[0]->getPosition("Middelheimlaan"), 300);
+    EXPECT_EQ(w->getJunctions()[0]->getRoad(1)->getName(), "Groenenborgerlaan");
+    EXPECT_EQ(w->getJunctions()[0]->getPosition("Groenenborgerlaan"), 100);
+    EXPECT_EQ(w->getJunctions()[0]->getRoad(2)->getName(), "Kerkstraat");
+    EXPECT_EQ(w->getJunctions()[0]->getPosition("Kerkstraat"), 250);
+    EXPECT_EQ(w->getJunctions()[0]->getRoad(3)->getName(), "Molendreef");
+    EXPECT_EQ(w->getJunctions()[0]->getPosition("Molendreef"), 130);
+    delete w;
+}
+
 /**
 Tests InputNoWorld
 */
