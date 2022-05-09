@@ -333,7 +333,10 @@ TEST_F(Car_SimDomainTest, UpdateWorld) {
     EXPECT_TRUE(w->getRoads()[0]->getBusStops()[0]->getTimeStopped()> w->getRoads()[0]->getBusStops()[0]->getStopTime());
     EXPECT_EQ(w->getRoads()[0]->getBusStops()[0]->getbussy(), true);
 
-    for (unsigned int i=0; i<50; i++){
+   for (unsigned int i=0; i<30; i++){
+        w->updateWorld(0.1);
+    }
+    for (unsigned int i=0; i<5; i++){
         w->updateWorld(0.1);
     }
     EXPECT_EQ(w->getRoads()[0]->getBusStops()[0]->getbussy(), false);

@@ -173,6 +173,8 @@ public:
     bool onRoad(int d) const;
 
     bool isvalid(Road* road) const;
+
+    bool isvalidClock() const;
 /////////////
 };
 

@@ -78,6 +78,9 @@ TEST_F(JunctionDomainTest, moreRoads) {
     Road* r5 = new Road("Zonderhaatstraat", 100, &error);
     w->addRoad(r1);
     w->addRoad(r2);
+    w->addRoad(r3);
+    w->addRoad(r4);
+    w->addRoad(r5);
     std::vector<std::pair<Road *, double> > roads;
     roads.push_back(std::pair<Road*,double>(r1,83));
     roads.push_back(std::pair<Road*,double>(r2,70));

@@ -24,6 +24,7 @@ CarGen::CarGen(double frequency, Road *road, CarData *data) : road(road), freque
 
 CarGen::CarGen(double frequency, Road *road, std::vector<CarData *>* allData)  : road(road), frequency(frequency), random(true), data(NULL), AllData(allData)  {
     _initCheck = this;
+    data = (*AllData)[0];
     if (frequency < 1){
         frequency = 1;
     }
@@ -33,16 +34,20 @@ CarGen::CarGen(double frequency, Road *road, std::vector<CarData *>* allData)  :
 
 
 void CarGen::updateCarGen(double t) {
-    REQUIRE(this->properlyInitialized(), "CarGen wasn't initialized when calling updateCarGen");
-    REQUIRE(t>=0, "Time cannot be negative");
+    REQUIRE(isvalid(road), "CarGen wasn't initialized when calling updateCarGen");
+    REQUIRE(t >= 0, "Time cannot be negative");
+    double ensureLastcycle = lastCycle;
     lastCycle += t;
+    ENSURE(lastCycle == ensureLastcycle + t, "cycle hasn't updated");
     if (lastCycle < frequency) {
+        ENSURE(isvalid(road), "CarGen isn't Valid");
         return;
     }
-    lastCycle -= frequency;
-    if (random){
+    lastCycle = std::fmod(lastCycle, frequency);
+    ENSURE(lastCycle == std::fmod(lastCycle, ensureLastcycle + t), "lastcycle hasn't changed");
+    if (random) {
         unsigned int v1 = rand() % 10;
-        if (v1 < 6){
+        if (v1 < 6) {
             data = (*AllData)[v1];
         } else {
             for (std::vector<CarData *>::iterator alldata = (*AllData).begin();
@@ -53,18 +58,23 @@ void CarGen::updateCarGen(double t) {
                 }
             }
         }
-        if (data == NULL){
+        if (data == NULL) {
             data = (*AllData)[0];
         }
     }
+    ENSURE(data->isValid(), "data is not Valid");
     std::vector<Car *> carsOnRoad = getRoad()->getCars();
     for (std::vector<Car *>::iterator itC = carsOnRoad.begin(); itC != carsOnRoad.end(); itC++) {
-        if ((*itC)->getDistance() <= 2*(*itC)->getData()->getlength()) {
+        if ((*itC)->getDistance() <= 2 * (*itC)->getData()->getlength()) {
+            ENSURE(data->isValid(), "data is not Valid");
             return;
         }
     }
+    unsigned int r = road->getCars().size();
     getRoad()->addCar(0, data);
-    }
+    ENSURE(isvalid(road), "Cargen is not Valid");
+    ENSURE(road->getCars().size() == r + 1, "car hasn't been added");
+}
 
 
 

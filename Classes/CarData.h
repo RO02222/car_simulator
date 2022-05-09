@@ -79,6 +79,8 @@ public:
 //////////////
 public:
     bool properlyInitialized() const;
+
+    bool isValid() const;
 //////////////
 };
 

@@ -27,8 +27,10 @@ BusStop::BusStop(double position, double stoptime, Road *road) : road(road), pos
 
 
 void BusStop::updateBusStop(double t) {
-    REQUIRE(this->properlyInitialized(), "Light wasn't initialized when calling updateLight");
+    REQUIRE(isvalid(road), "Busstop wasn't initialized when calling updateBusStop");
     REQUIRE(t>=0, "Time cannot be negative");
+    REQUIRE(road->isvalidSimulation(),"part of the Simulation wasn't valid when calling updateBusStop");
+    double ensureTimeStopped = timestopped;
     std::vector<Car *> carsOnRoad = getRoad()->getCars();
     Car *firstBus = NULL;
     for (std::vector<Car *>::iterator itC = carsOnRoad.begin(); itC != carsOnRoad.end(); itC++) {
@@ -46,8 +48,10 @@ void BusStop::updateBusStop(double t) {
     }
     if (firstBus == NULL) {
         bussy = false;
+        ENSURE(isvalid(road),"Busstop isn't valid after calling updateBusStop");
         return;
     }
+    ENSURE(firstBus->isvalid(road),"FirstBus isn't valid after calling updateBusStop");
     if (firstBus != currentBus){
         bussy = false;
     }
@@ -56,20 +60,26 @@ void BusStop::updateBusStop(double t) {
         if (timestopped > stoptime) {
             currentBus->setAction(fast);
         }
+        ENSURE(timestopped == ensureTimeStopped + t,"time hasn't changed");
+        ENSURE(isvalid(road),"Busstop isn't valid after calling updateBusStop");
         return;
     }
     currentBus = firstBus;
+    ENSURE(currentBus->isvalid(road),"FirstBus isn't valid after calling updateBusStop");
     if (currentBus->getDistance() + gBreakDistance < getPosition()) {
+        ENSURE(isvalid(road),"Busstop isn't valid after calling updateBusStop");
         return;
     }
     if (currentBus->getDistance() + gStopDistance < getPosition()) {
         currentBus->setAction(slow);
+        ENSURE(isvalid(road),"Busstop isn't valid after calling updateBusStop");
         return;
     }
     currentBus->setAction(stop);
     if (currentBus->getSpeed() < 0.01) {
         bussy = true;
         timestopped = 0;
+        ENSURE(timestopped == 0,"timer hasn't reset to zero");
     }
 }
 
@@ -167,6 +177,9 @@ bool BusStop::isvalid(Road* r) {
     if(!properlyInitialized()){
         return false;
     }
+    if(!r->properlyInitialized()){
+        return false;
+    }
     if(road != r){
         return false;
     }
@@ -180,9 +193,6 @@ bool BusStop::isvalid(Road* r) {
         return false;
     }
     if(timestopped < 0){
-        return false;
-    }
-    if(!currentBus->properlyInitialized()){
         return false;
     }
     return true;

@@ -23,6 +23,9 @@ public:
 public:
     GenerateIni(World *world, const std::string &filename);
     void generate();
+
+private:
+    unsigned int parralellRoads();
 };
 
 

@@ -116,4 +116,29 @@ double CarData::getfMin() const {
 bool CarData::properlyInitialized () const{
     return _initCheck == this;
 }
+
+bool CarData::isValid() const {
+    if (!properlyInitialized()){
+        return false;
+    }
+    if (type != car and type != bus and type != bugatti and type != ambulance and type != fire and type != police){
+        return false;
+    }
+    if (l<1){
+        return false;
+    }
+    if (vMax<=1){
+        return false;
+    }
+    if (aMax<=0){
+        return false;
+    }
+    if (bMax<=0){
+        return false;
+    }
+    if (fMin<1){
+        return false;
+    }
+    return true;
+}
 //////////////

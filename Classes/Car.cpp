@@ -27,13 +27,15 @@ Car::Car(double distance, CarData* data, Road* road) : road(road), distance(dist
 
 
 void Car::updateCar(double t, bool onJunction) {
-    REQUIRE(this->properlyInitialized(), "Car wasn't initialized when calling updateCar");
-    REQUIRE(t>=0, "Time cannot be negative");
+    REQUIRE(isvalid(road), "Car is not valid");
+    REQUIRE(t >= 0, "Time cannot be negative");
+    double ensurePos = distance;
+    double ensureSpeed = speed;
     if (getAction() == fast) {
         maxSpeed = data->getvMax();
     } else if (getAction() == slow) {
         maxSpeed = gSlowFactor * data->getvMax();
-        if (maxSpeed > 20){
+        if (maxSpeed > 20) {
             maxSpeed = 20;
         }
     }
@@ -56,22 +58,33 @@ void Car::updateCar(double t, bool onJunction) {
         } else {
             double dx = nextCar->getDistance() - getDistance() - nextCar->data->getlength();
             double dv = getSpeed() - nextCar->getSpeed();
-            delta = (data->getfMin() + std::max(0.0, v0 + ((v0 * dv) / (2 * sqrt(data->getaMax() * data->getbMax()))))) / dx;
+            delta = (data->getfMin() +
+                     std::max(0.0, v0 + ((v0 * dv) / (2 * sqrt(data->getaMax() * data->getbMax()))))) / dx;
         }
-        a = (data->getaMax())*(1.0 - (pow(v0 / getMaxSpeed(), 4)) - pow(delta, 2));
-    }else{
-        a = -(data->getbMax()*v0)/getMaxSpeed();
+        a = (data->getaMax()) * (1.0 - (pow(v0 / getMaxSpeed(), 4)) - pow(delta, 2));
+    } else {
+        a = -(data->getbMax() * v0) / getMaxSpeed();
     }
     setAcceleration(a);
+    ENSURE(acceleration == a, "accelration is not updated");
     double v1 = v0 + a * t;
     if (v1 < 0) {
         distance = distance - pow(v0, 2) / (2 * a);
         setSpeed(0);
+        ENSURE(speed == 0, "speed is not updated");
     } else {
         setSpeed(v1);
         distance = distance + v0 * t + a * (pow(t, 2) / 2.0);
+        ENSURE(speed == v1, "speed is not updated");
     }
-    //near Junction
+
+    if (ensureSpeed > 0.01) {
+        ENSURE(ensurePos < distance, "position is not updated");
+    } else{
+        ENSURE(ensurePos <= distance, "position is not updated");
+    }
+
+        //near Junction
     if (!onJunction) {
         std::vector<std::pair<Junction *, double *> > junctions = road->getJunctions();
         for (unsigned int i = 0; i < junctions.size(); i++) {
@@ -83,7 +96,11 @@ void Car::updateCar(double t, bool onJunction) {
         //car off the road
         if (!onRoad()) {
             road->deleteCar(this);
+        } else{
+            ENSURE(isvalid(road), "car is not Valid");
         }
+    } else{
+        ENSURE(properlyInitialized(), "car is not properlyInitialized");
     }
 }
 
@@ -239,9 +256,12 @@ bool Car::isvalid(Road* r) const {
     if (!properlyInitialized()){
         return false;
     }
-    if(!(road == r)){
+    if(!r->properlyInitialized()){
         return false;
-    };
+    }
+    if(road != r){
+        return false;
+    }
     if (!(onRoad())){
         return false;
     }
@@ -251,7 +271,7 @@ bool Car::isvalid(Road* r) const {
     if (action != slow and action != fast and action != stop){
         return false;
     }
-    if(data->properlyInitialized()){
+    if(!data->properlyInitialized()){
         return false;
     }
     return true;

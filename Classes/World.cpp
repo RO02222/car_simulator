@@ -235,6 +235,7 @@ void World::updateWorld(double t) {
     for (std::vector<Junction *>::iterator itJ = junctionIt.begin(); itJ != junctionIt.end(); itJ++) {
         (*itJ)->updateJunction(t);
     }
+    ENSURE(isvalidSimulation(),"Simulation isn't Valid");
 }
 
 

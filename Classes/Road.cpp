@@ -72,6 +72,7 @@ void Road::updateRoad(double t) {
     for (std::vector<BusStop *>::iterator itB = busStops.begin(); itB != busStops.end(); itB++) {
         (*itB)->updateBusStop(t);
     }
+    ENSURE(isvalidSimulation(), "Part of the simulation isn't valid");
 }
 
 

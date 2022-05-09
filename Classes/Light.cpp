@@ -38,20 +38,29 @@ Light::Light(double c, std::ofstream* error): error(error), road(NULL), position
 }
 
 void Light::updateLight(double t) {
-    REQUIRE(this->properlyInitialized(), "Light wasn't initialized when calling updateLight");
-    REQUIRE(t>=0, "Time cannot be negative");
+    if (clock and !update){
+        REQUIRE(isvalidClock(), "Clock wasn't initialized when calling updateLight");
+    } else {
+        REQUIRE(isvalid(road), "Light wasn't initialized when calling updateLight");
+    }
+    REQUIRE(t >= 0, "Time cannot be negative");
     if (clock) {
+        double ensureLastCycle = lastCycle;
         lastCycle += t;
-        if (state == green and lastCycle >= cycle){
+        ENSURE(lastCycle == ensureLastCycle + t, "LastCycle hasn't been updated");
+        if (state == green and lastCycle >= cycle) {
             lastCycle -= cycle;
+            ENSURE(lastCycle == ensureLastCycle + t - cycle, "LastCycle hasn't been updated");
             setState(orange);
         }
-        if (state == orange and lastCycle >= cycle/10.0){
-            lastCycle -= cycle/10.0;
+        if (state == orange and lastCycle >= cycle / 10.0) {
+            lastCycle -= cycle / 10.0;
+            ENSURE(lastCycle == ensureLastCycle + t - cycle / 10.0, "LastCycle hasn't been updated");
             setState(red);
         }
-        if (state == red and lastCycle >= cycle){
+        if (state == red and lastCycle >= cycle) {
             lastCycle -= cycle;
+            ENSURE(lastCycle == ensureLastCycle + t - cycle, "LastCycle hasn't been updated");
             setState(green);
         }
     }
@@ -61,7 +70,8 @@ void Light::updateLight(double t) {
         for (std::vector<Car *>::iterator itC = carsOnRoad.begin(); itC != carsOnRoad.end(); itC++) {
             if (!(*itC)->getData()->getpriority()) {//geen prioriteitsvoertuigen
                 if ((*itC)->getDistance() < getPosition()) {//VOOR het licht
-                    if (((*itC)->getDistance() + gStopDistance < getPosition() and getState() != orange) or (*itC)->getAction() == slow or
+                    if (((*itC)->getDistance() + gStopDistance < getPosition() and getState() != orange) or
+                        (*itC)->getAction() == slow or
                         (*itC)->getAction() == stop) {
                         if (firstCar == NULL or (*itC)->getDistance() > firstCar->getDistance()) {
                             firstCar = (*itC);
@@ -73,22 +83,24 @@ void Light::updateLight(double t) {
         if (firstCar == NULL) {
             return;
         }
+        ENSURE(firstCar->isvalid(road), "firstCar isn't valid");
         if (getState() == green) {
             firstCar->setAction(fast);
-            return;
-        }
-        if (getState() == red or getState() == orange) {
+        } else if (getState() == red or getState() == orange) {
             if ((firstCar->getDistance() + gStopDistance) > getPosition()) {
                 if (getState() == red) {
                     firstCar->setAction(stop);
                 }
-                return;
             } else if ((firstCar->getDistance() + gBreakDistance) > getPosition()) {
                 firstCar->setAction(slow);
             }
         }
     }
-    return;
+    if (clock and !update){
+        REQUIRE(isvalidClock(), "Clock wasn't initialized when calling updateLight");
+    } else {
+        REQUIRE(isvalid(road), "Light wasn't initialized when calling updateLight");
+    }
 }
 
 
@@ -215,10 +227,35 @@ bool Light::isvalid(Road* r) const {
     if(!properlyInitialized()){
         return false;
         }
-    if(road == r){
+    if(!r->properlyInitialized()){
         return false;
         }
+    if(road != r){
+        return false;
+    }
     if(!onRoad()){
+        return false;
+    }
+    if(cycle < 1){
+        return false;
+    }
+    if(lastCycle > cycle){
+        return false;
+    }
+    if(lastCycle < 0){
+        return false;
+    }
+    if(state != green and state != red and state != orange){
+        return false;
+    }
+    return true;
+}
+
+bool Light::isvalidClock() const {
+    if(!properlyInitialized()){
+        return false;
+    }
+    if(!clock or update){
         return false;
     }
     if(cycle < 1){
