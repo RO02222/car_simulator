@@ -193,6 +193,16 @@ void Junction::setClock(Light *light) {
     clock = light;
     ENSURE(clock == light, "clock hasn't changed");
 }
+
+std::vector<std::pair<Road* , double> > Junction::getRoads(){
+    REQUIRE(this->properlyInitialized(), "Junction wasn't initialized when calling setPosition");
+    for(unsigned int i=0; i<roads.size(); i++){
+        ENSURE(roads[i].first->properlyInitialized(), "Road on junction is not properly initialised");
+        ENSURE(roads[i].second >=0 and roads[i].second<=roads[i].first->getLength(), "Junction is not on road");
+    }
+    return roads;
+}
+
 /////////////
 
 

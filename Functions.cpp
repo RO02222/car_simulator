@@ -12,7 +12,7 @@
 #include <cstdlib>
 
 namespace std {
-    int stoi(std::string& text) {
+    int stoi(std::string &text) {
         std::istringstream iss(text);
         int number;
         iss >> number;

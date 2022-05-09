@@ -141,6 +141,8 @@ public:
 */
     void setClock(Light* light);
 
+    std::vector<std::pair<Road* , double> > getRoads();
+
 /////////////
 
 
