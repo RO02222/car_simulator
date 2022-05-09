@@ -41,12 +41,14 @@ int main() {
     //World* w = input::loadWorldXML("../XML/bugattiVScar.xml");
     //World* w = input::loadWorldXML("../XML/case1.xml");
 
-    World* w = input::loadWorldXML("../XML/case1.xml");
+    //World* w = input::loadWorldXML("../XML/case3.xml");
+    srand(123);
+    World* w = input::loadWorldXML("../testInput/testCase7.xml");
     GenerateIni g(w, "sim");
-    for (unsigned int i = 0; i<1000; i++) {
-        //g.generate();
+    for (unsigned int i = 0; i<5; i++) {
+        g.generate();
         for (unsigned int _ = 0; _<10; _++) {
-            w->updateWorld(0.01);
+            w->updateWorld(0.1);
         }
     }
     /*
@@ -68,6 +70,7 @@ int main() {
     myFile2.close();
      */
     delete w;
+    //system("../new_engine.exe");
     return 0;
 }/*
 

@@ -45,7 +45,7 @@ Road::~Road() {
 
 
 void Road::updateRoad(double t) {
-    REQUIRE(this->properlyInitialized(), "Road wasn't initialized when calling updateRoad");
+    REQUIRE(properlyInitialized(), "Road wasn't initialized when calling updateRoad");
     REQUIRE(t>=0, "Time cannot be negative");
     std::vector<Car *> carIt = getCars();
     for (std::vector<Car *>::iterator itC = carIt.begin(); itC != carIt.end(); itC++) {

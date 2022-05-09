@@ -75,15 +75,15 @@ Type CarData::getType() const {
     return type;
 }
 
+bool CarData::getpriority() const {
+    REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling getpriority");
+    return priority;
+}
+
 double CarData::getlength() const {
     REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling getlength");
     ENSURE(l>0, "Length cannot be negative or zero");
     return l;
-}
-
-bool CarData::getpriority() const {
-    REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling getpriority");
-    return priority;
 }
 
 double CarData::getvMax() const {

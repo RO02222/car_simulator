@@ -26,6 +26,7 @@ public:
 
 private:
     unsigned int parralellRoads();
+    unsigned int singleCrossing();
 };
 
 

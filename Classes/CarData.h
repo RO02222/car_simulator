@@ -30,6 +30,8 @@ public:
  * get the type of the car
  * @return: (Type), the type of the car
 \n REQUIRE(properlyInitialized(), "CarData wasn't initialized when calling getType);
+\n ENSURE(type == bus or type == bugatti or type == police or type == fire or type == ambulance or type == car, "This type does not exist");
+
 */
     Type getType() const;
 
@@ -44,6 +46,7 @@ public:
  * get the length of the car
  * @return: (double), the length of the car
 \n REQUIRE(properlyInitialized(), "CarData wasn't initialized when calling getlength);
+\n ENSURE(l>0, "Length cannot be negative or zero");
 */
     double getlength() const;
 
@@ -51,6 +54,7 @@ public:
  * get the default max speed of the car
  * @return: (double), the default max speed of the car
 \n REQUIRE(properlyInitialized(), "CarData wasn't initialized when calling getvMax);
+\n ENSURE(vMax>=0, "vMax cannot be negative");
 */
     double getvMax() const;
 
@@ -58,6 +62,7 @@ public:
  * get the max velocity of the car
  * @return: (double), the max velocity of the car
 \n REQUIRE(properlyInitialized(), "CarData wasn't initialized when calling getaMax);
+\n ENSURE(aMax>=0, "aMax cannot be negative");
 */
     double getaMax() const;
 
@@ -65,6 +70,7 @@ public:
  * get the max break of the car
  * @return: (double), the max break of the car
 \n REQUIRE(properlyInitialized(), "CarData wasn't initialized when calling getbMax);
+\n ENSURE(bMax>=0, "bMax cannot be negative");
 */
     double getbMax() const;
 
@@ -72,6 +78,7 @@ public:
  * get the minimal following distance of the car
  * @return: (double), the  minimal following distance of the car
 \n REQUIRE(properlyInitialized(), "CarData wasn't initialized when calling getfMin);
+\n ENSURE(fMin>=0, "fMin cannot be negative");
 */
     double getfMin() const;
 

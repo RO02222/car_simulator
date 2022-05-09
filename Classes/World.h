@@ -49,7 +49,6 @@ function:
  * delete a simulationWorld and everything in the world
  * @return: None
 \n REQUIRE(properlyInitialized(), "Road wasn't initialized when calling ~Road);
-\n REQUIRE(properlyInitialized(), "World wasn't initialized when calling ~World);
 */
     ~World();
 
@@ -58,7 +57,8 @@ function:
  * write the current state of all cars to the file
  * @param onStream: a stream where the current state of all cars is written to
  * @return: None
-\n REQUIRE(properlyInitialized(), "World wasn't initialized when calling simulateWorld);
+\n REQUIRE(properlyInitialized(), "World wasn't initialized when calling simpleSimulateWorld);
+\n REQUIRE(isvalidSimulation(), "Simulation is not valid";
 */
     void simpleSimulateWorld(std::ostream &onStream);
 
@@ -66,7 +66,8 @@ function:
  * draw the current state of the simulation to the file
  * @param onStream: a stream where the current state of all cars is written to
  * @return: None
-\n REQUIRE(properlyInitialized(), "World wasn't initialized when calling simulateWorld);
+\n REQUIRE(properlyInitialized(), "World wasn't initialized when calling graficImpSimulateWorld);
+\n REQUIRE(isvalidSimulation(), "Simulation is not valid";
 */
     void graficImpSimulateWorld(std::ostream &onStream);
 
@@ -75,16 +76,10 @@ function:
  * @param t: time since last update
  * @return: None
 \n REQUIRE(properlyInitialized(), "World wasn't initialized when calling updateWorld);
+\n REQUIRE(isvalidSimulation(), "Simulation is not valid");
+\n ENSURE(isvalidSimulation(),"Simulation isn't Valid")");
 */
     void updateWorld(double t);
-
-
-/**
- * check the simulation if valid
- * @return: none
-\n REQUIRE(properlyInitialized(), "World wasn't initialized when calling updateWorld);
-*/
-
 
 
 /////////////
@@ -93,6 +88,7 @@ public:
  * get all the roads of the simulationWorld
  * @return: (std::vector<Road*>), the roads in the simulationWorld
 \n REQUIRE(properlyInitialized(), "World wasn't initialized when calling getRoads);
+\n ENSURE(roads[i]->properlyInitialized(), "Road is not properly initialised");
 */
     const std::vector<Road *> &getRoads();
 
@@ -101,6 +97,8 @@ public:
  * @param r: the new roads of the simulationWorld
  * @return: None
 \n REQUIRE(properlyInitialized(), "World wasn't initialized when calling setRoad);
+\n REQUIRE(r[i]->properlyInitialized(), "Road not properly initialised");
+\n ENSURE(roads == r,"Roads hasn't changed");
 */
     void setRoad(const std::vector<Road *> &r);
 
@@ -110,6 +108,7 @@ public:
  * @param length: the length of the new road
  * @return: None
 \n REQUIRE(properlyInitialized(), "World wasn't initialized when calling addRoad);
+\n ENSURE(roads[-1] == newRoad, "Road is not added");
 */
     void addRoad(std::string name, double length);
 
@@ -118,6 +117,8 @@ public:
  * @param road: the new road
  * @return: None
 \n REQUIRE(properlyInitialized(), "World wasn't initialized when calling addRoad);
+\n REQUIRE(road->isvalid(), "Road isn't valid");
+\n ENSURE(roads[-1] == r, "Road is not added");
 */
     void addRoad(Road* road);
 
@@ -126,6 +127,7 @@ public:
  * get all the Junctions of the simulationWorld
  * @return: (std::vector<Junction*>), the Junctions in the simulationWorld
 \n REQUIRE(properlyInitialized(), "World wasn't initialized when calling getJunctions);
+\n ENSURE(junctions[i]->properlyInitialized(), "Junction is not initialised");
 */
     std::vector<Junction *> &getJunctions();
 
@@ -134,6 +136,8 @@ public:
  * @param junction: the new Junctions of the simulationWorld
  * @return: None
 \n REQUIRE(properlyInitialized(), "World wasn't initialized when calling setJunctions);
+\n REQUIRE(junction[i]->properlyInitialized(), "Junction not properly initialised");
+\n ENSURE(junctions == junction,"Junctions hasn't changed");
 */
     void setJunctions(const std::vector<Junction *> & junction);
 

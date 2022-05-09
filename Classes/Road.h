@@ -51,12 +51,23 @@ public:
 */
     ~Road();
 
+/**
+ * Update the road, update everything on the road: Cars, light, CarGen.
+ * @param t: time since last update
+ * @return: None
+\n REQUIRE(properlyInitialized(), "Car wasn't initialized when calling updateRoad");
+\n REQUIRE(t>=0, "Time cannot be negative");
+\n ENSURE(isvalidSimulation(), "Part of the simulation isn't valid");
+*/
+    void updateRoad(double t);
 
 /**
  * remove and delete a car from the road.
  * @param car: the car that needs to be removed
  * @return: None
 \n REQUIRE(properlyInitialized(), "Road wasn't initialized when calling removeCars);
+\n REQUIRE(car->properlyInitialized(), "Car wasn't properly initialised");
+\n ENSURE(cars.size() == size-1, "Car is not deleted");
 */
     void deleteCar(Car* car);
 
@@ -65,18 +76,13 @@ public:
  * @param car: the car that needs to be removed
  * @return: None
 \n REQUIRE(properlyInitialized(), "Road wasn't initialized when calling removeCars);
+\n REQUIRE(car->properlyInitialized(), "car wasn't properly initialised");
 */
     void removeCar(Car* car);
 
 
 
-/**
- * Update the road, update everything on the road: Cars, light, CarGen.
- * @param t: time since last update
- * @return: None
-\n REQUIRE(properlyInitialized(), "Car wasn't initialized when calling updateRoad");
-*/
-    void updateRoad(double t);
+
 
 
 /////////////

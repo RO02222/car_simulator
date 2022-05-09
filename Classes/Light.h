@@ -65,16 +65,18 @@ public:
  * Update the traffic light, changes the first (not priority) car his behavior depending on the lights state
  * @param t: time since last update
  * @return: None
+
+\n REQUIRE(t >= 0, "Time cannot be negative");
+
+    As Light
 \n REQUIRE(properlyInitialized(), "Light wasn't initialized when calling updateLight");
+\n REQUIRE(isvalid(road), "Light wasn't initialized when calling updateLight");
+
+    As clock
+\n REQUIRE(isvalidClock(), "Clock wasn't initialized when calling updateLight");
+\n REQUIRE(isvalidClock(), "Clock wasn't initialized when calling updateLight");
 */
     void updateLight(double t);
-
-
-
-
-
-
-
 
 
 /////////////

@@ -14,9 +14,19 @@
         <lengte>140</lengte>
     </BAAN>
 
+    <BAAN>
+        <naam>straat1</naam>
+        <lengte>160</lengte>
+    </BAAN>
+
+    <BAAN>
+        <naam>straat2</naam>
+        <lengte>300</lengte>
+    </BAAN>
+
     <VOERTUIG>
         <baan>Middelheimlaan</baan>
-        <positie>99.9</positie>
+        <positie>20</positie>
         <type>auto</type>
     </VOERTUIG>
 
@@ -27,9 +37,9 @@
     </VOERTUIG>
 
     <VOERTUIG>
-        <baan>Floralienlaan</baan>
+        <baan>Kerkstraat</baan>
         <positie>10</positie>
-        <type>bus</type>
+        <type>police</type>
     </VOERTUIG>
 
     <VERKEERSLICHT>
@@ -38,10 +48,29 @@
         <cyclus>5</cyclus>
     </VERKEERSLICHT>
 
-    <BUSHALTE>
-        <baan>Middelheimlaan</baan>
+    <VERKEERSLICHT>
+        <baan>Kerkstraat</baan>
         <positie>50</positie>
-        <wachttijd>8</wachttijd>
+        <cyclus>5</cyclus>
+    </VERKEERSLICHT>
+
+
+    <VERKEERSLICHT>
+        <baan>Kerkstraat</baan>
+        <positie>140</positie>
+        <cyclus>5</cyclus>
+    </VERKEERSLICHT>
+
+    <BUSHALTE>
+        <baan>Floralienlaan</baan>
+        <positie>120</positie>
+        <wachttijd>4</wachttijd>
+    </BUSHALTE>
+
+    <BUSHALTE>
+        <baan>Floralienlaan</baan>
+        <positie>50</positie>
+        <wachttijd>4</wachttijd>
     </BUSHALTE>
 
     <VOERTUIGGENERATOR>
@@ -51,8 +80,14 @@
     </VOERTUIGGENERATOR>
 
     <VOERTUIGGENERATOR>
-        <baan>Middelheimlaan</baan>
+        <baan>Floralienlaan</baan>
         <frequentie>3</frequentie>
         <type>none</type>
+    </VOERTUIGGENERATOR>
+
+    <VOERTUIGGENERATOR>
+        <baan>Kerkstraat</baan>
+        <frequentie>6</frequentie>
+        <type>bus</type>
     </VOERTUIGGENERATOR>
 </World>

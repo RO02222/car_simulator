@@ -34,7 +34,7 @@ Light::Light(double c, std::ofstream* error): error(error), road(NULL), position
     state = color(rand() % 2);
     clock = true;
     update = false;
-    ENSURE(this->properlyInitialized(), "constructor must end in properlyInitialized state");
+    ENSURE(properlyInitialized(), "constructor must end in properlyInitialized state");
 }
 
 void Light::updateLight(double t) {
