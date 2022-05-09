@@ -36,11 +36,12 @@ public:
 
 /**
  * Update the Car his position, speed and acceleration
- * @param t: time since last update
+ * @param t: time to update
  * @param onJunction: if car is near Junction
  * @return: None
 \n REQUIRE(this->properlyInitialized(), "Car wasn't initialized when calling updateCar");
     REQUIRE(t>=0, "Time cannot be negative");
+    ENSURE(acceleration == a, "accelration is not updated");
 */
     void updateCar(double t, bool onJunction = false);
 
@@ -50,7 +51,13 @@ public:
  * @param road: the new road
  * @param position: the new position of the car
  * @return: None
-\n REQUIRE(properlyInitialized(), "Car wasn't initialized when calling moveCar");
+\n REQUIRE(this->properlyInitialized(), "Car is not properly initialised");
+    REQUIRE(r->properlyInitialized(), "Road is not properly initialised");
+    REQUIRE(r->isvalid(), "road isn't valid");
+    REQUIRE(position>=0 and position<=r->getLength(), "Car is not on road");
+    ENSURE(this->getDistance() == position, "position hasn't changed");
+    ENSURE(road==r, "Road hasn't changed");
+    ENSURE(road->getCars()[road->getCars().size()-1] == this, "Car is not added to the new road");
 */
     void moveCar(Road* road, double position);
 

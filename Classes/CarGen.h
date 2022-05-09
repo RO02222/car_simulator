@@ -51,7 +51,9 @@ public:
  * Update the CarGen his cycle and create a car if needed
  * @param t: time since last update
  * @return: None
-\n REQUIRE(properlyInitialized(), "CarGen wasn't initialized when calling updateCarGen");
+\n REQUIRE(isvalid(road), "CarGen wasn't initialized when calling updateCarGen");
+    REQUIRE(t >= 0, "Time cannot be negative");
+    ENSURE(lastCycle == ensureLastcycle + t, "cycle hasn't updated");
 */
     void updateCarGen(double t);
 

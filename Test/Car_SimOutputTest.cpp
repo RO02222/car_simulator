@@ -9,6 +9,8 @@
 #include <iostream>
 #include <fstream>
 #include "gtest/gtest.h"
+#include "../Simulation/GenerateIni.h"
+#include "../Functions.h"
 
 
 class Car_SimOutputTest: public ::testing::Test {
@@ -37,6 +39,7 @@ protected:
     friend class BusStop;
     friend class Junction;
     friend class CarData;
+    friend class GenerateIni;
     // You should make the members protected s.t. they can be
     // accessed from sub-classes.
 };
@@ -77,6 +80,25 @@ void Test_Simulation(const char* inputfile, std::string compareFile, bool graphi
         EXPECT_TRUE(FileCompare("../outputFile/Car_sim2.txt", compareFile));
     }
     EXPECT_TRUE(FileCompare("../outputFile/error.txt", errorFile));
+}
+
+
+void Test_SimulationEngine(const char* inputfile, std::string compareFile) {
+    srand(123);
+    World* w = input::loadWorldXML(inputfile);
+    GenerateIni g(w, "sim");
+    for (unsigned int i = 0; i<5; i++) {
+        g.generate();
+        for (unsigned int _ = 0; _<10; _++) {
+            w->updateWorld(0.1);
+        }
+    }
+    std::ofstream myFile;
+    myFile.close();
+    delete w;
+    for(unsigned int i = 1; i<6; i++){
+        EXPECT_TRUE(FileCompare("../outputFile/Ini/sim000" + std::itos(i) + ".ini", compareFile + "/sim000" + std::itos(i) + ".ini"));
+    }
 }
 
 
@@ -143,7 +165,7 @@ TEST_F(Car_SimOutputTest, FileCompare) {
 }
 
 /**
-Tests FileOutputHappyDay: test if the output is right for a simple impression.
+Tests FileOutput: test if the output is right for a simple impression.
 */
 TEST_F(Car_SimOutputTest, SimpleFileOutput) {
     Test_Simulation("../testInput/testCase1.xml",  "../testOutput/testOutput1.txt", false);
@@ -151,13 +173,20 @@ TEST_F(Car_SimOutputTest, SimpleFileOutput) {
 }
 
 /**
-Tests GraphicFileOutputHappyDay: test if the output is right for the graphical impression.
+Tests GraphicFileOutput: test if the output is right for the graphical impression.
 */
 TEST_F(Car_SimOutputTest, GraphicFileOutput) {
     Test_Simulation("../testInput/testCase1.xml",  "../testOutput/testOutput1.0.txt", true);
     Test_Simulation("../testInput/testCase2.xml",  "../testOutput/testOutput2.0.txt", true);
 }
 
+/**
+Tests GraphicEngineOutput: test if the output is right for the impression with the engine.
+*/
+TEST_F(Car_SimOutputTest, GraphicEngineFileOutput) {
+    Test_SimulationEngine("../testInput/testCase7.xml",  "../testOutput/Ini1");
+    Test_SimulationEngine("../testInput/testCase8.xml",  "../testOutput/Ini2");
+}
 
 
 

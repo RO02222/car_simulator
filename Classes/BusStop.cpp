@@ -51,7 +51,7 @@ void BusStop::updateBusStop(double t) {
         ENSURE(isvalid(road),"Busstop isn't valid after calling updateBusStop");
         return;
     }
-    ENSURE(firstBus->isvalid(road),"FirstBus isn't valid after calling updateBusStop");
+    ENSURE(firstBus->properlyInitialized(),"FirstBus isn't properly initialised after calling updateBusStop");
     if (firstBus != currentBus){
         bussy = false;
     }

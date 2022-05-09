@@ -86,6 +86,7 @@ void Junction::addCar(Car *car) {
 }
 
 void Junction::checkJunctionLights() {
+    REQUIRE(this->properlyInitialized(), "Junction is not properly initialised");
     double cycle = 0;
     std::vector<Light*> light;
     for (std::vector<std::pair<Road*,double> >::iterator itR = roads.begin(); itR != roads.end(); itR++){

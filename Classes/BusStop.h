@@ -26,6 +26,7 @@ public:
  * create a BusStop
  * @param position: position of the BusStop light
  * @param road: the road where the Busstop is placed on
+ * @param stoptime: the minimum time how long a bus is waiting before leaving
  * @return: None
 \n ENSURE(properlyInitialized(), "constructor must end in properlyInitialized state");
 */
@@ -33,10 +34,12 @@ public:
 
 /**
  * Update the BusStop, changes the first bus his behavior
- * @param t: time since last update
+ * @param t: the time over which the simulation is updated
  * @return: None
-\n REQUIRE(properlyInitialized(), "BusStop wasn't initialized when calling updateBusStop");
-   REQUIRE(t>=0, "Time cannot be negative");
+\n REQUIRE(isvalid(road), "Busstop wasn't initialized when calling updateBusStop");
+    REQUIRE(t>=0, "Time cannot be negative");
+    REQUIRE(road->isvalidSimulation(),"part of the Simulation wasn't valid when calling updateBusStop");
+
 */
     void updateBusStop(double t);
 
@@ -91,8 +94,8 @@ public:
     double getStopTime();
 
 /**
-* get the waittime of the getWaitTime
-* @return: (double), the waittime the getWaitTime
+* get the timeStopped of the getTimeStopped
+* @return: (double), the time stopped of the bus
 \n REQUIRE(this->properlyInitialized(), "BusStop wasn't initialized when calling getTimeStopped");
     ENSURE(timestopped>=0, "Timestopped cannot be negative");
 */
@@ -100,14 +103,14 @@ public:
 
 /**
  * get the state of the Busstop
- * @return: (double), the stoptime of the Busstop
+ * @return: (bool), the state of the Busstop
 \n REQUIRE(properlyInitialized(), "Busstop wasn't initialized when calling getbussy");
 */
     bool getbussy();
 
 /**
  * set the state of the Busstop
- * @param bussey: the new state of the BusStop
+ * @param bussy: the new state of the BusStop
  * @return: none
 \n REQUIRE(properlyInitialized(), "Busstop wasn't initialized when calling setbussy");
    ENSURE(bussy==b, "Bussy hasn't changed");
@@ -116,30 +119,28 @@ public:
 
 /////////////
 /**
- * set the state of the Busstop
- * @param bussey: the new state of the BusStop
- * @return: none
+ * See if busstop is properly initialised
+ * @return: (bool) if busstop is properly initialised
 */
     bool properlyInitialized() const;
 
 /**
- * set the state of the Busstop
- * @param bussey: the new state of the BusStop
- * @return: none
+ * See if busstop is on the road
+ * @return: (bool) if busstop is on road
 */
     bool onRoad() const;
 
 /**
- * set the state of the Busstop
- * @param bussey: the new state of the BusStop
- * @return: none
+ * see if given position is on road
+ * @param p: the given position to check if on road
+ * @return: (bool) if position is on road
 */
     bool onRoad(int p) const;
 
 /**
- * set the state of the Busstop
- * @param bussey: the new state of the BusStop
- * @return: none
+ * See if busstop is valid
+ * @param road: the road on which to check if the busstop is valid
+ * @return: (bool) see if busstop is valid
 */
     bool isvalid(Road *road);
 

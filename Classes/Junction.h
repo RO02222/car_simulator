@@ -52,23 +52,28 @@ public:
  * Update the junction, update cars near the junction and switch lanes.
  * @param t: time since last update
  * @return: None
-\n REQUIRE(properlyInitialized(), "Junction wasn't initialized when calling updateJunction");
+\n REQUIRE(this->properlyInitialized(), "Junction wasn't initialized when calling updateJunction");
+    REQUIRE(t>=0, "Time cannot be negative");
+    ENSURE(cars[i]->isvalid(cars[i]->getRoad()), "car isn't valid");
+    ENSURE(cars.empty(), "There are still cars that needs to be updated");
+    ENSURE(isvalid(),"Junction isn't valid");
 */
     void updateJunction(double t);
 
 /**
  * add a car the junction, junction takes control of the car.
  * @param car: new car on the Junction
- * @param updated: already updated
  * @return: None
-\n REQUIRE(properlyInitialized(), "Junction wasn't initialized when calling addCar");
+\n REQUIRE(this->properlyInitialized(), "Junction wasn't initialized when calling addCar");
+    REQUIRE(car->properlyInitialized(), "Car is not properly initialised");
+    ENSURE(cars[cars.size()-1] == car, "Car is not added");
 */
     void addCar(Car* car);
 
 /**
  * check the Junction for lights and change on all road  of the Junction
  * @return: None
-\n REQUIRE(properlyInitialized(), "Junction wasn't initialized when calling setPosition");
+\n REQUIRE(this->properlyInitialized(), "Junction is not properly initialised");
 */
     void checkJunctionLights();
 
