@@ -9,11 +9,49 @@
 #include "Functions.h"
 #include <iostream>
 #include <sstream>
+#include <cstdlib>
+
 namespace std {
     int stoi(std::string& text) {
         std::istringstream iss(text);
         int number;
         iss >> number;
         return number;
+    }
+
+    string itos(int a) {
+        stringstream ss;
+        ss << a;
+        string str = ss.str();
+        return str;
+    }
+
+    double stod(std::string& x) {
+        double temp = ::atof(x.c_str());
+        return temp;
+    }
+
+    string dtos(double d){
+        stringstream ss;
+        ss << d;
+        string str = ss.str();
+        return str;
+    }
+
+    std::vector<std::string> splitString(std::string str) {
+        vector<std::string> strings;
+        string w = "";
+        for (unsigned int i=0; i<str.size(); i++) {
+            if (str[i] == ',') {
+                strings.push_back(w);
+                w = "";
+            } else {
+                w = w + str[i];
+            }
+        }
+        if (w.size()!=0 and w!=" "){
+            strings.push_back(w);
+        }
+        return strings;
     }
 }

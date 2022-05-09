@@ -6,6 +6,7 @@
 #include "Classes/BusStop.h"
 #include "Classes/Junction.h"
 #include "Classes/CarData.h"
+#include "Simulation/GenerateIni.h"
 
 #if VERSION == 14
 #include <chrono>
@@ -41,8 +42,15 @@ int main() {
     //World* w = input::loadWorldXML("../XML/case1.xml");
 
     World* w = input::loadWorldXML("../XML/case1.xml");
+    GenerateIni g(w, "sim");
+    for (unsigned int i = 0; i<1000; i++) {
+        //g.generate();
+        for (unsigned int _ = 0; _<10; _++) {
+            w->updateWorld(0.01);
+        }
+    }
+    /*
     //World* w = input::loadWorldXML("../testInput/testFail13.xml");
-    bool x = w->isvalidSimulation();
     //World* w = input::loadWorldXML("../testInput/testFail2.xml");
     //World* w = input::loadWorldXML("../testInput/test1.xml");
     std::ofstream myFile;
@@ -58,6 +66,7 @@ int main() {
     }
     myFile.close();
     myFile2.close();
+     */
     delete w;
     return 0;
 }/*

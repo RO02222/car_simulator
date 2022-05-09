@@ -39,6 +39,14 @@ public:
 */
     Junction(std::vector<std::pair<Road* , double> > roads, std::ofstream* error);
 
+/**
+ * create a Junction
+ * @param roads: the roads connected to the junction
+ * @return: None
+\n ENSURE(properlyInitialized(), "constructor must end in properlyInitialized state");
+*/
+    ~Junction();
+
 
 /**
  * Update the junction, update cars near the junction and switch lanes.

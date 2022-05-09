@@ -6,6 +6,7 @@
 //============================================================================
 
 #include <cmath>
+
 #include <fstream>
 #include "Junction.h"
 #include "Car.h"
@@ -20,6 +21,12 @@ Junction::Junction(std::vector<std::pair<Road*, double> > roads, std::ofstream* 
         roads[i].first->addJunction(std::pair<Junction*,double*> (this,&this->roads[i].second));
     }
     ENSURE(this->properlyInitialized(), "constructor must end in properlyInitialized state");
+}
+
+Junction::~Junction() {
+    if (lights.size() > 1){
+        delete clock;
+    }
 }
 
 
@@ -50,11 +57,13 @@ void Junction::updateJunction(double t) {
                 }
             }
         }
+        ENSURE(cars[i]->isvalid(cars[i]->getRoad()), "car isn't valid");
         if (!cars[i]->onRoad()){
             cars[i]->getRoad()->deleteCar(cars[i]);
         }
     }
     cars.clear();
+    ENSURE(cars.empty(), "There are still cars that needs to be updated");
     //update lights
     if (lights.size() != 0) {
         clock->updateLight(t);
@@ -65,6 +74,7 @@ void Junction::updateJunction(double t) {
             lights[numLight]->setState(clock->getState());
         }
     }
+    ENSURE(isvalid(),"Junction isn't valid");
 }
 
 
@@ -231,6 +241,9 @@ bool Junction::isvalid() const {
         if(!(*itC)->properlyInitialized()) {
             return false;
         }
+    }
+    if (lights.size() > 1 and !clock->isvalidClock()){
+        return false;
     }
     return true;
 }

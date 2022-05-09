@@ -5,19 +5,23 @@
 #ifndef CAR_SIMULATION_GENERATEINI_H
 #define CAR_SIMULATION_GENERATEINI_H
 #include <fstream>
+#include <vector>
 
 class World;
+class Road;
 
 class GenerateIni {
 public:
     GenerateIni* _initcheck;
     World* world;
-    std::ofstream iniFile;
     std::string filename;
     int filenumber;
 
 public:
-    GenerateIni(World *world, const std::string &filename, int filenumber);
+    std::vector<std::pair<Road*, std::pair<double,double> > > roads;
+
+public:
+    GenerateIni(World *world, const std::string &filename);
     void generate();
 };
 

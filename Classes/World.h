@@ -15,9 +15,12 @@
 #include "../tinyxml/tinyxml.h"
 #include "../tinyxml/tinystr.h"
 #include "Road.h"
-#include "CarGen.h"
-#include "CarData.h"
 #include "Car.h"
+#include "CarGen.h"
+#include "Light.h"
+#include "BusStop.h"
+#include "Junction.h"
+#include "CarData.h"
 
 
 class Junction;
