@@ -16,8 +16,11 @@
 #include "Clock.h"
 #include "../Basic_Values.h"
 #include "../DesignByContract.h"
+#include "../Functions.h"
 
-Junction::Junction(std::vector<std::pair<Road*, double> > roads, std::ofstream* error) : error(error), roads(roads){
+Junction::Junction(std::vector<std::pair<Road*, double> > r, std::ofstream* error) : error(error){
+    REQUIRE(isvalid(roads), "Roads to form the junction are not valid");
+    roads = r;
     _initCheck = this;
     for (unsigned int i = 0; i < roads.size(); i++){
         roads[i].first->addJunction(std::pair<Junction*,double*> (this,&this->roads[i].second));
@@ -35,6 +38,7 @@ Junction::~Junction() {
 void Junction::updateJunction(double t) {
     REQUIRE(this->properlyInitialized(), "Junction wasn't initialized when calling updateJunction");
     REQUIRE(t>=0, "Time cannot be negative");
+    unsigned int ensureNumlight = numLight;
     for (unsigned int i = 0; i < cars.size(); i++) {
         double oldPos = cars[i]->getDistance();
         cars[i]->updateCar(t, true);
@@ -64,7 +68,6 @@ void Junction::updateJunction(double t) {
         }
     }
     cars.clear();
-    ENSURE(cars.empty(), "There are still cars that needs to be updated");
     //update lights
     if (lights.size() != 0) {
         clock->updateClock(t);
@@ -72,10 +75,13 @@ void Junction::updateJunction(double t) {
         if (clock->getState() == red) {
             clock->setState(green);
             numLight = (numLight + 1)%lights.size();
+            ensureNumlight = numLight;
             lights[numLight]->setState(clock->getState());
         }
     }
-    ENSURE(isvalid(),"Junction isn't valid");
+    ENSURE(isValid(),"Junction isn't valid");
+    ENSURE(cars.empty(), "There are still cars that needs to be updated");
+    ENSURE(ensureNumlight = numLight, "NumLight is not right");
 }
 
 

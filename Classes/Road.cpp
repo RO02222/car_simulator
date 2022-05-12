@@ -15,11 +15,10 @@
 #include "../DesignByContract.h"
 #include "../Basic_Values.h"
 
-Road::Road(const std::string &name, double l, std::ofstream* error) : error(error), name(name), length(l)  {
+Road::Road(const std::string &name, double l, std::ofstream* error) : error(error), name(name)  {
+    REQUIRE(l>=15, "Road is not long enough");
+    length = l;
     _initCheck = this;
-    if (l < 1){
-        length = 1;
-    }
     ENSURE(properlyInitialized(),"constructor must end in properlyInitialized state");
 }
 
@@ -78,22 +77,6 @@ void Road::updateRoad(double t) {
 }
 
 
-
-void Road::deleteCar(Car* car) {
-    REQUIRE(this->properlyInitialized(), "Road wasn't initialized when calling removeCars");
-    REQUIRE(car->properlyInitialized(), "Car wasn't properly initialised");
-    unsigned int size = cars.size();
-    std::vector<Car *> carIt = getCars();
-    for (unsigned int i = 0; i<cars.size();i++) {
-        if (cars[i] == car){
-            cars.erase(cars.begin()+i);
-            delete car;
-            ENSURE(cars.size() == size-1, "Car is not deleted");
-            return;
-        }
-    }
-}
-
 void Road::removeCar(Car* car, bool del) {
     REQUIRE(this->properlyInitialized(), "Road wasn't initialized when calling removeCars");
     REQUIRE(car->properlyInitialized(), "car wasn't properly initialised");
@@ -114,13 +97,11 @@ void Road::removeCar(Car* car, bool del) {
 
 void Road::addLight(double position, double cycle) {
     REQUIRE(this->properlyInitialized(), "Road wasn't initialized when calling addLight");
-    if (position > getLength() or position < 0) {
-        *error<<"Failed to add light: position is not on the road"<<std::endl;
-        return;
-    }
+    REQUIRE(isValidToAdd(position),"Light cannot be added");
+    REQUIRE(cycle>=1, "Cycle is not valid");
     Light* l = new Light(position, cycle,this, error);
     lights.push_back(l);
-    ENSURE(lights[lights.size()-1] == l, "Light is not added");
+    ENSURE(true, "Light is not added");
 }
 
 void Road::addCar(double distance, CarData* data) {

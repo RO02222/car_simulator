@@ -14,25 +14,29 @@
 #include "../Basic_Values.h"
 #include "../DesignByContract.h"
 
-BusStop::BusStop(double position, double stoptime, Road *road) : road(road), position(position), stoptime(stoptime),
-                                                                 currentBus(NULL), bussy(false) {
+BusStop::BusStop(double p, double s, Road *r) : timestopped(0), currentBus(NULL), bussy(false)  {
+    REQUIRE(s>=1, "Time is not valid");
+    REQUIRE(r->isValidToAdd(p), "Busstop cannot be added to the road");
+    road = r;
+    stoptime = s;
+    position = p;
     _initCheck = this;
-    if (this->stoptime < 1) {
-        this->stoptime = 1;
-    }
-    timestopped = 0;
     ENSURE(this->properlyInitialized(), "constructor must end in properlyInitialized state");
+
 }
 
 
 
 void BusStop::updateBusStop(double t) {
-    REQUIRE(isvalid(road), "Busstop wasn't initialized when calling updateBusStop");
-    REQUIRE(t>=0, "Time cannot be negative");
-    REQUIRE(road->isvalidSimulation(),"part of the Simulation wasn't valid when calling updateBusStop");
-    double ensureTimeStopped = timestopped;
+    REQUIRE(isValid(road), "Busstop wasn't initialized when calling updateBusStop");
+    REQUIRE(t > 0, "Time cannot be negative");
+    REQUIRE(road->isvalidSimulation(), "part of the Simulation wasn't valid when calling updateBusStop");
     std::vector<Car *> carsOnRoad = getRoad()->getCars();
     Car *firstBus = NULL;
+    Action expectAction;
+    bool expectBussy;
+    Car* expectCurrentBus;
+    double expectTimeStopped = timestopped;
     for (std::vector<Car *>::iterator itC = carsOnRoad.begin(); itC != carsOnRoad.end(); itC++) {
         if ((*itC)->getData()->getType() == bus) {
             if ((*itC)->getDistance() < getPosition()) {
@@ -48,43 +52,45 @@ void BusStop::updateBusStop(double t) {
     }
     if (firstBus == NULL) {
         bussy = false;
-        ENSURE(isvalid(road),"Busstop isn't valid after calling updateBusStop");
-        return;
+        expectBussy = false;
     }
-    ENSURE(firstBus->properlyInitialized(),"FirstBus isn't properly initialised after calling updateBusStop");
-    if (firstBus != currentBus){
-        bussy = false;
-    }
-    if (bussy) {
-        timestopped += t;
-        if (timestopped > stoptime) {
-            currentBus->setAction(fast);
+    else {
+        if (firstBus != currentBus) {
+            bussy = false;
+            expectBussy = false;
         }
-        ENSURE(timestopped == ensureTimeStopped + t,"time hasn't changed");
-        ENSURE(isvalid(road),"Busstop isn't valid after calling updateBusStop");
-        return;
+        if (bussy) {
+            timestopped += t;
+            expectTimeStopped = timestopped;
+            if (timestopped > stoptime) {
+                currentBus->setAction(fast);
+                expectAction = fast;
+            }
+            return;
+        }
+        currentBus = firstBus;
+        expectCurrentBus = firstBus;
+        if (currentBus->getDistance() + gBreakDistance < getPosition()) {
+            expectAction = fast;
+        } else if (currentBus->getDistance() + gStopDistance < getPosition()) {
+            currentBus->setAction(slow);
+            expectAction = slow;
+        }
+        currentBus->setAction(stop);
+        expectAction = stop;
+        if (currentBus->getSpeed() < 0.01) {
+            bussy = true;
+            expectBussy = true;
+            timestopped = 0;
+            expectTimeStopped = 0;
+        }
     }
-    currentBus = firstBus;
-    ENSURE(currentBus->isvalid(road),"FirstBus isn't valid after calling updateBusStop");
-    if (currentBus->getDistance() + gBreakDistance < getPosition()) {
-        ENSURE(isvalid(road),"Busstop isn't valid after calling updateBusStop");
-        return;
-    }
-    if (currentBus->getDistance() + gStopDistance < getPosition()) {
-        currentBus->setAction(slow);
-        ENSURE(isvalid(road),"Busstop isn't valid after calling updateBusStop");
-        return;
-    }
-    currentBus->setAction(stop);
-    if (currentBus->getSpeed() < 0.01) {
-        bussy = true;
-        timestopped = 0;
-        ENSURE(timestopped == 0,"timer hasn't reset to zero");
-    }
+    ENSURE(expectTimeStopped == timestopped, "time hasn't changed");
+    ENSURE(expectBussy == bussy, "Bussy is not right");
+    ENSURE(isValid(road), "Busstop isn't valid after calling updateBusStop");
+    ENSURE(currentBus->getAction() == expectAction, "Action of current bus is not right");
+    ENSURE(expectCurrentBus = currentBus, "CurrentBus is not valid");
 }
-
-
-
 
 
 

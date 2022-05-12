@@ -14,14 +14,16 @@
 #include "Junction.h"
 #include <cmath>
 
-Car::Car(double distance, CarData* data, Road* road) : road(road), distance(distance) {
+Car::Car(double d, CarData* da, Road* r) : acceleration(0), action(fast){
+    REQUIRE(da->properlyInitialized(), "Data is not valid");
+    REQUIRE(onRoad(d), "Car is not on road");
+    REQUIRE(road->isValid(), "Road is not valid");
+    road = r;
+    distance = d;
     _initCheck = this;
-    this->data = data;
+    data = da;
     speed = data->getvMax();
     maxSpeed = data->getvMax();
-    acceleration = 0;
-    action = fast;
-
     ENSURE(properlyInitialized(),"constructor must end in properlyInitialized state");
 }
 
@@ -29,14 +31,21 @@ Car::Car(double distance, CarData* data, Road* road) : road(road), distance(dist
 bool Car::updateCar(double t, bool onJunction) {
     REQUIRE(isValid(road), "Car is not valid");
     REQUIRE(t >= 0, "Time cannot be negative");
-    double ensurePos = distance;
-    double ensureSpeed = speed;
+    REQUIRE(road->isvalidSimulation(), "Road of the simulation is not valid");
+    bool returnValue = true;
+    double ensurePos;
+    double ensureSpeed;
+    double ensureMaxSpeed;
+    double ensureAcceleration;
     if (getAction() == fast) {
         maxSpeed = data->getvMax();
+        ensureMaxSpeed = maxSpeed;
     } else if (getAction() == slow) {
         maxSpeed = gSlowFactor * data->getvMax();
+        ensureMaxSpeed = maxSpeed;
         if (maxSpeed > 20) {
             maxSpeed = 20;
+            ensureMaxSpeed = maxSpeed;
         }
     }
     double v0 = getSpeed();
@@ -66,22 +75,19 @@ bool Car::updateCar(double t, bool onJunction) {
         a = -(data->getbMax() * v0) / getMaxSpeed();
     }
     setAcceleration(a);
-    ENSURE(acceleration == a, "accelration is not updated");
+    ensureAcceleration = a;
     double v1 = v0 + a * t;
     if (v1 < 0) {
         distance = distance - pow(v0, 2) / (2 * a);
+        ensurePos = distance;
         setSpeed(0);
-        ENSURE(speed == 0, "speed is not updated");
+        ensureSpeed = 0;
     } else {
         setSpeed(v1);
+        ensureSpeed = v1;
         distance = distance + v0 * t + a * (pow(t, 2) / 2.0);
-        ENSURE(speed == v1, "speed is not updated");
-    }
+        ensurePos = distance;
 
-    if (ensureSpeed > 0.01) {
-        ENSURE(ensurePos < distance, "position is not updated");
-    } else{
-        ENSURE(ensurePos <= distance, "position is not updated");
     }
 
         //near Junction
@@ -90,18 +96,19 @@ bool Car::updateCar(double t, bool onJunction) {
         for (unsigned int i = 0; i < junctions.size(); i++) {
             if (std::abs(distance - *junctions[i].second) <= gStopDistance) {
                 junctions[i].first->addCar(this);
-                return;
             }
         }
         //car off the road
         if (!onRoad()) {
-            road->deleteCar(this);
-        } else{
-            ENSURE(isvalid(road), "car is not Valid");
+            returnValue = false;
         }
-    } else{
-        ENSURE(properlyInitialized(), "car is not properlyInitialized");
     }
+    ENSURE(isValid(road), "Car is not valid");
+    ENSURE(ensureMaxSpeed == maxSpeed, "MaxSpeed is not right");
+    ENSURE(ensureAcceleration = acceleration, "Acceleration is not right");
+    ENSURE(ensureSpeed == speed, "speed is not right");
+    ENSURE(ensurePos = distance, "Position is not right");
+    return returnValue;
 }
 
 

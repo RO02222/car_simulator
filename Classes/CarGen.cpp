@@ -13,23 +13,30 @@
 #include "CarData.h"
 #include "Junction.h"
 #include "../DesignByContract.h"
+#include "../Functions.h"
 
-CarGen::CarGen(double frequency, Road *road, CarData *data) : road(road), frequency(frequency), random(false), data(data), AllData(NULL) {
+CarGen::CarGen(double f, Road *r, CarData *da) : random(false), AllData(NULL) {
+    REQUIRE(f>=1, "Frequency is not valid");
+    REQUIRE(da->properlyInitialized(), "Data is not valid");
+    REQUIRE(isValidToAdd(r), "Road is not valid to be added");
+    data = da;
     _initCheck = this;
-    if (frequency < 1){
-        frequency = 1;
-    }
+    frequency = f;
     lastCycle = rand() % lround(frequency);
+    road = r;
     ENSURE(properlyInitialized(),"constructor must end in properlyInitialized state");
 }
 
-CarGen::CarGen(double frequency, Road *road, std::vector<CarData *>* allData)  : road(road), frequency(frequency), random(true), data(NULL), AllData(allData)  {
+CarGen::CarGen(double f, Road *r, std::vector<CarData *>* da)  :  random(true), data(NULL) {
+    REQUIRE(f>=1, "Frequency is not valid");
+    REQUIRE(isvalid(da), "AllData is not valid");
+    REQUIRE(isValidToAdd(r), "Road is not valid to be added");
     _initCheck = this;
+    AllData = da;
+    road = r;
     data = (*AllData)[0];
-    if (frequency < 1){
-        frequency = 1;
-    }
-    lastCycle = frequency;
+    frequency = f;
+    lastCycle = f;
     ENSURE(properlyInitialized(),"constructor must end in properlyInitialized state");
 }
 
@@ -37,7 +44,10 @@ CarGen::CarGen(double frequency, Road *road, std::vector<CarData *>* allData)  :
 void CarGen::updateCarGen(double t) {
     REQUIRE(isValid(road), "CarGen wasn't initialized when calling updateCarGen");
     REQUIRE(t >= 0, "Time cannot be negative");
+    REQUIRE(isValidData(), "Not all data is valid");
     double ensureLastcycle = lastCycle;
+    Car* ensureNewCar = NULL;
+    CarData* ensureData = data;
     lastCycle += t;
     ensureLastcycle = lastCycle;
     if (lastCycle >= frequency) {
