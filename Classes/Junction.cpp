@@ -12,6 +12,8 @@
 #include "Car.h"
 #include "Road.h"
 #include "Light.h"
+#include "World.h"
+#include "Clock.h"
 #include "../Basic_Values.h"
 #include "../DesignByContract.h"
 
@@ -57,16 +59,15 @@ void Junction::updateJunction(double t) {
                 }
             }
         }
-        ENSURE(cars[i]->isvalid(cars[i]->getRoad()), "car isn't valid");
         if (!cars[i]->onRoad()){
-            cars[i]->getRoad()->deleteCar(cars[i]);
+            cars[i]->getRoad()->removeCar(cars[i], true);
         }
     }
     cars.clear();
     ENSURE(cars.empty(), "There are still cars that needs to be updated");
     //update lights
     if (lights.size() != 0) {
-        clock->updateLight(t);
+        clock->updateClock(t);
         lights[numLight]->setState(clock->getState());
         if (clock->getState() == red) {
             clock->setState(green);
@@ -113,7 +114,7 @@ void Junction::checkJunctionLights() {
         return;
     }
     lights = light;
-    clock = new Light(cycle,error);
+    clock = new Clock(cycle);
     clock->setState(green);
     numLight = 0;
     for (std::vector<Light*>::iterator itL = lights.begin(); itL != lights.end(); itL++){
@@ -145,7 +146,7 @@ std::vector<Car*> Junction::getCars() {
 void Junction::setRoad(Road *r,unsigned int n) {
     REQUIRE(this->properlyInitialized(), "Junction wasn't initialized when calling setRoad");
     REQUIRE(r->properlyInitialized(), "Road is not properly initialised");
-    REQUIRE(r->isvalid(), "Road isn't valid");
+    REQUIRE(r->isValid(), "Road isn't valid");
     REQUIRE(n>=0, "The number of the road cannot be negative");
     REQUIRE(n<=roads.size(), "there aren't that many roads");
     roads[n].first = r;
@@ -181,18 +182,18 @@ void Junction::setPosition(double p,unsigned int n) {
 }
 
 
-Light* Junction::getClock() {
+Clock* Junction::getClock() {
     REQUIRE(this->properlyInitialized(), "Junction wasn't initialized when calling getPosition");
     ENSURE(clock->properlyInitialized(), "clock is not initialized");
     return clock;
 }
 
 
-void Junction::setClock(Light *light) {
+void Junction::setClock(Clock *c) {
     REQUIRE(this->properlyInitialized(), "Junction wasn't initialized when calling setPosition");
-    REQUIRE(light->properlyInitialized(), "clock is not initialized");
-    clock = light;
-    ENSURE(clock == light, "clock hasn't changed");
+    REQUIRE(c->isvalid(), "clock is not valid");
+    clock = c;
+    ENSURE(clock == c, "clock hasn't changed");
 }
 
 std::vector<std::pair<Road* , double> > Junction::getRoads(){
@@ -234,7 +235,7 @@ bool Junction::onRoad(std::string roadname){
     return true;
 }
 
-bool Junction::isvalid() const {
+bool Junction::isValid() const {
     if (!properlyInitialized()){
         return false;
     }
@@ -253,7 +254,7 @@ bool Junction::isvalid() const {
             return false;
         }
     }
-    if (lights.size() > 1 and !clock->isvalidClock()){
+    if (lights.size() > 1 and !clock->isvalid()){
         return false;
     }
     return true;

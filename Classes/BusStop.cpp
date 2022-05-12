@@ -100,7 +100,7 @@ Road* BusStop::getRoad() {
 void BusStop::setRoad(Road *r) {
     REQUIRE(this->properlyInitialized(), "BusStop wasn't initialized when calling setRoad");
     REQUIRE(r->properlyInitialized(), "Road is not properly initialised");
-    REQUIRE(r->isvalid(),"Road isn't valid");
+    REQUIRE(r->isValid(),"Road isn't valid");
     BusStop::road = r;
     ENSURE(road == r,"Road hasn't changed");
 }
@@ -115,7 +115,7 @@ double BusStop::getPosition() {
 
 void BusStop::setPosition(double p) {
     REQUIRE(this->properlyInitialized(), "BusStop wasn't initialized when calling setPosition");
-    REQUIRE(onRoad(p), "Busstop is not on road");
+    REQUIRE(onRoad(road, p), "Busstop is not on road");
     BusStop::position = p;
     ENSURE(position == p,"Position hasn't changed");
 }
@@ -165,15 +165,15 @@ bool BusStop::onRoad() const {
     return true;
 }
 
-bool BusStop::onRoad(int p) const{
-    if (p<0 or p>road->getLength()){
+bool BusStop::onRoad(Road* r, int p) const{
+    if (p<0 or p>r->getLength()){
         return false;
     }
     return true;
 }
 
 
-bool BusStop::isvalid(Road* r) {
+bool BusStop::isValid(Road* r) {
     if(!properlyInitialized()){
         return false;
     }

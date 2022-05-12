@@ -25,7 +25,7 @@ private:
     std::vector<Car*> cars;
 
 private:
-    Light* clock;
+    Clock* clock;
     std::vector<Light*> lights;
     unsigned int numLight;
 
@@ -132,10 +132,10 @@ public:
 /**
  * get the position of the Junction on the road
  * @param roadname: the name of the road from the Junction
- * @return: (double), the position of the Junction on the road
+ * @return: (Clock*), the position of the Junction on the road
 \n REQUIRE(properlyInitialized(), "Light wasn't initialized when calling getPosition");
 */
-    Light* getClock();
+    Clock* getClock();
 
 /**
  * change the position of the Junction
@@ -144,7 +144,7 @@ public:
  * @return: None
 \n REQUIRE(properlyInitialized(), "Light wasn't initialized when calling setPosition");
 */
-    void setClock(Light* light);
+    void setClock(Clock* clock);
 
     std::vector<std::pair<Road* , double> > getRoads();
 
@@ -160,7 +160,7 @@ public:
 
     bool onRoad(std::string roadname);
 
-    bool isvalid() const;
+    bool isValid() const;
 /////////////
 };
 

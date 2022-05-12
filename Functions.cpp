@@ -7,6 +7,8 @@
 
 
 #include "Functions.h"
+#include "Classes/CarData.h"
+#include "Classes/Road.h"
 #include <iostream>
 #include <sstream>
 #include <cstdlib>
@@ -54,4 +56,23 @@ namespace std {
         }
         return strings;
     }
+}
+
+bool isvalid(std::vector<CarData*>* data){
+    for (std::vector<CarData*>::iterator da = data->begin(); da != data->end(); da++){
+        if (!(*da)->isValid()) {
+            return false;
+        }
+    }
+    return true;
+}
+
+bool isvalid(std::vector<std::pair<Road*, double> > roads){
+    for (std::vector<std::pair<Road*, double> >::iterator itR = roads.begin(); itR != roads.end(); itR++){
+        if (!itR->first->isValid()) {
+            return false;
+        }
+
+    }
+    return true;
 }

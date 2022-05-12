@@ -18,6 +18,7 @@
 #include "Car.h"
 #include "CarGen.h"
 #include "Light.h"
+#include "Clock.h"
 #include "BusStop.h"
 #include "Junction.h"
 #include "CarData.h"
@@ -186,9 +187,9 @@ public:
 public:
     bool properlyInitialized() const;
 
-    bool isvalid() const;
+    bool isValid() const;
 
-    bool isvalidSimulation() const;
+    bool isValidSimulation() const;
 //////////////
 };
 

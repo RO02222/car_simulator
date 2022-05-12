@@ -10,6 +10,7 @@
 #define CAR_SIMULATOR_FUNCTIONS_H
 #include <string>
 #include "vector"
+#include "Classes/CarData.h"
 namespace std {
     int stoi(std::string& text);
 
@@ -21,6 +22,11 @@ namespace std {
 
     std::vector<std::string> splitString(std::string str);
 
-
 }
+
+bool isvalid(std::vector<CarData*>* data);
+
+bool isvalid(std::vector<std::pair<Road*, double> > roads);
+
+
 #endif //CAR_SIMULATOR_FUNCTIONS_H

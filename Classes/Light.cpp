@@ -10,80 +10,45 @@
 #include "Car.h"
 #include "Road.h"
 #include "CarData.h"
+#include "Clock.h"
 #include "../Basic_Values.h"
 #include "../DesignByContract.h"
 
-Light::Light(double position, double c, Road* r, std::ofstream* error): error(error), road(r), position(position), cycle(c) {
+Light::Light(double p, double c, Road* r, std::ofstream* error): Clock(c), error(error) {
+    REQUIRE(r->isValidToAdd(p), "Light cannot be added");
+    REQUIRE(c>=1, "Cycle is not valid");
+    position = p;
+    road = r;
     _initCheck = this;
-    if (c < 1){
-        cycle = 1;
-    }
-    lastCycle = rand() % lround(cycle);
-    state = color(rand() % 2);
     clock = true;
-    update = true;
     ENSURE(this->properlyInitialized(), "constructor must end in properlyInitialized state");
 }
 
-Light::Light(double c, std::ofstream* error): error(error), road(NULL), position(0), cycle(c) {
-    _initCheck = this;
-    if (c < 1){
-        cycle = 1;
-    }
-    lastCycle = rand() % lround(cycle);
-    state = color(rand() % 2);
-    clock = true;
-    update = false;
-    ENSURE(properlyInitialized(), "constructor must end in properlyInitialized state");
-}
+Light::~Light() {}
+
 
 void Light::updateLight(double t) {
-    if (clock and !update){
-        REQUIRE(isvalidClock(), "Clock wasn't initialized when calling updateLight");
-    } else {
-        REQUIRE(isvalid(road), "Light wasn't initialized when calling updateLight");
-    }
+    REQUIRE(isvalid(road), "Light wasn't initialized when calling updateLight");
     REQUIRE(t >= 0, "Time cannot be negative");
     if (clock) {
-        double ensureLastCycle = lastCycle;
-        lastCycle += t;
-        ENSURE(lastCycle == ensureLastCycle + t, "LastCycle hasn't been updated");
-        if (state == green and lastCycle >= cycle) {
-            lastCycle -= cycle;
-            ENSURE(lastCycle == ensureLastCycle + t - cycle, "LastCycle hasn't been updated");
-            setState(orange);
-        }
-        if (state == orange and lastCycle >= cycle / 10.0) {
-            lastCycle -= cycle / 10.0;
-            ENSURE(lastCycle == ensureLastCycle + t - cycle / 10.0, "LastCycle hasn't been updated");
-            setState(red);
-        }
-        if (state == red and lastCycle >= cycle) {
-            lastCycle -= cycle;
-            ENSURE(lastCycle == ensureLastCycle + t - cycle, "LastCycle hasn't been updated");
-            setState(green);
-        }
+        updateClock(t);
     }
-    if (update) {
-        std::vector<Car *> carsOnRoad = getRoad()->getCars();
-        Car *firstCar = NULL;
-        for (std::vector<Car *>::iterator itC = carsOnRoad.begin(); itC != carsOnRoad.end(); itC++) {
-            if (!(*itC)->getData()->getpriority()) {//geen prioriteitsvoertuigen
-                if ((*itC)->getDistance() < getPosition()) {//VOOR het licht
-                    if (((*itC)->getDistance() + gStopDistance < getPosition() and getState() != orange) or
-                        (*itC)->getAction() == slow or
-                        (*itC)->getAction() == stop) {
-                        if (firstCar == NULL or (*itC)->getDistance() > firstCar->getDistance()) {
-                            firstCar = (*itC);
-                        }
+    std::vector<Car *> carsOnRoad = getRoad()->getCars();
+    Car *firstCar = NULL;
+    for (std::vector<Car *>::iterator itC = carsOnRoad.begin(); itC != carsOnRoad.end(); itC++) {
+        if (!(*itC)->getData()->getpriority()) {//geen prioriteitsvoertuigen
+            if ((*itC)->getDistance() < getPosition()) {//VOOR het licht
+                if (((*itC)->getDistance() + gStopDistance < getPosition() and getState() != orange) or
+                    (*itC)->getAction() == slow or
+                    (*itC)->getAction() == stop) {
+                    if (firstCar == NULL or (*itC)->getDistance() > firstCar->getDistance()) {
+                        firstCar = (*itC);
                     }
                 }
             }
         }
-        if (firstCar == NULL) {
-            return;
-        }
-        ENSURE(firstCar->isvalid(road), "firstCar isn't valid");
+    }
+    if (firstCar != NULL) {
         if (getState() == green) {
             firstCar->setAction(fast);
         } else if (getState() == red or getState() == orange) {
@@ -96,11 +61,7 @@ void Light::updateLight(double t) {
             }
         }
     }
-    if (clock and !update){
-        REQUIRE(isvalidClock(), "Clock wasn't initialized when calling updateLight");
-    } else {
-        REQUIRE(isvalid(road), "Light wasn't initialized when calling updateLight");
-    }
+    ENSURE(isvalid(road), "Light wasn't initialized when calling updateLight");
 }
 
 
@@ -121,7 +82,7 @@ Road* Light::getRoad() {
 void Light::setRoad(Road *r) {
     REQUIRE(this->properlyInitialized(), "Light wasn't initialized when calling setRoad");
     REQUIRE(r->properlyInitialized(), "Road is not properly initialised");
-    REQUIRE(r->isvalid(), "Road is not valid");
+    REQUIRE(r->isValid(), "Road is not valid");
     Light::road = r;
     ENSURE(road == r,"Road hasn't changed");
 }
@@ -141,50 +102,6 @@ void Light::setPosition(double p) {
     ENSURE(position == p,"Position hasn't changed");
 }
 
-
-double Light::getCycle() {
-    REQUIRE(this->properlyInitialized(), "Light wasn't initialized when calling getCycle");
-    ENSURE(cycle>0, "Cycle cannot be negative or zero");
-    return cycle;
-}
-
-
-void Light::setCycle(double c) {
-    REQUIRE(this->properlyInitialized(), "Light wasn't initialized when calling setCycle");
-    REQUIRE(c>0, "Cycle cannot be negative or zero");
-    Light::cycle = c;
-    ENSURE(cycle == c,"Cycle hasn't changed");
-}
-
-
-double Light::getLastCycle() {
-    REQUIRE(this->properlyInitialized(), "Light wasn't initialized when calling getLastCycle");
-    ENSURE(lastCycle>=0, "LastCycle cannot be negative");
-    return lastCycle;
-}
-
-
-void Light::setLastCycle(double c) {
-    REQUIRE(this->properlyInitialized(), "Light wasn't initialized when calling setLastCycle");
-    REQUIRE(c>=0, "LastCycle cannot be negative");
-    Light::lastCycle = c;
-    ENSURE(lastCycle == c,"Lastcycle hasn't changed");
-}
-
-
-color Light::getState() {
-    REQUIRE(this->properlyInitialized(), "Light wasn't initialized when calling getState");
-    ENSURE(state==green or state==red or state==orange, "Color does not exist ");
-    return state;
-}
-
-
-void Light::setState(color s) {
-    REQUIRE(this->properlyInitialized(), "Light wasn't initialized when calling setState");
-    REQUIRE(s==green or s==red or s==orange, "Color does not exist ");
-    Light::state = s;
-    ENSURE(state == s,"State hasn't changed");
-}
 
 bool Light::getClock() {
     REQUIRE(this->properlyInitialized(), "Light wasn't initialized when calling getClock");
@@ -236,38 +153,7 @@ bool Light::isvalid(Road* r) const {
     if(!onRoad()){
         return false;
     }
-    if(cycle < 1){
-        return false;
-    }
-    if(lastCycle > cycle){
-        return false;
-    }
-    if(lastCycle < 0){
-        return false;
-    }
-    if(state != green and state != red and state != orange){
-        return false;
-    }
-    return true;
-}
-
-bool Light::isvalidClock() const {
-    if(!properlyInitialized()){
-        return false;
-    }
-    if(!clock or update){
-        return false;
-    }
-    if(cycle < 1){
-        return false;
-    }
-    if(lastCycle > cycle){
-        return false;
-    }
-    if(lastCycle < 0){
-        return false;
-    }
-    if(state != green and state != red and state != orange){
+    if (Clock::isvalid()){
         return false;
     }
     return true;

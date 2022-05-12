@@ -22,6 +22,7 @@ set(RELEASE_SOURCE_FILES
         Classes/BusStop.cpp Classes/BusStop.h
         Classes/Junction.cpp Classes/Junction.h
         Classes/CarData.cpp Classes/CarData.h
+        Classes/Clock.cpp Classes/Clock.h
         Input.cpp Input.h
         Exception/ParserException.h
         Classes/CarGen.cpp Classes/CarGen.h
@@ -42,6 +43,7 @@ set(DEBUG_SOURCE_FILES
         Classes/BusStop.cpp Classes/BusStop.h
         Classes/Junction.cpp Classes/Junction.h
         Classes/CarData.cpp Classes/CarData.h
+        Classes/Clock.cpp Classes/Clock.h
         Input.cpp Input.h
         Exception/ParserException.h
         Classes/CarGen.cpp Classes/CarGen.h DesignByContract.h Basic_Values.h Functions.cpp Functions.h

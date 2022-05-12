@@ -61,15 +61,6 @@ public:
 */
     void updateRoad(double t);
 
-/**
- * remove and delete a car from the road.
- * @param car: the car that needs to be removed
- * @return: None
-\n REQUIRE(properlyInitialized(), "Road wasn't initialized when calling removeCars);
-\n REQUIRE(car->properlyInitialized(), "Car wasn't properly initialised");
-\n ENSURE(cars.size() == size-1, "Car is not deleted");
-*/
-    void deleteCar(Car* car);
 
 /**
  * remove a car from the road.
@@ -78,7 +69,7 @@ public:
 \n REQUIRE(properlyInitialized(), "Road wasn't initialized when calling removeCars);
 \n REQUIRE(car->properlyInitialized(), "car wasn't properly initialised");
 */
-    void removeCar(Car* car);
+    void removeCar(Car* car, bool del = false);
 
 
 
@@ -250,10 +241,17 @@ public:
 public:
     bool properlyInitialized() const;
 
-    bool isvalid() const;
+    bool onRoad(double position) const;
+
+    bool isValid() const;
+
+    bool isValidToAdd(double position) const;
 
     bool isvalidSimulation();
-protected:
+
+    bool findCar(Car* car);
+
+    bool findLight(Light* light);
 /////////////
 };
 

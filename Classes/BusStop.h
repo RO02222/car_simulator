@@ -135,14 +135,14 @@ public:
  * @param p: the given position to check if on road
  * @return: (bool) if position is on road
 */
-    bool onRoad(int p) const;
+    bool onRoad(Road* r, int p) const;
 
 /**
  * See if busstop is valid
  * @param road: the road on which to check if the busstop is valid
  * @return: (bool) see if busstop is valid
 */
-    bool isvalid(Road *road);
+    bool isValid(Road *road);
 
 /////////////
 };

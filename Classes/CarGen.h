@@ -125,7 +125,11 @@ public:
 public:
     bool properlyInitialized() const;
 
-    bool isvalid(Road* road) const;
+    bool isValid(Road* road) const;
+
+    bool isValidToAdd(Road *road) const;
+
+    bool isValidData() const;
 /////////////
 };
 

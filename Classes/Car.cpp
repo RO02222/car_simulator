@@ -26,8 +26,8 @@ Car::Car(double distance, CarData* data, Road* road) : road(road), distance(dist
 }
 
 
-void Car::updateCar(double t, bool onJunction) {
-    REQUIRE(isvalid(road), "Car is not valid");
+bool Car::updateCar(double t, bool onJunction) {
+    REQUIRE(isValid(road), "Car is not valid");
     REQUIRE(t >= 0, "Time cannot be negative");
     double ensurePos = distance;
     double ensureSpeed = speed;
@@ -108,7 +108,7 @@ void Car::updateCar(double t, bool onJunction) {
 void Car::moveCar(Road *r, double position) {
     REQUIRE(this->properlyInitialized(), "Car is not properly initialised");
     REQUIRE(r->properlyInitialized(), "Road is not properly initialised");
-    REQUIRE(r->isvalid(), "road isn't valid");
+    REQUIRE(r->isValid(), "road isn't valid");
     REQUIRE(position>=0 and position<=r->getLength(), "Car is not on road");
     road->removeCar(this);
     road = r;
@@ -138,7 +138,7 @@ Road *Car::getRoad() const {
 void Car::setRoad(Road *r) {
     REQUIRE(this->properlyInitialized(), "Car wasn't initialized when calling setRoad");
     REQUIRE(r->properlyInitialized(), "Road is not properly initialised");
-    REQUIRE(r->isvalid(),"Road isn't valid");
+    REQUIRE(r->isValid(),"Road isn't valid");
     Car::road = r;
     ENSURE(road == r,"Road hasn't changed");
 }
@@ -252,7 +252,7 @@ bool Car::onRoad(int d) const{
     return true;
 }
 
-bool Car::isvalid(Road* r) const {
+bool Car::isValid(Road* r) const {
     if (!properlyInitialized()){
         return false;
     }

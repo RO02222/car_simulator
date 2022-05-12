@@ -43,7 +43,7 @@ public:
     REQUIRE(t>=0, "Time cannot be negative");
     ENSURE(acceleration == a, "accelration is not updated");
 */
-    void updateCar(double t, bool onJunction = false);
+    bool updateCar(double t, bool onJunction = false);
 
 
 /**
@@ -178,7 +178,7 @@ public:
 
     bool onRoad(int d) const;
 
-    bool isvalid(Road* road) const;
+    bool isValid(Road* road) const;
 /////////////
 };
 

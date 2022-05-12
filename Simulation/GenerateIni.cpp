@@ -26,7 +26,7 @@ GenerateIni::GenerateIni(World *world, const std::string &filename)
 
 
 void GenerateIni::generate() {
-    REQUIRE(world->isvalidSimulation(), "World is not valid when calling generate");
+    REQUIRE(world->isValidSimulation(), "World is not valid when calling generate");
     REQUIRE(world->getRoads().size() >= (unsigned int) 1, "At least 1 Road to simulate");
     unsigned int fignum = 0;
     bool parralellRoad = true;

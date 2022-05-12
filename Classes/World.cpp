@@ -62,7 +62,7 @@ World::~World() {
 
 void World::simpleSimulateWorld(std::ostream &onStream) {
     REQUIRE(properlyInitialized(), "World wasn't initialized when calling simpleSimulateWorld");
-    REQUIRE(isvalidSimulation(), "Simulation is not valid");
+    REQUIRE(isValidSimulation(), "Simulation is not valid");
     onStream << "Tijd: " <<time<<std::endl;
     int numVehicle = 1;
     std::vector<Road*> roadIt = getRoads();
@@ -80,7 +80,7 @@ void World::simpleSimulateWorld(std::ostream &onStream) {
 
 void World::graficImpSimulateWorld(std::ostream &onStream) {
     REQUIRE(properlyInitialized(), "World wasn't initialized when calling graficImpSimulateWorld");
-    REQUIRE(isvalidSimulation(), "Simulation is not valid");
+    REQUIRE(isValidSimulation(), "Simulation is not valid");
     const char separator = ' ';
     unsigned int nameWidth = 17;
     std::vector<Road*> roadIt = getRoads();
@@ -219,7 +219,7 @@ void World::graficImpSimulateWorld(std::ostream &onStream) {
 
 void World::updateWorld(double t) {
     REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling updateWorld");
-    REQUIRE(isvalidSimulation(), "Simulation is not valid");
+    REQUIRE(isValidSimulation(), "Simulation is not valid");
     time += t;
     std::vector<Road *> roadIt = getRoads();
     for (std::vector<Road *>::iterator itR = roadIt.begin(); itR != roadIt.end(); itR++) {
@@ -229,7 +229,7 @@ void World::updateWorld(double t) {
     for (std::vector<Junction *>::iterator itJ = junctionIt.begin(); itJ != junctionIt.end(); itJ++) {
         (*itJ)->updateJunction(t);
     }
-    ENSURE(isvalidSimulation(),"Simulation isn't Valid");
+    ENSURE(isValidSimulation(),"Simulation isn't Valid");
 }
 
 
@@ -272,7 +272,7 @@ void World::addRoad(std::string name, double length) {
 
 void World::addRoad(Road* r) {
     REQUIRE(properlyInitialized(), "World wasn't initialized when calling addRoad");
-    REQUIRE(r->isvalid(), "Road isn't valid");
+    REQUIRE(r->isValid(), "Road isn't valid");
     for (std::vector<Road *>::iterator it = roads.begin(); it != roads.end(); it++) {
         if ((*it)->getName() == r->getName()) {
             error<<"Failed to add road: road already exist"<<std::endl;
@@ -318,22 +318,25 @@ double World::getTime() const {
 
 
 void World::setTime(double t) {
-    REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling setTime");
+    REQUIRE(properlyInitialized(), "World wasn't initialized when calling setTime");
     REQUIRE(t>=0, "time cannot be negative");
     World::time = t;
     ENSURE(World::time == t,"Time hasn't changed");
 }
 
 CarData* World::getCarData(Type type)  {
-    REQUIRE(this->properlyInitialized(), "World wasn't initialized when calling getCarData");
+    REQUIRE(properlyInitialized(), "World wasn't initialized when calling getCarData");
+    REQUIRE(isvalid(&carData),"Data is not properly initialised");
+    CarData* returnData = carData[0];
     for (std::vector<CarData*>::iterator data = carData.begin(); data != carData.end(); data++){
         if ((*data)->getType() == type){
-            ENSURE((*data)->properlyInitialized(), "Data is not properly initialised");
-            return (*data);
+            returnData = *data;
+            break;
         }
     }
-    ENSURE(carData[0]->properlyInitialized(), "The cardata is not properly initialised");
-    return carData[0];
+
+    ENSURE(returnData->properlyInitialized(), "The cardata is not properly initialised");
+    return returnData;
 }
 
 std::vector<CarData*>* World::getAllData() {
@@ -353,7 +356,7 @@ bool World::properlyInitialized () const{
     return _initCheck == this;
 }
 
-bool World::isvalid() const{
+bool World::isValid() const{
     if (!properlyInitialized()){
         return false;
     }
@@ -363,19 +366,19 @@ bool World::isvalid() const{
     return true;
 }
 
-bool World::isvalidSimulation() const {
-    if (!isvalid()) {
+bool World::isValidSimulation() const {
+    if (!isValid()) {
         return false;
     }
     std::vector<Road *> RoadIt = roads;
     for (std::vector<Road *>::iterator itR = RoadIt.begin(); itR != RoadIt.end(); itR++) {
-        if (!(*itR)->isvalid()) {
+        if (!(*itR)->isValid()) {
             return false;
         }
     }
     std::vector<Junction *> junctionIt = junctions;
     for (std::vector<Junction *>::iterator itJ = junctionIt.begin(); itJ != junctionIt.end(); itJ++) {
-        if (!(*itJ)->isvalid()) {
+        if (!(*itJ)->isValid()) {
             return false;
         }
     }

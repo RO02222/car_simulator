@@ -58,7 +58,9 @@ void Road::updateRoad(double t) {
             }
         }
         if (update) {
-            (*itC)->updateCar(t);
+            if (!(*itC)->updateCar(t)){
+                removeCar((*itC),true);
+            }
         }
     }
     std::vector<Light *> lightIt = getLights();
@@ -92,18 +94,20 @@ void Road::deleteCar(Car* car) {
     }
 }
 
-void Road::removeCar(Car* car) {
+void Road::removeCar(Car* car, bool del) {
     REQUIRE(this->properlyInitialized(), "Road wasn't initialized when calling removeCars");
     REQUIRE(car->properlyInitialized(), "car wasn't properly initialised");
-    unsigned int size = cars.size();
     std::vector<Car *> carIt = getCars();
     for (unsigned int i = 0; i<cars.size();i++) {
         if (cars[i] == car){
             cars.erase(cars.begin()+i);
-            ENSURE(cars.size() == size-1, "Car is not removed");
-            return;
+            break;
         }
     }
+    if (del){
+        delete car;
+    }
+    ENSURE(findCar(car),"Car is not deleted");
 }
 
 /////////////
@@ -295,7 +299,7 @@ void Road::setbusStops(const std::vector<BusStop *> &BusStops) {
 const std::vector<std::pair<Junction *, double *> > &Road::getJunctions() {
     REQUIRE(this->properlyInitialized(), "Road wasn't initialized when calling getJunctions");
     for(unsigned int i=0; i<junctions.size(); i++){
-        ENSURE(junctions[i].first->isvalid(), "Junction is not valid");
+        ENSURE(junctions[i].first->isValid(), "Junction is not valid");
     }
     return junctions;
 }
@@ -318,7 +322,14 @@ bool Road::properlyInitialized() const{
     return _initCheck == this;
 }
 
-bool Road::isvalid() const{
+bool Road::onRoad(double p) const{
+    if (p < 0 or p > length){
+        return false;
+    }
+    return true;
+}
+
+bool Road::isValid() const{
     if (!properlyInitialized()){
         return false;
     }
@@ -331,13 +342,43 @@ bool Road::isvalid() const{
     return true;
 }
 
+
+bool Road::isValidToAdd(double position) const {
+    if (!isValid()){
+        return false;
+    }
+    if (position < gStopDistance or onRoad(position)){
+        return false;
+    }
+    std::vector<Light*> light = lights;
+    for (std::vector<Light*>::iterator itL = light.begin(); itL != light.end(); itL++){
+        if (!(*itL)->properlyInitialized()){
+            return false;
+        }
+        if (std::abs((*itL)->getPosition() - position) < gSlowFactor){
+            return false;
+        }
+    }
+    std::vector<BusStop*> busstop = busStops;
+    for (std::vector<BusStop*>::iterator itB = busstop.begin(); itB != busstop.end(); itB++){
+        if (!(*itB)->properlyInitialized()){
+            return false;
+        }
+        if (std::abs((*itB)->getPosition() - position) < gSlowFactor){
+            return false;
+        }
+    }
+    return true;
+}
+
+
 bool Road::isvalidSimulation(){
-    if (!isvalid()){
+    if (!isValid()){
         return false;
     }
     std::vector<Car *> carIt = getCars();
     for (std::vector<Car *>::iterator itC = carIt.begin(); itC != carIt.end(); itC++) {
-        if (!(*itC)->isvalid(this)){
+        if (!(*itC)->isValid(this)){
             return false;
         };
     }
@@ -349,16 +390,42 @@ bool Road::isvalidSimulation(){
     }
     std::vector<CarGen *> carGenIt = getCarGen();
     for (std::vector<CarGen *>::iterator itG = carGenIt.begin(); itG != carGenIt.end(); itG++) {
-        if(!(*itG)->isvalid(this)){
+        if(!(*itG)->isValid(this)){
             return false;
         }
     }
     std::vector<BusStop *> busStopIt = getBusStops();
     for (std::vector<BusStop *>::iterator itB = busStopIt.begin(); itB != busStopIt.end(); itB++) {
-        if(!(*itB)->isvalid(this)){
+        if(!(*itB)->isValid(this)){
             return false;
         }
     }
     return true;
+}
+
+bool Road::findCar(Car *car) {
+    if (car == NULL){
+        return true;
+    }
+    std::vector<Car*> c = cars;
+    for (std::vector<Car*>::iterator itC = c.begin(); itC != c.end(); itC++){
+        if (*itC == car){
+            return true;
+        }
+    }
+    return false;
+}
+
+bool Road::findLight(Light *light) {
+    if (light == NULL){
+        return true;
+    }
+    std::vector<Light*> l = lights;
+    for (std::vector<Light*>::iterator itC = l.begin(); itC != l.end(); itC++){
+        if (*itC == light){
+            return true;
+        }
+    }
+    return false;
 }
 //////////////

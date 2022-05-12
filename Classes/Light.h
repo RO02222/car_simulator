@@ -9,12 +9,13 @@
 #ifndef CAR_SIMULATOR_LIGHT_H
 #define CAR_SIMULATOR_LIGHT_H
 #include <iostream>
+#include "Clock.h"
 
-enum color {green,red,orange};
+
 class Road;
 class Junction;
 
-class Light{
+class Light : public Clock{
 public:
     std::ofstream* error;
 private:
@@ -22,13 +23,8 @@ private:
     Road* road;
 
     double position;
-    double cycle;
-    double lastCycle;
-    color state;
 
-private:
     bool clock;
-    bool update;
 public:
 /**
  * create a traffic light
@@ -42,23 +38,11 @@ public:
     Light(double position, double cycle, Road* road, std::ofstream* error);
 
 /**
- * create a traffic light for a junction as a clock
- * @param cycle: the time a cycle takes for a traffic light
- * @param error: errorfile
+ * delete a light
  * @return: None
-\n ENSURE(properlyInitialized(), "constructor must end in properlyInitialized state");
+\n REQUIRE(properlyInitialized(), "Road wasn't initialized when calling ~Road);
 */
-    Light(double cycle, std::ofstream* error);
-
-
-/**
- * create a traffic controller for a junction
- * @param junction: junction with lights
- * @param error: errorfile
- * @return: None
-\n ENSURE(properlyInitialized(), "constructor must end in properlyInitialized state");
-*/
-    Light(Junction junction, std::ofstream* error);
+    ~Light();
 
 
 /**
@@ -111,45 +95,6 @@ public:
 */
     void setPosition(double position);
 /**
- * get the cycleTime the traffic light
- * @return: (double), the cycleTime the traffic light
-\n REQUIRE(properlyInitialized(), "Light wasn't initialized when calling getCycle");
-*/
-    double getCycle();
-/**
- * change cycle of the traffic light
- * @param cycle: the new cycle of the traffic light
- * @return: None
-\n REQUIRE(properlyInitialized(), "Light wasn't initialized when calling setCycle");
-*/
-    void setCycle(double cycle);
-/**
- * get the time since the last cycle the traffic light
- * @return: (double), the cycleTime the traffic light
-\n REQUIRE(properlyInitialized(), "Light wasn't initialized when calling getCycle");
-*/
-    double getLastCycle();
-/**
- * set the time since the last cycle the traffic light
- * @param cycle: the new cycle of the traffic light
- * @return: None
-\n REQUIRE(properlyInitialized(), "Light wasn't initialized when calling setCycle");
-*/
-    void setLastCycle(double cycle);
-/**
- * get the state the traffic light
- * @return: (color), the state the traffic light
-\n REQUIRE(properlyInitialized(), "Light wasn't initialized when calling getState");
-*/
-    color getState();
-/**
- * change state of the traffic light
- * @param state: the new state of the traffic light
- * @return: None
-\n REQUIRE(properlyInitialized(), "Light wasn't initialized when calling setState");
-*/
-    void setState(color state);
-/**
  * get the state the traffic light
  * @return: (color), the state the traffic light
 \n REQUIRE(properlyInitialized(), "Light wasn't initialized when calling getClock");
@@ -175,8 +120,6 @@ public:
     bool onRoad(int d) const;
 
     bool isvalid(Road* road) const;
-
-    bool isvalidClock() const;
 /////////////
 };
 

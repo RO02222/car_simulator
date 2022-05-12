@@ -6,6 +6,7 @@
 #define CAR_SIMULATION_CARDATA_H
 
 enum Type{car,bus,fire,police,ambulance,bugatti,none};
+class Road;
 class CarData {
 private:
     CarData* _initCheck;
@@ -88,6 +89,7 @@ public:
     bool properlyInitialized() const;
 
     bool isValid() const;
+
 //////////////
 };
 
